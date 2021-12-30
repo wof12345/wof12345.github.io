@@ -1,0 +1,134 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: .5s;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    overflow-x: auto;
+}
+
+.selection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0px;
+}
+
+#choice {
+    min-width: 200px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.selection_info {
+    margin: 30px 0 0 0;
+    padding: 20px;
+    line-height: 25px;
+    letter-spacing: 1px;
+    font-size: 19px;
+}
+
+.input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0px;
+}
+
+input {
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgba(133, 129, 129, 0.61);
+}
+
+.input>* {
+    margin: 5px;
+}
+
+.start_execution,
+.clear,
+.display_toggle,
+button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+.start_execution:hover,
+.clear:hover,
+.display_toggle:hover,
+button:hover {
+    background-color: rgba(174, 203, 228, 0.514);
+    cursor: pointer;
+}
+
+.iteration_result {
+    min-width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    background-color: rgba(150, 147, 147, 0.521);
+    border-radius: 5px;
+    text-align: center;
+    line-height: 15px;
+    letter-spacing: 1px;
+}
+
+.iteration_result>* {
+    margin: 6px;
+}
+
+.floating_window {
+    background-color: rgba(166, 167, 166, 0.63);
+    min-width: 200px;
+    min-height: 100px;
+    position: fixed;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    left: -200px;
+    top: 0;
+}
+
+.floating_window:hover {
+    opacity: .5;
+    cursor: pointer;
+}
+
+.chart_cont {
+    width: 200px;
+    height: 200px;
+}
+
+.input_gen_cont {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 150;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.input_gen_cont>label {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.input_gen_cont>input {
+    width: 200px;
+}
+
+.input_gen_cont>* {
+    margin: 10px;
+}
