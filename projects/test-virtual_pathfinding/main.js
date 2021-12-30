@@ -1,6 +1,6 @@
 generateBackground(numOfGrid); //24384
 setGrid();
-generateBlockades(3000);
+generateBlockades(10000);
 quickSort(blockades, 0, blockades.length - 1);
 
 function driverFunction(currentNode) {
