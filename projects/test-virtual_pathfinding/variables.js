@@ -65,6 +65,10 @@ let currentGridInfo = {
     currentTarget: 0,
     gridToNodeDistanceToTarget: [],
     currentSmallestfCost: Infinity,
+    timeVar: 0,
+    cycles: 0,
+    tsSortstartTime: [],
+    tsSortendTime: [],
 }
 
 let debugVars = {

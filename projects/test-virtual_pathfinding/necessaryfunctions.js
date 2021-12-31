@@ -7,6 +7,14 @@ function fixPath(collection) {
     collection.push(temp);
 }
 
+function updatePosition() {
+    let temp1 = background.offsetTop;
+    let temp2 = background.offsetLeft;
+
+    gridStats.fixerVarLeft = temp2;
+    gridStats.fixerVarTop = temp1;
+}
+
 function setGrid() {
     gridStats.rows = numOfGrid / gridStats.columns;
     background.style = ` grid-template-columns: repeat(${gridStats.columns}, 10px); grid-template-rows: repeat(${gridStats.rows}, 10px);`
@@ -86,7 +94,9 @@ function illuminatePath(command, currentPath, color) {
 }
 
 function generalAnimation(position) {
-    playerCharacter.style = `transform :translate(${position[0]}px,${position[1]}px)`
+    playerCharacter.style = `transform :translate(${position[0]}px,${position[1]}px)`;
+    playerCharacterPosition.posX = position[0];
+    playerCharacterPosition.posY = position[1];
 }
 
 function initiateGridInfo(elementId) {
@@ -94,12 +104,15 @@ function initiateGridInfo(elementId) {
         currentGridInfo.gridToNodeRelations[i + 1] = [];
         currentGridInfo.gridToNodeWeights[i + 1] = [];
         currentGridInfo.gridToNodeLevel[i + 1] = [];
+        currentGridInfo.tsSortstartTime[i + 1] = [];
+        currentGridInfo.tsSortendTime[i + 1] = [];
         currentGridInfo.gridToNodeDistanceFromSource[i + 1] = Infinity;
         currentGridInfo.gridToNodeDistanceToTarget[i + 1] = -1;
+        currentGridInfo.gridToNodeLevel[i] = -1;
     }
     currentGridInfo.pqForPathfinding.push(elementId, 0);
     currentGridInfo.gridToNodeDistanceFromSource[elementId] = 0;
-    currentGridInfo.gridToNodeLevel[elementId] = -1;
+    currentGridInfo.gridToNodeLevel[elementId] = 1;
     currentGridInfo.parentNode[elementId] = -1;
     currentGridInfo.allCheckedNodes.push(elementId);
     currentGridInfo.currentSource = elementId;
@@ -116,9 +129,13 @@ function resetGridInfo() {
     currentPath = [];
     currentGridInfo.closedNode = [];
     currentGridInfo.currentSmallestfCost = Infinity;
+    currentGridInfo.cycles = 0;
+    currentGridInfo.timeVar = 0;
     tempi = 0;
     illuminatePath('override', currentGridInfo.allCheckedNodes, 'rgb(0, 255, 0)');
     currentGridInfo.allCheckedNodes = [];
+    currentGridInfo.tsSortendTime = [];
+    currentGridInfo.tsSortstartTime = [];
 }
 
 function printShortestPath(parents, node) {
@@ -157,8 +174,8 @@ function placePlayerCharacterGrid(target) {
         elementStat.moveComplete = true;
         return;
     }
-    let position = getPosition(currentPath.shift());
 
+    let position = getPosition(currentPath.shift());
     generalAnimation(position);
 
     setTimeout(() => {

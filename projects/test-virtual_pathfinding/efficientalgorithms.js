@@ -39,6 +39,32 @@ function binarySearch(arr, start, end, target) {
     return false;
 }
 
+function DFS(currentSource, parent, target) {
+
+    driverFunction(currentSource);
+    console.log('Visited : ', currentGridInfo.gridToNodeRelations[currentSource]);
+    currentGridInfo.tsSortstartTime[currentSource] = currentGridInfo.timeVar++;
+    illuminatePath('', [currentSource], 'rgb(255, 255, 255)')
+    if (currentGridInfo.currentSource == target) return;
+
+    for (let i = 0; i < currentGridInfo.gridToNodeRelations[currentSource].length; i++) {
+        let currentAdjacent = currentGridInfo.gridToNodeRelations[currentSource][i];
+        if (currentGridInfo.gridToNodeLevel[currentAdjacent] === -1) {
+            currentGridInfo.gridToNodeLevel[currentAdjacent] = 1;
+            currentGridInfo.closedNode.push(currentSource)
+
+            setTimeout(() => {
+                DFS(currentAdjacent, currentSource);
+            }, 0.1)
+        } else if (currentAdjacent !== parent && currentGridInfo.gridToNodeDistanceFromSource[currentAdjacent] !== 2) {
+            currentGridInfo.cycles++;
+        }
+    }
+
+    currentGridInfo.gridToNodeLevel[currentSource] = 2;
+    currentGridInfo.tsSortendTime[currentSource] = currentGridInfo.timeVar++;
+}
+
 function Dijkstra(target) {
 
     if (currentGridInfo.pqForPathfinding.isEmpty()) {

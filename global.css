@@ -201,6 +201,10 @@ aside {
     flex-direction: column;
 }
 
+.section_container {
+    overflow-x: hidden;
+}
+
 #pass_field {
     padding: 16px;
     border-radius: 10px;

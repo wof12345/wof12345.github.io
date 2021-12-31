@@ -5,6 +5,7 @@ quickSort(blockades, 0, blockades.length - 1);
 
 function driverFunction(currentNode) {
     let currentNeighbors = [];
+    currentNode = +currentNode;
     let arrayToFollow = neighborParams.middle;
 
     if (currentNode % gridStats.columns === 0) {
@@ -20,6 +21,7 @@ function driverFunction(currentNode) {
 
         if (neighTemNode <= numOfGrid && neighTemNode > 0) {
             currentNeighbors.push(neighTemNode)
+            console.log(neighTemNode);
 
             currentGridInfo.gridToNodeRelations[currentNode].push(neighTemNode);
             currentGridInfo.gridToNodeRelations[neighTemNode].push(currentNode);
@@ -38,8 +40,10 @@ function determineJourneyStats(elementId) {
     initiateGridInfo(playerCharacterPosition.lastPositionId);
     if (elementStat.currentAlgorithm === 'Dijkstra')
         Dijkstra(elementId);
-    else
+    else if (elementStat.currentAlgorithm === 'A*')
         Astar(elementId);
+    else
+        DFS(currentGridInfo.currentSource, 0, elementId)
 }
 
 function placePlayerCharacter(element, elementId, position) {
@@ -89,4 +93,8 @@ algo_select.addEventListener('change', function(e) {
     elementStat.currentAlgorithm = algorithm;
 
     showFloatingMsg(`Algorithm changed to ${elementStat.currentAlgorithm}`, 1000);
+})
+
+window.addEventListener('resize', () => {
+    updatePosition();
 })
