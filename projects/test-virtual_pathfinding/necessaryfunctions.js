@@ -36,11 +36,11 @@ function generateBlockades(count) {
 }
 
 function showFloatingMsg(string, time) {
-    floatingMsg.value = string;
+    floatingMsg.textContent = string;
     floatingMsg.style = `padding:20px;width:max-content`
 
     setTimeout(() => {
-        floatingMsg.value = ``;
+        floatingMsg.textContent = ``;
         floatingMsg.style = null;
     }, time)
 }
@@ -164,6 +164,7 @@ function algorithmEndingAction(target, command) {
         console.log(currentPath);
     } else {
         showFloatingMsg(`No path valid!`, 3000);
+        updateViews('No path!')
         resetPlayerChar();
     }
 }

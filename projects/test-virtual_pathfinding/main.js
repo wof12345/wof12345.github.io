@@ -21,7 +21,7 @@ function driverFunction(currentNode) {
 
         if (neighTemNode <= numOfGrid && neighTemNode > 0) {
             currentNeighbors.push(neighTemNode)
-            console.log(neighTemNode);
+            // console.log(neighTemNode);
 
             currentGridInfo.gridToNodeRelations[currentNode].push(neighTemNode);
             currentGridInfo.gridToNodeRelations[neighTemNode].push(currentNode);
@@ -42,8 +42,10 @@ function determineJourneyStats(elementId) {
         Dijkstra(elementId);
     else if (elementStat.currentAlgorithm === 'A*')
         Astar(elementId);
-    else
+    else {
+        currentGridInfo.currentTarget=`This is a depth traversal and has no target.`
         DFS(currentGridInfo.currentSource, 0, elementId)
+    }
 }
 
 function placePlayerCharacter(element, elementId, position) {
@@ -88,6 +90,10 @@ background.addEventListener('click', function(e) {
 })
 
 algo_select.addEventListener('change', function(e) {
+    if(elementStat.currentAlgorithm==="DFS"){
+        resetGridInfo();
+        resetPlayerChar();
+    }
     let algorithm = algo_select.value;
     algorithmView.textContent = `Movement algorithm is ${algorithm}.`;
     elementStat.currentAlgorithm = algorithm;

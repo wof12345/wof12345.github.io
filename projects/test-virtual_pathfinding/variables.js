@@ -9,7 +9,7 @@ let background = document.querySelector(`.background`)
 let floatingMsg = document.querySelector(`.floating_message`)
 let playerCharacter = document.querySelector(`.playerCharacter`)
 
-let numOfGrid = 7000;
+let numOfGrid = 5000;
 let numOfBlockades = 4000;
 let gridStats = {
     columns: 100,

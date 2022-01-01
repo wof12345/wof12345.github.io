@@ -40,21 +40,20 @@ function binarySearch(arr, start, end, target) {
 }
 
 function DFS(currentSource, parent, target) {
-
     driverFunction(currentSource);
-    console.log('Visited : ', currentGridInfo.gridToNodeRelations[currentSource]);
-    currentGridInfo.tsSortstartTime[currentSource] = currentGridInfo.timeVar++;
+    // console.log(currentGridInfo.currentSource, target);
+    // currentGridInfo.tsSortstartTime[currentSource] = currentGridInfo.timeVar++;
     illuminatePath('', [currentSource], 'rgb(255, 255, 255)')
-    if (currentGridInfo.currentSource == target) return;
 
     for (let i = 0; i < currentGridInfo.gridToNodeRelations[currentSource].length; i++) {
         let currentAdjacent = currentGridInfo.gridToNodeRelations[currentSource][i];
-        if (currentGridInfo.gridToNodeLevel[currentAdjacent] === -1) {
+        if (currentGridInfo.gridToNodeLevel[currentAdjacent] === -1 && !binarySearch(blockades, 0, blockades.length - 1, currentAdjacent)) {
             currentGridInfo.gridToNodeLevel[currentAdjacent] = 1;
+            updateViews(currentAdjacent);
             currentGridInfo.closedNode.push(currentSource)
 
             setTimeout(() => {
-                DFS(currentAdjacent, currentSource);
+                DFS(currentAdjacent, currentSource, target);
             }, 0.1)
         } else if (currentAdjacent !== parent && currentGridInfo.gridToNodeDistanceFromSource[currentAdjacent] !== 2) {
             currentGridInfo.cycles++;
@@ -62,7 +61,9 @@ function DFS(currentSource, parent, target) {
     }
 
     currentGridInfo.gridToNodeLevel[currentSource] = 2;
-    currentGridInfo.tsSortendTime[currentSource] = currentGridInfo.timeVar++;
+    illuminatePath('override', [currentSource], 'yellow');
+    console.log(currentSource, target);
+    // currentGridInfo.tsSortendTime[currentSource] = currentGridInfo.timeVar++;
 }
 
 function Dijkstra(target) {
