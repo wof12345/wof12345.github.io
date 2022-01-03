@@ -13,6 +13,7 @@ let iteraionBlock = {
 let lastTimerValue = 0;
 
 let pageElements = {
+    input: document.getElementById(`input`),
     choice: document.getElementById('choice'),
     infoBox: document.querySelector(`.selection_info`),
     resultDisplay: document.querySelector(`.result_display`),
@@ -21,6 +22,8 @@ let pageElements = {
     display_toggle: document.querySelector(`.display_toggle`),
     input_box: document.querySelector(`#input_gen`),
     generationButton: document.querySelector(`.generate`),
+    input_gen_cont: document.querySelector(`.input_gen_cont`),
+    floater_indicator: document.querySelector(`.arrow_shape`)
 }
 
 let backupVariables = {
@@ -60,6 +63,10 @@ let chartCurrentData = {
 }
 
 let graph_cont = document.getElementById('graph_cont').getContext('2d');
+
+let pageLogics = {
+    floater_gen_shrunk: false,
+}
 
 let currentGraphInfo = {
     graphName: null,

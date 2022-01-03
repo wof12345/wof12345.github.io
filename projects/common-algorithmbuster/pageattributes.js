@@ -137,6 +137,26 @@ pageElements.generationButton.addEventListener('click', () => {
     document.getElementById(`input`).value = tempString;
 })
 
+pageElements.floater_indicator.addEventListener('click', () => {
+    if (!pageLogics.floater_gen_shrunk) {
+        pageElements.floater_indicator.style = ` transform: rotate(180deg);`
+        pageLogics.floater_gen_shrunk = true;
+        pageElements.input_gen_cont.style = `transform: translateX(262px);`
+    } else {
+        pageElements.floater_indicator.style = ``
+        pageLogics.floater_gen_shrunk = false;
+        pageElements.input_gen_cont.style = ``
+    }
+})
+
+pageElements.input.addEventListener('focus', () => {
+    pageElements.input.style = `width:100%;`;
+})
+
+pageElements.input.addEventListener('blur', () => {
+    pageElements.input.style = ``;
+})
+
 // currentGraphInfo.priorityQueue.push('23', 1);
 // currentGraphInfo.priorityQueue.push('25', 1);
 // currentGraphInfo.priorityQueue.push('24', 2);
