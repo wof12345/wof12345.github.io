@@ -1,6 +1,11 @@
 let tempi = 0;
 let currentPath = [];
+let gridTotal = document.getElementById('total_nodes')
+let gridColumns = document.getElementById('columns')
+let gridBlocks = document.getElementById('blocks')
+let gridGenerationBtn = document.querySelector('.grid_gen')
 let algo_select = document.getElementById(`algo`);
+let animation_select = document.getElementById(`animation_type`);
 let sourceView = document.getElementById(`source`)
 let currentView = document.getElementById(`current`)
 let targetView = document.getElementById(`target`)
@@ -9,10 +14,10 @@ let background = document.querySelector(`.background`)
 let floatingMsg = document.querySelector(`.floating_message`)
 let playerCharacter = document.querySelector(`.playerCharacter`)
 
-let numOfGrid = 5000;
-let numOfBlockades = 4000;
+let numOfGrid = 3000;
+let numOfBlockades = 500;
 let gridStats = {
-    columns: 100,
+    columns: 50,
     rows: 0,
     fixerVarTop: background.offsetTop,
     fixerVarLeft: background.offsetLeft,
@@ -37,6 +42,7 @@ let playerCharacterPosition = {
 let elementStat = {
     moveComplete: true,
     currentAlgorithm: 'Dijkstra',
+    animationType: 'Normal'
 }
 let neighborParams = {
     left: [-gridStats.columns, -(gridStats.columns - 1), 1, (gridStats.columns + 1), gridStats.columns],
@@ -69,6 +75,7 @@ let currentGridInfo = {
     cycles: 0,
     tsSortstartTime: [],
     tsSortendTime: [],
+    traversalDone: false,
 }
 
 let debugVars = {

@@ -1,39 +1,41 @@
 generateBackground(numOfGrid); //24384
+updateGridInfo();
 setGrid();
 generateBlockades(numOfBlockades);
-quickSort(blockades, 0, blockades.length - 1);
 
 function driverFunction(currentNode) {
-    let currentNeighbors = [];
-    currentNode = +currentNode;
-    let arrayToFollow = neighborParams.middle;
+    if (!binarySearch(currentGridInfo.closedNode, 0, currentGridInfo.closedNode.length, currentNode)) {
+        let currentNeighbors = [];
+        currentNode = +currentNode;
+        let arrayToFollow = neighborParams.middle;
 
-    if (currentNode % gridStats.columns === 0) {
-        arrayToFollow = neighborParams.right;
-    }
-    if ((currentNode - 1) % gridStats.columns === 0) {
-        arrayToFollow = neighborParams.left;
-    }
-
-    for (let i = 0; i < arrayToFollow.length; i++) {
-        let neighTemNode = currentNode + +arrayToFollow[i];
-        let distance;
-
-        if (neighTemNode <= numOfGrid && neighTemNode > 0) {
-            currentNeighbors.push(neighTemNode)
-            // console.log(neighTemNode);
-
-            currentGridInfo.gridToNodeRelations[currentNode].push(neighTemNode);
-            currentGridInfo.gridToNodeRelations[neighTemNode].push(currentNode);
-
-            distance = calculateDistance(neighTemNode, currentNode);
-            currentGridInfo.gridToNodeWeights[currentNode].push(distance);
-            currentGridInfo.gridToNodeWeights[neighTemNode].push(distance);
+        if (currentNode % gridStats.columns === 0) {
+            arrayToFollow = neighborParams.right;
         }
-    }
+        if ((currentNode - 1) % gridStats.columns === 0) {
+            arrayToFollow = neighborParams.left;
+        }
 
-    illuminatePath('', currentNeighbors, 'rgba(255, 0, 0, 0.99)')
-    tempi++;
+        for (let i = 0; i < arrayToFollow.length; i++) {
+            let neighTemNode = currentNode + +arrayToFollow[i];
+            let distance;
+
+            if (neighTemNode <= numOfGrid && neighTemNode > 0) {
+                currentNeighbors.push(neighTemNode)
+                    // console.log(neighTemNode);
+
+                currentGridInfo.gridToNodeRelations[currentNode].push(neighTemNode);
+                currentGridInfo.gridToNodeRelations[neighTemNode].push(currentNode);
+
+                distance = calculateDistance(neighTemNode, currentNode);
+                currentGridInfo.gridToNodeWeights[currentNode].push(distance);
+                currentGridInfo.gridToNodeWeights[neighTemNode].push(distance);
+            }
+        }
+
+        illuminatePath('', currentNeighbors, 'rgba(255, 0, 0, 0.99)')
+        tempi++;
+    }
 }
 
 function determineJourneyStats(elementId) {
@@ -43,7 +45,6 @@ function determineJourneyStats(elementId) {
     else if (elementStat.currentAlgorithm === 'A*')
         Astar(elementId);
     else {
-        currentGridInfo.currentTarget=`This is a depth traversal and has no target.`
         DFS(currentGridInfo.currentSource, 0, elementId)
     }
 }
@@ -90,15 +91,34 @@ background.addEventListener('click', function(e) {
 })
 
 algo_select.addEventListener('change', function(e) {
-    if(elementStat.currentAlgorithm==="DFS"){
-        resetGridInfo();
-        resetPlayerChar();
-    }
     let algorithm = algo_select.value;
     algorithmView.textContent = `Movement algorithm is ${algorithm}.`;
     elementStat.currentAlgorithm = algorithm;
 
     showFloatingMsg(`Algorithm changed to ${elementStat.currentAlgorithm}`, 1000);
+})
+
+
+animation_select.addEventListener('change',()=>{
+    let animation_value  = animation_select.value;
+
+    elementStat.animationType = animation_value;
+
+})
+
+gridGenerationBtn.addEventListener('click', () => {
+    console.log('clicked');
+    resetPlayerChar();
+    removeElements(background);
+    updateGridInfo();
+    generateBackground(numOfGrid);
+    setGrid();
+    updateNeighParams();
+    generateBlockades(numOfBlockades);
+    console.log(blockades);
+    resetGridInfo();
+    console.log(gridStats);
+    console.log(neighborParams);
 })
 
 window.addEventListener('resize', () => {

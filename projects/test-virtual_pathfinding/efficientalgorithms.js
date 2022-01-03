@@ -39,31 +39,49 @@ function binarySearch(arr, start, end, target) {
     return false;
 }
 
+function simulateDFS(target) {
+    if (currentGridInfo.closedNode.length <= 0) {
+        algorithmEndingAction(target, "DFS");
+        return;
+    }
+    let currentVisit = currentGridInfo.closedNode.shift();
+    illuminatePath('', [currentVisit], 'rgb(255, 255, 255)')
+
+    setTimeout(() => {
+        simulateDFS(target);
+    }, 1)
+}
+
 function DFS(currentSource, parent, target) {
     driverFunction(currentSource);
     // console.log(currentGridInfo.currentSource, target);
     // currentGridInfo.tsSortstartTime[currentSource] = currentGridInfo.timeVar++;
-    illuminatePath('', [currentSource], 'rgb(255, 255, 255)')
-
-    for (let i = 0; i < currentGridInfo.gridToNodeRelations[currentSource].length; i++) {
-        let currentAdjacent = currentGridInfo.gridToNodeRelations[currentSource][i];
-        if (currentGridInfo.gridToNodeLevel[currentAdjacent] === -1 && !binarySearch(blockades, 0, blockades.length - 1, currentAdjacent)) {
-            currentGridInfo.gridToNodeLevel[currentAdjacent] = 1;
-            updateViews(currentAdjacent);
-            currentGridInfo.closedNode.push(currentSource)
-
-            setTimeout(() => {
-                DFS(currentAdjacent, currentSource, target);
-            }, 0.1)
-        } else if (currentAdjacent !== parent && currentGridInfo.gridToNodeDistanceFromSource[currentAdjacent] !== 2) {
-            currentGridInfo.cycles++;
-        }
+    currentGridInfo.closedNode.push(currentSource)
+        // console.log(currentSource, parent);
+    if (currentSource === +target) {
+        simulateDFS(target);
+        currentGridInfo.traversalDone = true;
+        return;
     }
 
-    currentGridInfo.gridToNodeLevel[currentSource] = 2;
-    illuminatePath('override', [currentSource], 'yellow');
-    console.log(currentSource, target);
-    // currentGridInfo.tsSortendTime[currentSource] = currentGridInfo.timeVar++;
+    if (!currentGridInfo.traversalDone) {
+        for (let i = 0; i < currentGridInfo.gridToNodeRelations[currentSource].length; i++) {
+            let currentAdjacent = currentGridInfo.gridToNodeRelations[currentSource][i];
+            if (currentGridInfo.gridToNodeLevel[currentAdjacent] === -1 && !binarySearch(blockades, 0, blockades.length - 1, currentAdjacent)) {
+                currentGridInfo.gridToNodeLevel[currentAdjacent] = 1;
+                currentGridInfo.parentNode[currentAdjacent] = currentSource;
+                updateViews(currentAdjacent);
+
+                DFS(currentAdjacent, currentSource, target);
+            } else if (currentAdjacent !== parent && currentGridInfo.gridToNodeDistanceFromSource[currentAdjacent] !== 2) {
+                currentGridInfo.cycles++;
+            }
+        }
+
+        currentGridInfo.gridToNodeLevel[currentSource] = 2;
+        // illuminatePath('override', [currentSource], 'yellow');
+        // currentGridInfo.tsSortendTime[currentSource] = currentGridInfo.timeVar++;
+    }
 }
 
 function Dijkstra(target) {

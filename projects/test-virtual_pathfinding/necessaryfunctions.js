@@ -15,8 +15,45 @@ function updatePosition() {
     gridStats.fixerVarTop = temp1;
 }
 
+function updateNeighParams() {
+    neighborParams.left = [-gridStats.columns, -(gridStats.columns - 1), 1, (gridStats.columns + 1), gridStats.columns];
+    neighborParams.middle = [-(gridStats.columns + 1), -gridStats.columns, -(gridStats.columns - 1), -1, 1, (gridStats.columns - 1), gridStats.columns, (gridStats.columns + 1)];
+    neighborParams.right = [-(gridStats.columns + 1), -gridStats.columns, -1, gridStats.columns, (gridStats.columns - 1)];
+    neighborParams.singleLeft = -1;
+    neighborParams.singleRight = 1;
+    neighborParams.singleTop = -gridStats.columns;
+    neighborParams.singleBottom = gridStats.columns;
+    neighborParams.singleCrossLeftBottom = (gridStats.columns - 1);
+    neighborParams.singleCrossRightBottom = (gridStats.columns + 1);
+    neighborParams.singleCrossRightTop = -(gridStats.columns - 1);
+    neighborParams.singleCrossLeftTop = -(gridStats.columns + 1);
+
+}
+
+function removeElements(parent) {
+    let nextLastChild = parent.lastElementChild
+    while (nextLastChild) {
+        parent.removeChild(nextLastChild)
+        nextLastChild = parent.lastElementChild
+    }
+    // parent.childNodes.remove();
+}
+
+function updateGridInfo() {
+    if (gridColumns.value === "") {
+        gridColumns.value = gridStats.columns;
+        gridBlocks.value = numOfBlockades;
+        gridTotal.value = numOfGrid;
+    } else {
+        gridStats.columns = +gridColumns.value
+        numOfBlockades = +gridBlocks.value;
+        numOfGrid = +gridTotal.value;
+    }
+
+}
+
 function setGrid() {
-    gridStats.rows = numOfGrid / gridStats.columns;
+    gridStats.rows = Math.ceil(numOfGrid / gridStats.columns);
     background.style = ` grid-template-columns: repeat(${gridStats.columns}, 10px); grid-template-rows: repeat(${gridStats.rows}, 10px);`
     background.style.width = `${gridStats.columns*10}px`
     background.style.height = `${gridStats.rows*10}px`
@@ -28,10 +65,17 @@ function generateBackground(count) {
 }
 
 function generateBlockades(count) {
+    illuminatePath('override', blockades, 'rgb(0, 255, 0)');
+    blockades = [];
+    currentGridInfo.allCheckedNodes = []
+    console.log('debug :', blockades);
+
+
     for (let counter = 1; counter <= count; counter++) {
         let seed = Math.round(generateRandomNumber(numOfGrid));
         blockades.push(seed);
     }
+    quickSort(blockades, 0, blockades.length - 1);
     illuminatePath('override', blockades, 'rgb(0, 0, 0)');
 }
 
@@ -66,7 +110,8 @@ function getPosition(elm2) {
 
 function resetPlayerChar() {
     playerCharacterPosition.placed = false;
-    document.getElementById(`1`).lastChild.remove();
+    if (playerCharacterPosition.placed)
+        document.getElementById(`1`).lastChild.remove();
     elementStat.moveComplete = true;
 }
 
@@ -136,6 +181,7 @@ function resetGridInfo() {
     currentGridInfo.allCheckedNodes = [];
     currentGridInfo.tsSortendTime = [];
     currentGridInfo.tsSortstartTime = [];
+    currentGridInfo.traversalDone = false;
 }
 
 function printShortestPath(parents, node) {
@@ -147,6 +193,8 @@ function printShortestPath(parents, node) {
 
     printShortestPath(parents, parents[node]);
 
+    // console.log(node);
+
 
     currentPath.push(node + "");
 
@@ -156,6 +204,8 @@ function printShortestPath(parents, node) {
 function algorithmEndingAction(target, command) {
     if (command !== "nopath") {
         illuminatePath('override', [currentGridInfo.currentSource], 'yellow');
+        // console.log(currentGridInfo.parentNode);
+
 
         printShortestPath(currentGridInfo.parentNode, target)
 
@@ -170,19 +220,27 @@ function algorithmEndingAction(target, command) {
 }
 
 function placePlayerCharacterGrid(target) {
-    if (currentPath.length <= 0) {
+
+    if (elementStat.animationType === 'Normal') {
+        if (currentPath.length <= 0) {
+            playerCharacterPosition.lastPositionId = target;
+            elementStat.moveComplete = true;
+            return;
+        }
+
+        let position = getPosition(currentPath.shift());
+        generalAnimation(position);
+
+        setTimeout(() => {
+            placePlayerCharacterGrid(target);
+
+        }, 200)
+    } else {
+        let position = getPosition(currentPath.pop());
         playerCharacterPosition.lastPositionId = target;
         elementStat.moveComplete = true;
-        return;
+        generalAnimation(position);
     }
-
-    let position = getPosition(currentPath.shift());
-    generalAnimation(position);
-
-    setTimeout(() => {
-        placePlayerCharacterGrid(target);
-
-    }, 200)
 }
 
 function calculateDistance(source, target) {

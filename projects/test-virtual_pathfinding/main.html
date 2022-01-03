@@ -32,6 +32,34 @@
         <h1 class="header">Movement algorithm is Dijkstra.</h1>
 
         <div class="node_traversal_info">
+            <div class="grid_info">
+                <label for="total_nodes">Total nodes</label>
+                <input type="text" id="total_nodes">
+            </div>
+
+            <div class="grid_info">
+                <label for="columns">Columns</label>
+                <input type="text" id="columns">
+            </div>
+
+            <div class="grid_info">
+                <label for="blocks">Blockades</label>
+                <input type="text" id="blocks">
+            </div>
+
+            <button class="grid_gen">Generate</button>
+        </div>
+
+        <div class="node_traversal_info">
+
+            <div class="grid_info">
+                <label for="animation">Animation</label>
+                <select name="animation" id="animation_type">
+                    <option value="Normal">Normal</option>
+                    <option value="Instant">Instant</option>
+                </select>
+            </div>
+
             <div class="view_cont">
                 <label for="source">source</label>
                 <input type="text" id="source">

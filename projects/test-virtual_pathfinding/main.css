@@ -8,6 +8,10 @@ input {
     text-align: center;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 h1 {
     text-align: center;
 }
@@ -63,14 +67,16 @@ h1 {
 }
 
 .node_traversal_info,
-.view_cont {
+.view_cont,
+.grid_info {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .node_traversal_info>*,
-.view_cont>* {
+.view_cont>*,
+.grid_info>* {
     margin: 10px;
 }
 
@@ -82,7 +88,7 @@ h1 {
     padding: 7px;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 892px) {
     .node_traversal_info {
         flex-direction: column;
     }
