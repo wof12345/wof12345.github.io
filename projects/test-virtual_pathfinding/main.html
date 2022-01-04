@@ -24,14 +24,17 @@
     <section class="header_info">
 
         <select name="choose_algo" id="algo">
+            <option value="DFS">DFS</option>
+            <option value="BFS">BFS</option>
             <option value="Dijkstra">Dijkstra</option>
             <option value="A*">A*</option>
-            <option value="DFS">DFS</option>
         </select>
 
         <h1 class="header">Movement algorithm is Dijkstra.</h1>
 
         <div class="node_traversal_info">
+            <button class="grid_options">Options</button>
+
             <div class="grid_info">
                 <label for="total_nodes">Total nodes</label>
                 <input type="text" id="total_nodes">
@@ -51,6 +54,9 @@
         </div>
 
         <div class="node_traversal_info">
+            <button class="traversal_options">Traversal Options</button>
+
+            <button class="grid_reset">Reset traversal</button>
 
             <div class="grid_info">
                 <label for="animation">Animation</label>
@@ -77,6 +83,7 @@
         </div>
 
     </section>
+
     <section class="background">
 
     </section>

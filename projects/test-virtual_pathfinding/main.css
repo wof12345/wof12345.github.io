@@ -66,6 +66,12 @@ h1 {
     flex-direction: column;
 }
 
+.node_traversal_info {
+    border-top: 1px solid black;
+    overflow: hidden;
+    transition: .5s;
+}
+
 .node_traversal_info,
 .view_cont,
 .grid_info {
@@ -77,18 +83,18 @@ h1 {
 .node_traversal_info>*,
 .view_cont>*,
 .grid_info>* {
-    margin: 10px;
+    margin: 5px;
 }
 
 .header_info>* {
-    padding: 10px;
+    padding: 5px;
 }
 
 #algo {
     padding: 7px;
 }
 
-@media screen and (max-width: 892px) {
+@media screen and (max-width: 1084px) {
     .node_traversal_info {
         flex-direction: column;
     }

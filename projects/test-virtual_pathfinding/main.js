@@ -44,8 +44,10 @@ function determineJourneyStats(elementId) {
         Dijkstra(elementId);
     else if (elementStat.currentAlgorithm === 'A*')
         Astar(elementId);
-    else {
+    else if (elementStat.currentAlgorithm === 'DFS') {
         DFS(currentGridInfo.currentSource, 0, elementId)
+    } else if (elementStat.currentAlgorithm === 'BFS') {
+        BFS(elementId)
     }
 }
 
@@ -74,6 +76,7 @@ background.addEventListener('click', function(e) {
     let pos = getPosition(goingto)
     let topPos = pos[1];
     let leftPos = pos[0];
+    updatePosition();
     if (goingto.className === 'playerCharacter') {}
     if (elementStat.moveComplete && !binarySearch(blockades, 0, blockades.length - 1, +goingto) && !(goingto.className === 'playerCharacter')) {
         elementStat.moveComplete = false;
@@ -99,15 +102,15 @@ algo_select.addEventListener('change', function(e) {
 })
 
 
-animation_select.addEventListener('change',()=>{
-    let animation_value  = animation_select.value;
+animation_select.addEventListener('change', () => {
+    let animation_value = animation_select.value;
 
     elementStat.animationType = animation_value;
 
 })
 
 gridGenerationBtn.addEventListener('click', () => {
-    console.log('clicked');
+    // console.log('clicked');
     resetPlayerChar();
     removeElements(background);
     updateGridInfo();
@@ -117,8 +120,23 @@ gridGenerationBtn.addEventListener('click', () => {
     generateBlockades(numOfBlockades);
     console.log(blockades);
     resetGridInfo();
-    console.log(gridStats);
-    console.log(neighborParams);
+    // console.log(gridStats);
+    // console.log(neighborParams);
+})
+
+gridOptionbtn.addEventListener('click', () => {
+    controlGridOptionDrop(pageLogics.grid_optionOpen);
+    updatePosition();
+})
+
+traversalOptionbtn.addEventListener('click', () => {
+    controlTraversalOptionDrop(pageLogics.traversal_optionOpen);
+    updatePosition();
+})
+
+gridresetBtn.addEventListener('click', () => {
+    resetPlayerChar();
+    resetGridInfo();
 })
 
 window.addEventListener('resize', () => {

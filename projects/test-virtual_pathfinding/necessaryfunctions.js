@@ -144,6 +144,32 @@ function generalAnimation(position) {
     playerCharacterPosition.posY = position[1];
 }
 
+function basicPageAnimation(elmArray, styles) {
+    for (let i = 0; i < elmArray.length; i++) {
+        elmArray[i].style = styles[i];
+    }
+}
+
+function controlGridOptionDrop(value) {
+    if (!value) {
+        basicPageAnimation([droppables[0]], [`height:40px;width:80px`])
+        pageLogics.grid_optionOpen = true;
+    } else {
+        basicPageAnimation([droppables[0]], [``])
+        pageLogics.grid_optionOpen = false;
+    }
+}
+
+function controlTraversalOptionDrop(value) {
+    if (!value) {
+        basicPageAnimation([droppables[1]], [`height:40px;width:80px`])
+        pageLogics.traversal_optionOpen = true;
+    } else {
+        basicPageAnimation([droppables[1]], [``])
+        pageLogics.traversal_optionOpen = false;
+    }
+}
+
 function initiateGridInfo(elementId) {
     for (let i = 0; i < numOfGrid; i++) {
         currentGridInfo.gridToNodeRelations[i + 1] = [];
@@ -156,6 +182,7 @@ function initiateGridInfo(elementId) {
         currentGridInfo.gridToNodeLevel[i] = -1;
     }
     currentGridInfo.pqForPathfinding.push(elementId, 0);
+    currentGridInfo.normalNodeIteration.push(elementId)
     currentGridInfo.gridToNodeDistanceFromSource[elementId] = 0;
     currentGridInfo.gridToNodeLevel[elementId] = 1;
     currentGridInfo.parentNode[elementId] = -1;
@@ -181,6 +208,7 @@ function resetGridInfo() {
     currentGridInfo.allCheckedNodes = [];
     currentGridInfo.tsSortendTime = [];
     currentGridInfo.tsSortstartTime = [];
+    currentGridInfo.normalNodeIteration = [];
     currentGridInfo.traversalDone = false;
 }
 
@@ -204,6 +232,7 @@ function printShortestPath(parents, node) {
 function algorithmEndingAction(target, command) {
     if (command !== "nopath") {
         illuminatePath('override', [currentGridInfo.currentSource], 'yellow');
+        illuminatePath('override', [target], 'yellow');
         // console.log(currentGridInfo.parentNode);
 
 

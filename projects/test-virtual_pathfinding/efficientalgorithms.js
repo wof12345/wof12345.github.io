@@ -52,6 +52,42 @@ function simulateDFS(target) {
     }, 1)
 }
 
+function BFS(target) {
+    let currentNode = currentGridInfo.normalNodeIteration.shift();
+    driverFunction(currentNode)
+
+    // console.log(currentGridInfo.normalNodeIteration);
+    updateViews(currentNode)
+
+
+    illuminatePath('', [currentNode], 'rgb(255, 255, 255)')
+        // console.log(`Adjacents of ${currentNode} : `, currentGridInfo.gridToNodeRelations[currentNode]);
+    for (let i = 0; i < currentGridInfo.gridToNodeRelations[currentNode].length; i++) {
+        let currentAdjacent = currentGridInfo.gridToNodeRelations[currentNode][i];
+
+        if (currentGridInfo.gridToNodeLevel[currentAdjacent] === -1 && !binarySearch(blockades, 0, blockades.length - 1, currentAdjacent)) {
+            currentGridInfo.gridToNodeLevel[currentAdjacent] = currentGridInfo.gridToNodeLevel[currentNode] + 1;
+            currentGridInfo.normalNodeIteration.push(currentAdjacent)
+            currentGridInfo.parentNode[currentAdjacent] = currentNode;
+            currentGridInfo.gridToNodeDistanceFromSource.push(currentAdjacent)
+
+            // console.log(currentGridInfo.gridToNodeLevel[element], currentGridInfo.gridToNodeLevel[currentNode], currentGridInfo.closedNode);
+        } else {}
+
+    };
+    if (currentNode === +target) {
+        algorithmEndingAction(target, '')
+        return;
+    }
+    if (currentGridInfo.normalNodeIteration.length <= 0) {
+        algorithmEndingAction(target, 'nopath')
+        return;
+    }
+    setTimeout(() => {
+        BFS(target);
+    }, 0.1)
+}
+
 function DFS(currentSource, parent, target) {
     driverFunction(currentSource);
     // console.log(currentGridInfo.currentSource, target);
