@@ -23,7 +23,8 @@ let pageElements = {
     input_box: document.querySelector(`#input_gen`),
     generationButton: document.querySelector(`.generate`),
     input_gen_cont: document.querySelector(`.input_gen_cont`),
-    floater_indicator: document.querySelector(`.arrow_shape`)
+    floater_indicator: document.querySelector(`.arrow_shape`),
+    generation_guide: document.querySelector(`.generation_guide`)
 }
 
 let backupVariables = {
@@ -34,6 +35,10 @@ let backupVariables = {
 
 let lastIterationQueries = {
     iterations: [],
+}
+
+let usefulVariables = {
+    currentAlgorithm: 'none',
 }
 
 let chartData = {
@@ -84,4 +89,10 @@ let currentGraphInfo = {
     iterationSerial: [],
     weights: [],
     priorityQueue: new PriorityQueue(),
+}
+
+let graphGenerationTracker = {
+    nodesUsedSoFar: new PriorityQueue(),
+    nodesArray: [],
+    edgesUsedSofar: [],
 }
