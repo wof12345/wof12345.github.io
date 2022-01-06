@@ -95,4 +95,5 @@ let graphGenerationTracker = {
     nodesUsedSoFar: new PriorityQueue(),
     nodesArray: [],
     edgesUsedSofar: [],
+    infiniteStackTracker: 0,
 }

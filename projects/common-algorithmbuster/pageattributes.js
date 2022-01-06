@@ -9,12 +9,14 @@ let selectionValue = document.getElementById(`choice`).value;
 pageElements.choice.addEventListener('change', () => {
     setInfo(getInfo(pageElements.choice.value));
     selectionValue = document.getElementById(`choice`).value;
-    mainText.textContent = 'Input for the algorithm (If array, elements should be seperated by ",". Note that iterations are not balanced :)';
+    usefulVariables.currentAlgorithm = selectionValue;
+
     if (selectionValue === 'BFS' || selectionValue === 'DFS' || selectionValue === 'Dijkstra') {
-        console.log(selectionValue);
-        generatorCont.style.display = 'none';
+        // console.log(selectionValue);
+        pageElements.generation_guide.innerHTML = `Graph to generate : <br>(number of Nodes and Edges <br> seperated by comma.<br>If weighted, third input should <br> be 1 else 0.<br>  e.g: (Nodes, Edges, hasweight)<br>  (10, 12, 0))`
         mainText.textContent = 'Input should be seperated by space and comma. E.g. (2 3,4 5,6 7). Note that first line only represents the number of nodes and edges. If there is no weight then the third input followed by space should be 0, Eliminating input should be a single  node denoting the source. If there is a target it should be followed by the source.'
     } else {
+        pageElements.generation_guide.innerHTML = `Number of inputs to generate : <br>(number of inputs and input <br> range seperated by comma.<br>  e.g: (number of elements,range)<br>  (200,600))`;
         generatorCont.style.display = '';
         mainText.textContent = 'Input for the algorithm (If array, elements should be seperated by ",". Note that iterations are not balanced :)';
     }
@@ -123,17 +125,20 @@ pageElements.display_toggle.addEventListener('click', () => {
 })
 
 pageElements.generationButton.addEventListener('click', () => {
+    resetGenerationInfo();
     let number = pageElements.input_box.value;
     number = number.split(',');
-    console.log(number);
+
+    numberify(number)
 
     let tempString = '';
-    for (let it = 0; it < number[0]; it++) {
-        tempString += generateRandomNumber(number[1]);
-        if (it + 1 != number[0]) {
-            tempString += ",";
-        }
-    }
+    // console.log(number);
+
+    if (usefulVariables.currentAlgorithm === 'BFS' || usefulVariables.currentAlgorithm === 'DFS' || usefulVariables.currentAlgorithm === 'Dijkstra') {
+        tempString = generateGraph(number);
+    } else
+        tempString = generateInputArray(number);
+
     document.getElementById(`input`).value = tempString;
 })
 
@@ -166,3 +171,7 @@ pageElements.input.addEventListener('blur', () => {
 // currentGraphInfo.priorityQueue.removeAll();
 
 // console.log(currentGraphInfo.priorityQueue.printPQueue());
+
+// let array = [2, 4, 45, 5, 12, 3, 10, 1]
+// array.sort((a, b) => a - b)
+// console.log(binarySearch(array, 0, array.length - 1, 11), array);

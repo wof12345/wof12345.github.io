@@ -30,7 +30,7 @@ function binarySearch(arr, start, end, target) {
     if (end >= start) {
         let mid = Math.floor(start + (end - start) / 2);
 
-        if (arr[mid] === target) return mid;
+        if (arr[mid] === target) return true;
 
         if (arr[mid] > target) return binarySearch(arr, start, mid - 1, target)
 
