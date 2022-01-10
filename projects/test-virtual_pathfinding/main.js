@@ -95,8 +95,13 @@ background.addEventListener('click', function(e) {
     } else {
         if (!binarySearch(blockades, 0, blockades.length - 1, goingto) && goingto && pageLogics.add_block_mode_on) {
             // console.log(blockades);
-
-            add_blockade(goingto);
+            let tempArr = [goingto];
+            if (pageKeyPressRecords.currentKeyPressed === 'Shift') {
+                let isValid = processAndReturn(goingto);
+                if (isValid)
+                    tempArr = isValid;
+            }
+            add_blockade(tempArr);
             // console.log(blockades);
         }
     }
@@ -167,6 +172,18 @@ document.addEventListener('click', function(e) {
 
     if (e.target.parentNode.className !== 'background' && pageLogics.add_block_mode_on && e.target.className !== 'grid_add_block') {
         block_add_mode_toggle(true);
+    }
+
+})
+
+document.addEventListener('keydown', (e) => {
+    pageKeyPressRecords.currentKeyPressed = e.key;
+
+})
+
+document.addEventListener('keyup', (e) => {
+    if (e.key === pageKeyPressRecords.currentKeyPressed) {
+        pageKeyPressRecords.currentKeyPressed = null;
     }
 
 })

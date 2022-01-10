@@ -109,7 +109,7 @@ function generateBlockades(count) {
 
     for (let counter = 1; counter <= count; counter++) {
         let seed = generateRandomNumber(blockades, 1, numOfGrid + 1);
-        console.log(seed);
+        // console.log(seed);
         if (seed !== NaN && seed) {
             currentGridInfo.blockades.push(seed, seed);
             blockades = stringyfyPQ(currentGridInfo.blockades.printPQueue())
@@ -117,7 +117,7 @@ function generateBlockades(count) {
             counter--;
         }
     }
-    console.log(blockades);
+    // console.log(blockades);
     illuminatePath('override', blockades, 'rgb(0, 0, 0)');
 }
 
@@ -330,10 +330,62 @@ function block_add_mode_toggle(value) {
     }
 }
 
+function processAndReturn(id) {
+    let tempArr = [];
+    if (currentGridInfo.lastSelectedNode === null) {
+        currentGridInfo.lastSelectedNode = id;
+    } else {
+        let pos = getPosition(id);
+        let startPos = getPosition(currentGridInfo.lastSelectedNode)
+        let distanceX = pos[0] - startPos[0];
+        let distanceY = pos[1] - startPos[1];
+        let Xreq = distanceX / playerCharacterPosition.xDistanceConstant;
+        let Yreq = distanceY / playerCharacterPosition.yDistanceConstant;
+        let idFlag = currentGridInfo.lastSelectedNode;
+
+        for (let i = 0; i <= Math.abs(Yreq); i++) {
+            for (let j = 0; j < Math.abs(Xreq); j++) {
+                if (Xreq > 0) {
+                    currentGridInfo.lastSelectedNode += neighborParams.singleRight;
+                } else {
+                    currentGridInfo.lastSelectedNode += neighborParams.singleLeft;
+                }
+                // console.log(currentGridInfo.lastSelectedNode);
+                if (!binarySearch(blockades, 0, blockades.length - 1, currentGridInfo.lastSelectedNode)) {
+                    tempArr.push(currentGridInfo.lastSelectedNode)
+                }
+            }
+            if (i === Math.abs(Yreq)) break;
+
+            currentGridInfo.lastSelectedNode = idFlag;
+
+            if (Yreq > 0) {
+                idFlag += neighborParams.singleBottom;
+                currentGridInfo.lastSelectedNode += neighborParams.singleBottom;
+            } else {
+                idFlag += neighborParams.singleTop;
+                currentGridInfo.lastSelectedNode += neighborParams.singleTop;
+            }
+            // console.log(currentGridInfo.lastSelectedNode, idFlag);
+            if (!binarySearch(blockades, 0, blockades.length - 1, currentGridInfo.lastSelectedNode)) {
+                tempArr.push(currentGridInfo.lastSelectedNode)
+            }
+        }
+        // console.log(pos, startPos, distanceX, distanceY, Xreq, Yreq);
+
+
+
+        currentGridInfo.lastSelectedNode = null;
+        return tempArr;
+    }
+}
+
 function add_blockade(id) {
     // console.log(id);
-    illuminatePath(`override`, [id], 'rgb(0, 0, 0)')
-    currentGridInfo.blockades.push(id, id);
+    illuminatePath(`override`, id, 'rgb(0, 0, 0)')
+    for (let i = 0; i < id.length; i++) {
+        currentGridInfo.blockades.push(id[i], id[i]);
+    }
     blockades = stringyfyPQ(currentGridInfo.blockades.printPQueue())
         // binaryInsert(blockades, 0, blockades.length - 1, id)
 }

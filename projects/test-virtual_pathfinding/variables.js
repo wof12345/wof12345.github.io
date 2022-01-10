@@ -84,11 +84,16 @@ let currentGridInfo = {
     tsSortendTime: [],
     normalNodeIteration: [],
     traversalDone: false,
+    lastSelectedNode: null,
 }
 
 let debugVars = {
     maxIteration: 20,
     currentIteration: 0,
+}
+
+let pageKeyPressRecords = {
+    currentKeyPressed: null,
 }
 
 let pageLogics = {
