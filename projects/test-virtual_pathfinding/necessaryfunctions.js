@@ -1,5 +1,40 @@
-function generateRandomNumber(limit) {
-    return Math.random() * limit + 1;
+function generateRandomNumber(array, lowerrange, upperrange) {
+    let seed = Math.floor((((Math.random() * (upperrange - lowerrange + 1)) + lowerrange) - 1));
+    // console.log(seed, !binarySearch(array, 0, array.length - 1, seed));
+    debugVars.currentIteration++;
+    if (debugVars.currentIteration > 50) {
+        debugVars.currentIteration = 0;
+        return NaN;
+    }
+
+    if (!binarySearch(array, 0, array.length - 1, seed) && seed >= lowerrange) {
+        // console.log(seed);
+        debugVars.currentIteration = 0;
+        return seed;
+    } else {
+        generateRandomNumber(array, lowerrange, upperrange);
+    }
+}
+
+function stringyfyPQ(PQ) {
+    let tempArr = [];
+    // console.log(PQ);
+    PQ.split(" ").forEach(elm => {
+        if (elm !== "" && elm !== " " && elm !== 'NaN')
+            tempArr.push(+elm);
+    })
+
+    return tempArr;
+}
+
+function fixateArrays(array, fromIndex, from, nextElm) {
+    if (fromIndex >= array.length || from === undefined) return;
+
+    // console.log(from, nextElm);
+
+    array[fromIndex + 1] = from;
+    fixateArrays(array, fromIndex + 1, nextElm, array[fromIndex + 2])
+
 }
 
 function fixPath(collection) {
@@ -67,15 +102,22 @@ function generateBackground(count) {
 function generateBlockades(count) {
     illuminatePath('override', blockades, 'rgb(0, 255, 0)');
     blockades = [];
-    currentGridInfo.allCheckedNodes = []
+    currentGridInfo.blockades.removeAll();
+    currentGridInfo.allCheckedNodes = [];
     console.log('debug :', blockades);
 
 
     for (let counter = 1; counter <= count; counter++) {
-        let seed = Math.round(generateRandomNumber(numOfGrid));
-        blockades.push(seed);
+        let seed = generateRandomNumber(blockades, 1, numOfGrid + 1);
+        console.log(seed);
+        if (seed !== NaN && seed) {
+            currentGridInfo.blockades.push(seed, seed);
+            blockades = stringyfyPQ(currentGridInfo.blockades.printPQueue())
+        } else {
+            counter--;
+        }
     }
-    quickSort(blockades, 0, blockades.length - 1);
+    console.log(blockades);
     illuminatePath('override', blockades, 'rgb(0, 0, 0)');
 }
 
@@ -109,9 +151,9 @@ function getPosition(elm2) {
 }
 
 function resetPlayerChar() {
-    playerCharacterPosition.placed = false;
     if (playerCharacterPosition.placed)
         document.getElementById(`1`).lastChild.remove();
+    playerCharacterPosition.placed = false;
     elementStat.moveComplete = true;
 }
 
@@ -152,7 +194,7 @@ function basicPageAnimation(elmArray, styles) {
 
 function controlGridOptionDrop(value) {
     if (!value) {
-        basicPageAnimation([droppables[0]], [`height:40px;width:80px`])
+        basicPageAnimation([droppables[0]], [`height:30px;width:70px`])
         pageLogics.grid_optionOpen = true;
     } else {
         basicPageAnimation([droppables[0]], [``])
@@ -223,7 +265,6 @@ function printShortestPath(parents, node) {
 
     // console.log(node);
 
-
     currentPath.push(node + "");
 
 }
@@ -240,7 +281,7 @@ function algorithmEndingAction(target, command) {
 
         placePlayerCharacterGrid(target);
         illuminatePath('override', currentPath, 'yellow');
-        console.log(currentPath);
+        // console.log(currentPath);
     } else {
         showFloatingMsg(`No path valid!`, 3000);
         updateViews('No path!')
@@ -262,7 +303,6 @@ function placePlayerCharacterGrid(target) {
 
         setTimeout(() => {
             placePlayerCharacterGrid(target);
-
         }, 200)
     } else {
         let position = getPosition(currentPath.pop());
@@ -279,4 +319,21 @@ function calculateDistance(source, target) {
     let distance = Math.pow((sourcePos[0] - targetPos[0]), 2) + Math.pow((sourcePos[1] - targetPos[1]), 2);
 
     return distance;
+}
+
+function block_add_mode_toggle(value) {
+    if (!value) {
+        basicPageAnimation([add_block], ['box-shadow : 1px 1px 1px 2px rgba(0, 0, 0, .5);']);
+    } else {
+        basicPageAnimation([add_block], ['']);
+        pageLogics.add_block_mode_on = false;
+    }
+}
+
+function add_blockade(id) {
+    // console.log(id);
+    illuminatePath(`override`, [id], 'rgb(0, 0, 0)')
+    currentGridInfo.blockades.push(id, id);
+    blockades = stringyfyPQ(currentGridInfo.blockades.printPQueue())
+        // binaryInsert(blockades, 0, blockades.length - 1, id)
 }
