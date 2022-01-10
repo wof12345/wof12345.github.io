@@ -3,14 +3,14 @@ function generateRandomNumber(arrayToCompare, lowerrange, upperrange, numberNott
         lowerrange = upperrange;
     }
     let generatedNumber = +((((Math.random() * (upperrange - lowerrange + 1)) + lowerrange) - 1).toFixed(0));
-    console.log(!binarySearch(arrayToCompare, 0, arrayToCompare.length - 1, generatedNumber), generatedNumber, arrayToCompare, lowerrange, upperrange);
+    // console.log(!binarySearch(arrayToCompare, 0, arrayToCompare.length - 1, generatedNumber), generatedNumber, arrayToCompare, lowerrange, upperrange);
 
     if (graphGenerationTracker.infiniteStackTracker > 500) {
         graphGenerationTracker.infiniteStackTracker = 0;
-        return 0;
+        return 1;
     }
     graphGenerationTracker.infiniteStackTracker++;
-    if (!binarySearch(arrayToCompare, 0, arrayToCompare.length - 1, generatedNumber) && generatedNumber !== numberNottoUse && generatedNumber > 0) {
+    if (!binarySearch(arrayToCompare, 0, arrayToCompare.length - 1, generatedNumber, '') && generatedNumber !== numberNottoUse && generatedNumber > lowerrange) {
         graphGenerationTracker.infiniteStackTracker = 0;
         return generatedNumber;
     } else {
@@ -26,13 +26,23 @@ function printSet(set) {
     return srt;
 }
 
-function stringyfyPQ(PQ) {
+function setToArray(set) {
     let tempArr = [];
-    PQ.split(" ").forEach(elm => {
-        if (elm !== "" && elm !== " ")
-            tempArr.push(+elm);
-    })
+    set.forEach(element => {
+        tempArr.push(element)
+    });
     return tempArr;
+}
+
+function stringyfyPQ(PQ) {
+    let tempArr = new Set();
+    PQ.split(" ").forEach(elm => {
+            if (elm !== "" && elm !== " ")
+                tempArr.add(+elm);
+        })
+        // console.log(PQ, tempArr);
+
+    return setToArray(tempArr);
 }
 
 function clear() {
@@ -61,14 +71,11 @@ function timer(command) {
     if (command === `start`) {
         let dateob = performance.now();
         lastTimerValue = dateob;
-        console.log('(Start)');
-        // console.log(dateob, lastTimerValue);
     }
 
     if (command === `stop`) {
         let dateob = performance.now();
-        console.log('Time taken to execute :(Stop) ', dateob - lastTimerValue);
-        return Math.abs(dateob - lastTimerValue) / 1000;
+        return (Math.abs(dateob - lastTimerValue) / 1000).toFixed(8);
     }
 }
 
@@ -93,11 +100,18 @@ function iterationView(collection) {
 
 function deflate_floater() {
     pageElements.floater.style = `left:-400px;top:0;`;
+    pageLogics.floater_inflated = false;
+}
+
+function inflate_floater() {
+    pageElements.floater.style = `left:10px`;
+    pageLogics.floater_inflated = true;
 }
 
 function invoke_floater(style, text, duration) {
     pageElements.floater.style = style;
     pageElements.floater_text.textContent = text;
+    pageLogics.floater_inflated = true;
 
     if (duration < 2000) {
         setTimeout(() => {
@@ -203,13 +217,13 @@ function updateGraph(algorithm, label, time) {
         // console.log(chartCurrentData.labels, chartCurrentData.data);
 
         updateChartNecessity(algorithm);
-    } else if (algorithm === 'Insertion-sort') {
+    } else if (algorithm === 'Binary-search') {
         // console.log(algorithm, label, time);
 
-        chartData.algo6.push(time);
-        chartData.algo6labels.push(label);
+        chartData.algo10.push(time);
+        chartData.algo10labels.push(label);
 
-        assignTemp(chartData.algo6, chartData.algo6labels);
+        assignTemp(chartData.algo10, chartData.algo10labels);
         // console.log(chartCurrentData.labels, chartCurrentData.data);
 
         updateChartNecessity(algorithm);
@@ -271,13 +285,13 @@ function resetGraphInfo() {
 function resetGenerationInfo() {
     graphGenerationTracker.nodesUsedSoFar.removeAll();
     graphGenerationTracker.nodesArray = [];
-    graphGenerationTracker.edgesUsedSofar = []
+    graphGenerationTracker.edgesUsedSofar = new Set();
 }
 
 function initiateGraphGen(nodes) {
     // console.log(nodes);
     for (let i = 0; i < nodes; i++) {
-        graphGenerationTracker.edgesUsedSofar[i + 1] = [];
+        graphGenerationTracker.edgesUsedSofar[i + 1] = new Set();
     }
 
 }
@@ -325,13 +339,13 @@ function processGraph(relations, algorithm) {
     }
     console.log("Graph rels : ", currentGraphInfo.graphRelations);
     console.log('Graph weights', currentGraphInfo.weights);
-    // console.log('Graph source and it\'s level', currentGraphInfo.source, currentGraphInfo.visitState);
+    return 'Nodes : ' + currentGraphInfo.nodes + ', Edges : ' + currentGraphInfo.edges + '.';
 }
 
 function generateInputArray(number) {
     let tempString = '';
     for (let it = 0; it < number[0]; it++) {
-        tempString += generateRandomNumber([], 1, number[1], 0);
+        tempString += generateRandomNumber([], 0, number[1], 0);
         if (it + 1 != number[0]) {
             tempString += ",";
         }
@@ -346,10 +360,11 @@ function generateGraph(number) {
     let maxEdgeCount = +number[1];
     let currentNodeMaxEdge = 0;
 
-    let maxNodeCount = +number[0];
-    initiateGraphGen(maxNodeCount)
-    console.log(graphGenerationTracker.edgesUsedSofar);
+    let infiniteStackTracker = 0;
 
+    let maxNodeCount = +number[0];
+    let maxEdgeLimit = maxNodeCount;
+    initiateGraphGen(maxNodeCount)
 
     let maximumPredefinedEdgeCount = Math.round((maxNodeCount * (maxNodeCount - 1)) / 2);
     if (maxEdgeCount > maximumPredefinedEdgeCount) {
@@ -359,66 +374,58 @@ function generateGraph(number) {
     }
 
     tempString = '' + number[0] + " " + number[1] + ",";
-    for (let i = 1; i <= maxNodeCount; i++) {
-        let nextMaxEdgeValue = maxEdgeCount - edgeCount;
-        if (i === 1) {
-            nextMaxEdgeValue = Math.round(nextMaxEdgeValue / 2);
-        }
-        currentNodeMaxEdge = +generateRandomNumber([], 1, (nextMaxEdgeValue), 0);
-        if (edgeCount + currentNodeMaxEdge > maxEdgeCount) {
-            currentNodeMaxEdge = (edgeCount + currentNodeMaxEdge) - maxEdgeCount;
-        }
-
-        if (i + 1 === maxNodeCount) {
-            currentNodeMaxEdge = nextMaxEdgeValue;
-        }
-
-        if (currentNodeMaxEdge > maxNodeCount - 1) {
-            currentNodeMaxEdge = maxNodeCount - i;
-        }
+    for (let i = 1;; i++, infiniteStackTracker++) {
+        if (i > maxNodeCount) { i = 1 }
 
         graphGenerationTracker.nodesArray = [];
         graphGenerationTracker.nodesUsedSoFar.removeAll();
 
-        for (let n = 0; n < graphGenerationTracker.edgesUsedSofar[i].length; n++) {
-            let node = graphGenerationTracker.edgesUsedSofar[i][n];
+        graphGenerationTracker.edgesUsedSofar[i].forEach(element => {
+            let node = element;
             graphGenerationTracker.nodesUsedSoFar.push(node, node);
             graphGenerationTracker.nodesArray = stringyfyPQ(graphGenerationTracker.nodesUsedSoFar.printPQueue());
-            currentNodeMaxEdge--;
-            console.log('Gen Node : ', node, currentNodeMaxEdge);
+        });
+
+        maxEdgeLimit = (maxNodeCount) - graphGenerationTracker.edgesUsedSofar[i].size;
+
+        if (maxEdgeLimit <= 0) {
+            maxEdgeLimit = 0;
         }
-        if (currentNodeMaxEdge <= 0) currentNodeMaxEdge = 1;
+
+        currentNodeMaxEdge = generateRandomNumber([], 0, maxEdgeLimit - 1, 0);
+        if (edgeCount + currentNodeMaxEdge > maxEdgeCount) {
+            currentNodeMaxEdge = maxEdgeCount - edgeCount;
+        }
 
         edgeCount += +currentNodeMaxEdge;
-        console.log("currentEdgeCount : ", edgeCount);
 
         for (let j = 0; j < currentNodeMaxEdge; j++) {
-            console.log(`Node 1:${i}, Node 2:${j},Used Nodes ${graphGenerationTracker.nodesArray}`);
             let nodeToUse = +generateRandomNumber(graphGenerationTracker.nodesArray, 1, maxNodeCount, i);
             graphGenerationTracker.nodesArray = [];
             graphGenerationTracker.nodesUsedSoFar.push(nodeToUse, nodeToUse);
             graphGenerationTracker.nodesArray = stringyfyPQ(graphGenerationTracker.nodesUsedSoFar.printPQueue());
             tempString += i + " " + nodeToUse + " ";
             if (+number[2] === 1) {
-                tempString += generateRandomNumber([], 1, maxEdgeCount, 0);
+                tempString += generateRandomNumber([], 0, maxEdgeCount, 0);
             } else {
                 tempString += 0;
             }
             tempString += ',';
         }
-        console.log(graphGenerationTracker.nodesArray);
 
         for (let n = 0; n < graphGenerationTracker.nodesArray.length; n++) {
-            graphGenerationTracker.edgesUsedSofar[graphGenerationTracker.nodesArray[n]].push(i);
+            graphGenerationTracker.edgesUsedSofar[graphGenerationTracker.nodesArray[n]].add(i);
         }
-        console.log(`Tracker : `, graphGenerationTracker.edgesUsedSofar);
+        // console.log(`Tracker : `, graphGenerationTracker.edgesUsedSofar);
+
+        graphGenerationTracker.parentNodesUsedSoFarArray = [];
 
         if (edgeCount >= maxEdgeCount) {
             break;
         }
 
     }
-    tempString += generateRandomNumber([], 2, maxNodeCount) + " " + generateRandomNumber([], 1, maxNodeCount, 0);
+    tempString += generateRandomNumber([], 2, maxNodeCount) + " " + generateRandomNumber([], 0, maxNodeCount, 0);
     console.log(tempString);
 
     return tempString;

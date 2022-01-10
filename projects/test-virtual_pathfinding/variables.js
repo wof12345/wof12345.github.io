@@ -17,9 +17,10 @@ let playerCharacter = document.querySelector(`.playerCharacter`)
 let traversalOptionbtn = document.querySelector(`.traversal_options`)
 let gridOptionbtn = document.querySelector(`.grid_options`)
 let droppables = document.querySelectorAll(`.node_traversal_info`)
+let add_block = document.querySelector(`.grid_add_block`)
 
-let numOfGrid = 3000;
-let numOfBlockades = 500;
+let numOfGrid = 2000;
+let numOfBlockades = 20;
 let gridStats = {
     columns: 50,
     rows: 0,
@@ -48,6 +49,7 @@ let elementStat = {
     currentAlgorithm: 'DFS',
     animationType: 'Normal'
 }
+
 let neighborParams = {
     left: [-gridStats.columns, -(gridStats.columns - 1), 1, (gridStats.columns + 1), gridStats.columns],
     middle: [-(gridStats.columns + 1), -gridStats.columns, -(gridStats.columns - 1), -1, 1, (gridStats.columns - 1), gridStats.columns, (gridStats.columns + 1)],
@@ -68,6 +70,7 @@ let currentGridInfo = {
     gridToNodeWeights: [],
     gridToNodeLevel: [],
     pqForPathfinding: new PriorityQueue(),
+    blockades: new PriorityQueue(),
     parentNode: [],
     closedNode: [],
     allCheckedNodes: [],
@@ -91,4 +94,5 @@ let debugVars = {
 let pageLogics = {
     grid_optionOpen: false,
     traversal_optionOpen: false,
+    add_block_mode_on: false,
 }

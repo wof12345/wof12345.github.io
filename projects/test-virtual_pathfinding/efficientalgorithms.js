@@ -39,6 +39,27 @@ function binarySearch(arr, start, end, target) {
     return false;
 }
 
+function binaryInsert(arr, start, end, target) {
+
+    if (end >= start) {
+        let mid = Math.floor(start + (end - start) / 2);
+        console.log(arr[mid - 1], arr[mid + 1], target);
+
+        if (arr[mid - 1] < target && (arr[mid + 1] > target || arr[mid + 1] === undefined) && arr[mid] > target) {
+            fixateArrays(blockades, mid, blockades[mid], blockades[mid + 1]);
+            arr[mid] = target;
+            console.log(arr[mid]);
+
+            return true;
+        }
+
+        if (arr[mid] > target) return binaryInsert(arr, start, mid - 1, target)
+
+        return binaryInsert(arr, mid + 1, end, target)
+    }
+    return false;
+}
+
 function simulateDFS(target) {
     if (currentGridInfo.closedNode.length <= 0) {
         algorithmEndingAction(target, "DFS");

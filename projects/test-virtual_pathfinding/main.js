@@ -72,23 +72,32 @@ function placePlayerCharacter(element, elementId, position) {
 }
 
 background.addEventListener('click', function(e) {
-    let goingto = e.target.id;
-    let pos = getPosition(goingto)
-    let topPos = pos[1];
-    let leftPos = pos[0];
-    updatePosition();
-    if (goingto.className === 'playerCharacter') {}
-    if (elementStat.moveComplete && !binarySearch(blockades, 0, blockades.length - 1, +goingto) && !(goingto.className === 'playerCharacter')) {
-        elementStat.moveComplete = false;
-        playerCharacterPosition.currentPositionId = goingto;
-        playerClickCounter++;
-        resetGridInfo();
+    let goingto = +e.target.id;
+    let pos = getPosition(goingto);
+    if (!pageLogics.add_block_mode_on) {
+        let topPos = pos[1];
+        let leftPos = pos[0];
+        updatePosition();
+        if (goingto.className === 'playerCharacter') {}
+        if (elementStat.moveComplete && !binarySearch(blockades, 0, blockades.length - 1, goingto) && !(goingto.className === 'playerCharacter')) {
+            elementStat.moveComplete = false;
+            playerCharacterPosition.currentPositionId = goingto;
+            playerClickCounter++;
+            resetGridInfo();
 
-        if (e.target.className !== 'playerCharacter') {
-            if (!playerCharacterPosition.placed)
-                goingto = document.querySelector(`.seed_1`);
+            if (e.target.className !== 'playerCharacter') {
+                if (!playerCharacterPosition.placed)
+                    goingto = document.querySelector(`.seed_1`);
 
-            placePlayerCharacter(goingto, playerCharacterPosition.currentPositionId, [leftPos, topPos]);
+                placePlayerCharacter(goingto, playerCharacterPosition.currentPositionId, [leftPos, topPos]);
+            }
+        }
+    } else {
+        if (!binarySearch(blockades, 0, blockades.length - 1, goingto) && goingto && pageLogics.add_block_mode_on) {
+            // console.log(blockades);
+
+            add_blockade(goingto);
+            // console.log(blockades);
         }
     }
 })
@@ -118,7 +127,7 @@ gridGenerationBtn.addEventListener('click', () => {
     setGrid();
     updateNeighParams();
     generateBlockades(numOfBlockades);
-    console.log(blockades);
+    // console.log(blockades);
     resetGridInfo();
     // console.log(gridStats);
     // console.log(neighborParams);
@@ -139,6 +148,25 @@ gridresetBtn.addEventListener('click', () => {
     resetGridInfo();
 })
 
+add_block.addEventListener('click', () => {
+    if (!pageLogics.add_block_mode_on) {
+        pageLogics.add_block_mode_on = true;
+        block_add_mode_toggle(false);
+    } else {
+        pageLogics.add_block_mode_on = false;
+        block_add_mode_toggle(true);
+    }
+})
+
 window.addEventListener('resize', () => {
     updatePosition();
+})
+
+document.addEventListener('click', function(e) {
+    // console.log(e.target.parentNode.className);
+
+    if (e.target.parentNode.className !== 'background' && pageLogics.add_block_mode_on && e.target.className !== 'grid_add_block') {
+        block_add_mode_toggle(true);
+    }
+
 })

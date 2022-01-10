@@ -1,62 +1,47 @@
-function selectionSort(input) {
-    timer('start');
+function selectionSort(input, originalInput) {
+    let arrayLength = input.length;
+    let outerIndex, innerIndex, minimum_index;
 
-    let originalInput = [];
-    originalInput += input;
-    let iterationNo = 1;
-    let n = input.length;
-    let i, j, min_idx;
+    for (outerIndex = 0; outerIndex < arrayLength - 1; outerIndex++, backupVariables.globalteration++) {
 
-    for (i = 0; i < n - 1; i++, iterationNo++) {
-
-        min_idx = i;
-        let foundMinimum = min_idx;
-        for (j = i + 1; j < n; j++, iterationNo++) {
-            if (input[j] < input[min_idx]) {
-                min_idx = j;
-                foundMinimum = min_idx;
+        minimum_index = outerIndex;
+        let foundMinimum = minimum_index;
+        for (innerIndex = outerIndex + 1; innerIndex < arrayLength; innerIndex++, backupVariables.globalteration++) {
+            if (input[innerIndex] < input[minimum_index]) {
+                minimum_index = innerIndex;
+                foundMinimum = minimum_index;
             }
 
-            iterationPush(`Iteration no : ${iterationNo}`, `Outer loop index : ${i} - [${input[i]}], Inner loop index : ${j} - [${input[j]}]`, `Found minimum at ${foundMinimum} - [${input[foundMinimum]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
+            iterationPush(`Iteration no : ${backupVariables.globalteration}`, `Outer loop index : ${outerIndex} - [${input[outerIndex]}], Inner loop index : ${innerIndex} - [${input[innerIndex]}]`, `Found minimum at ${foundMinimum} - [${input[foundMinimum]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
         }
-        j = n - 1;
+        innerIndex = arrayLength - 1;
 
-        swap(input, min_idx, i);
-        iterationPush(`Iteration no : ${iterationNo}`, `Outer loop index : ${i} - [${input[i]}], Inner loop index : ${j} - [${input[j]}]`, `📔 Swapping ${foundMinimum} with ${i}`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
+        swap(input, minimum_index, outerIndex);
+        iterationPush(`Iteration no : ${backupVariables.globalteration}`, `Outer loop index : ${outerIndex} - [${input[outerIndex]}], Inner loop index : ${innerIndex} - [${input[innerIndex]}]`, `📔 Swapping ${foundMinimum} with ${outerIndex}`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
 
     }
-
-    const timeTaken = timer('stop');
-    iterationPush(`Iterated : ${iterationNo-1} times.`, `Time taken : ${timeTaken} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
-    invoke_floater('left:10px;top:20px', `Iterated : ${iterationNo-1} times. Time taken : ${timeTaken} seconds`, 2000);
-    backupVariables.lastTime = timeTaken;
+    iterationPush(`Iterated : ${backupVariables.globalteration-1} times.`, `Time taken : ${backupVariables.lastTime} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
 }
 
 
-function insertionsort(input) {
-    timer('start');
-    let originalInput = [];
-    originalInput += input;
-    let n = input.length;
-    let i, key, j, iterationNo = 1;
-    for (i = 1; i < n; i++, iterationNo++) {
-        key = input[i];
-        j = i - 1;
+function insertionsort(input, originalInput) {
+    let arrayLength = input.length;
+    let outerIndex, key, innerIndex;
+    for (outerIndex = 1; outerIndex < arrayLength; outerIndex++, backupVariables.globalteration++) {
+        key = input[outerIndex];
+        innerIndex = outerIndex - 1;
 
-        while (j >= 0 && input[j] > key) {
-            iterationPush(`Iteration No : ${iterationNo}`, `Current key at : ${i} - [${key}]`, `Found larger and assigning predecessor at : ${j+1} - [${input[j+1]}] to ${j} - [${input[j]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
-            input[j + 1] = input[j];
-            j = j - 1;
-            iterationNo++
+        while (innerIndex >= 0 && input[innerIndex] > key) {
+            iterationPush(`Iteration No : ${backupVariables.globalteration}`, `Current key at : ${outerIndex} - [${key}]`, `Found larger and assigning predecessor at : ${innerIndex+1} - [${input[innerIndex+1]}] to ${innerIndex} - [${input[innerIndex]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
+            input[innerIndex + 1] = input[innerIndex];
+            innerIndex = innerIndex - 1;
+            backupVariables.globalteration++
         }
-        iterationPush(`Iteration No : ${iterationNo}`, `Current key at : ${i} - [${key}]`, `📔 Assigning predecessor to key at : ${j+1} - [${input[j+1]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
-        input[j + 1] = key;
+        iterationPush(`Iteration No : ${backupVariables.globalteration}`, `Current key at : ${outerIndex} - [${key}]`, `📔 Assigning predecessor to key at : ${innerIndex+1} - [${input[innerIndex+1]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`)
+        input[innerIndex + 1] = key;
 
     }
-    const timeTaken = timer('stop');
-    iterationPush(`Iterated : ${iterationNo-1} times.`, `Time taken : ${timeTaken} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
-    invoke_floater('left:10px;top:20px', `Iterated : ${iterationNo-1} times. Time taken : ${timeTaken} seconds`, 2000);
-    backupVariables.lastTime = timeTaken;
+    iterationPush(`Iterated : ${backupVariables.globalteration-1} times.`, `Time taken : ${backupVariables.lastTime} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
 }
 
 function mergesort(array, begin, end, originalInput) {
@@ -72,31 +57,24 @@ function mergesort(array, begin, end, originalInput) {
     merge(array, begin, mid, end, originalInput);
 }
 
-function bubblesort(input) {
-    timer('start');
-    let iterationNo = 1,
-        n = input.length;
-    let originalInput = [];
-    originalInput += input;
-    let i, j;
+function bubblesort(input, originalInput) {
+    let arrayLength = input.length;
+    let outerIndex, innerIndex;
     let smaller;
 
-    for (i = 0; i < n - 1; i++, iterationNo++) {
-        for (j = 0; j < n - i - 1; j++, iterationNo++) {
-            smaller = j;
-            if (input[j] > input[j + 1]) {
-                iterationPush(`Iteration no : ${iterationNo}`, `Outer loop index : ${i} - [${input[i]}], Inner loop index : ${j} - [${input[j]}]`, `Swapping ${j} - [${input[j]}] with ${j+1} - [${input[j+1]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`);
-                swap(input, j, j + 1);
-                smaller = j + 1;
+    for (outerIndex = 0; outerIndex < arrayLength - 1; outerIndex++, backupVariables.globalteration++) {
+        for (innerIndex = 0; innerIndex < arrayLength - outerIndex - 1; innerIndex++, backupVariables.globalteration++) {
+            smaller = innerIndex;
+            if (input[innerIndex] > input[innerIndex + 1]) {
+                iterationPush(`Iteration no : ${backupVariables.globalteration}`, `Outer loop index : ${outerIndex} - [${input[outerIndex]}], Inner loop index : ${innerIndex} - [${input[innerIndex]}]`, `Swapping ${innerIndex} - [${input[innerIndex]}] with ${innerIndex+1} - [${input[innerIndex+1]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`);
+                swap(input, innerIndex, innerIndex + 1);
+                smaller = innerIndex + 1;
             }
-            iterationPush(`Iteration no : ${iterationNo}`, `Outer loop index : ${i} - [${input[i]}], Inner loop index : ${j} - [${input[j]}]`, `Smaller at ${smaller} - [${input[smaller]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`);
+            iterationPush(`Iteration no : ${backupVariables.globalteration}`, `Outer loop index : ${outerIndex} - [${input[outerIndex]}], Inner loop index : ${innerIndex} - [${input[innerIndex]}]`, `Smaller at ${smaller} - [${input[smaller]}]`, `Current collection : ${input}`, `Original collection : ${originalInput}`);
         }
-        iterationPush(`Iteration no : ${iterationNo}`, `Outer loop index : ${i} - [${input[i]}], Inner loop index : ${j} - [${input[j]}]`, `Loop for first ${input[i]} element complete`, `Current collection : ${input}`, `Original collection : ${originalInput}`);
+        iterationPush(`Iteration no : ${backupVariables.globalteration}`, `Outer loop index : ${outerIndex} - [${input[outerIndex]}], Inner loop index : ${innerIndex} - [${input[innerIndex]}]`, `Loop for first ${input[outerIndex]} element complete`, `Current collection : ${input}`, `Original collection : ${originalInput}`);
     }
-    const timeTaken = timer('stop');
-    iterationPush(`Iterated : ${iterationNo-1} times.`, `Time taken : ${timeTaken} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
-    invoke_floater('left:10px;top:20px', `Iterated : ${iterationNo-1} times. Time taken : ${timeTaken} seconds`, 2000);
-    backupVariables.lastTime = timeTaken;
+    iterationPush(`Iterated : ${backupVariables.globalteration-1} times.`, `Time taken : ${backupVariables.lastTime} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
 }
 
 function quickSort(arr, low, high, originalInput) {
@@ -109,51 +87,74 @@ function quickSort(arr, low, high, originalInput) {
     }
 }
 
-function heapSort(input, n) {
-    let originalInput = [];
-    originalInput += input;
-    timer('start');
-    for (let i = Math.floor(n / 2 - 1); i >= 0; i--, backupVariables.globalteration++) {
-        iterationPush(`Iteration No : ${backupVariables.globalteration} times.`, `Entering heapify with length ${n} , middle point ${i} `, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
-        heapify(input, n, i, originalInput);
+function heapSort(input, arrayLength, originalInput) {
+    for (let outerIndex = Math.floor(arrayLength / 2 - 1); outerIndex >= 0; outerIndex--, backupVariables.globalteration++) {
+        iterationPush(`Iteration No : ${backupVariables.globalteration} times.`, `Entering heapify with length ${arrayLength} , middle point ${outerIndex} `, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
+        heapify(input, arrayLength, outerIndex, originalInput);
     }
 
-    for (let i = n - 1; i > 0; i--) {
-        swap(input, 0, i);
+    for (let outerIndex = arrayLength - 1; outerIndex > 0; outerIndex--) {
+        swap(input, 0, outerIndex);
 
-        heapify(input, i, 0, originalInput);
+        heapify(input, outerIndex, 0, originalInput);
     }
-    const timeTaken = timer('stop');
-    iterationPush(`Iterated : ${backupVariables.globalteration-1} times.`, `Time taken : ${timeTaken} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
-    invoke_floater('left:10px;top:20px', `Iterated : ${backupVariables.globalteration-1} times. Time taken : ${timeTaken} seconds`, 2000);
-    backupVariables.lastTime = timeTaken;
+    iterationPush(`Iterated : ${backupVariables.globalteration-1} times.`, `Time taken : ${backupVariables.lastTime} seconds`, ``, `Current collection : ${input}`, `Original collection : ${originalInput}`)
 }
 
 
-function binarySearch(arr, start, end, target) {
+function binarySearch(arr, start, end, target, context) {
+    if (context === '') {
+        if (end >= start) {
+            let mid = Math.floor(start + (end - start) / 2);
 
-    if (end >= start) {
-        let mid = Math.floor(start + (end - start) / 2);
+            if (arr[mid] === target) return true;
 
-        if (arr[mid] === target) return true;
+            if (arr[mid] > target) return binarySearch(arr, start, mid - 1, target, '')
 
-        if (arr[mid] > target) return binarySearch(arr, start, mid - 1, target)
+            return binarySearch(arr, mid + 1, end, target, '')
+        }
+        return false;
+    } else {
+        if (end >= start) {
+            let mid = Math.floor(start + (end - start) / 2);
+            backupVariables.globalteration++;
+            iterationPush(`Iteration: ${backupVariables.globalteration}, Current mid : ${mid}`, `Current start : ${start}, current end : ${end}`, ``, ``, ``)
 
-        return binarySearch(arr, mid + 1, end, target)
+            if (arr[mid] === target) {
+                return mid;
+            }
+
+            if (arr[mid] > target) return binarySearch(arr, start, mid - 1, target, 's')
+
+            return binarySearch(arr, mid + 1, end, target, 's')
+        }
+        return false;
     }
-    return false;
+}
+
+function exponentiationBySquaring(base, exponent, primeModulo) {
+    let temporaryMarker = 1;
+
+    while (exponent > 0) {
+        if (exponent % 2 !== 0) {
+            temporaryMarker = ((temporaryMarker * base) % primeModulo);
+        }
+
+        base = (base * base) % primeModulo;
+        exponent = Math.floor(exponent / 2);
+        console.log(base, exponent, temporaryMarker, temporaryMarker % primeModulo);
+        backupVariables.globalteration++;
+    }
+    return temporaryMarker % primeModulo;
 }
 
 function BFS() {
     let currentNode = currentGraphInfo.currentArrayState.pop();
-    // console.log(`Adjacents of ${currentNode} : `, currentGraphInfo.graphRelations[currentNode]);
     currentGraphInfo.graphRelations[currentNode].forEach(element => {
         if (currentGraphInfo.visitState[element] === -1) {
             currentGraphInfo.visitState[element] = currentGraphInfo.visitState[currentNode] + 1;
             currentGraphInfo.currentArrayState.push(element)
             currentGraphInfo.iterationSerial.push(element)
-
-            // console.log(currentGraphInfo.visitState[element], currentGraphInfo.visitState[currentNode], currentGraphInfo.currentArrayState);
 
             iterationPush(`Iteration: ${backupVariables.globalteration} :`, `Current Node : ${currentNode}`, ``, `Current Adjacents : ${ printSet(currentGraphInfo.graphRelations[currentNode])}`, `Iterating on adjacent : ${element}`)
         } else {
@@ -162,7 +163,6 @@ function BFS() {
 
     });
     if (currentGraphInfo.currentArrayState.length <= 0) {
-        invoke_floater('left:10px;top:20px', `Iterated : ${backupVariables.globalteration-1} times.`, 2000);
         return;
     }
     backupVariables.globalteration++;
@@ -171,7 +171,6 @@ function BFS() {
 
 function DFS(currentSource, parent) {
     iterationPush(`Iteration: ${backupVariables.globalteration} :`, `Current Node : ${currentSource}`, ``, `Current Adjacents : ${ printSet(currentGraphInfo.graphRelations[currentSource])}`, ``)
-    console.log('Visited : ', currentSource);
     currentGraphInfo.tsSortstartTime[currentSource] = currentGraphInfo.timeVar++;
     backupVariables.globalteration++;
 
@@ -194,7 +193,6 @@ function DFS(currentSource, parent) {
 function Dijkstra(target) {
 
     while (!currentGraphInfo.priorityQueue.isEmpty()) {
-        console.log(`PQ elements : `, currentGraphInfo.priorityQueue.printPQueue());
         let currentNode = +currentGraphInfo.priorityQueue.front().element;
 
         currentGraphInfo.priorityQueue.remove();
@@ -202,23 +200,14 @@ function Dijkstra(target) {
         currentGraphInfo.graphRelations[currentNode].forEach((element, index) => {
             let neighborNode = +element;
             let weightToNode = +currentGraphInfo.weights[currentNode][index];
-            // console.log('Current Node:', currentNode);
-            // console.log('neighbor and weight : ', neighborNode, weightToNode);
-            // console.log('visitstate : ', currentGraphInfo.visitState[currentNode], weightToNode, currentGraphInfo.visitState[neighborNode]);
+            log('visitstate : ', currentGraphInfo.visitState[currentNode], weightToNode, currentGraphInfo.visitState[neighborNode]);
             if (currentGraphInfo.visitState[currentNode] + weightToNode < currentGraphInfo.visitState[neighborNode]) {
-                // console.log(`Visitstate of ${neighborNode} before sum : ${currentGraphInfo.visitState[neighborNode]}`);
                 currentGraphInfo.visitState[neighborNode] = currentGraphInfo.visitState[currentNode] + weightToNode;
                 currentGraphInfo.priorityQueue.push(neighborNode, currentGraphInfo.visitState[neighborNode]);
                 iterationPush(`Iteration: ${backupVariables.globalteration++} :`, `Current Node : ${currentNode}`, ``, `Current Adjacents : ${ printSet(currentGraphInfo.graphRelations[currentNode])}`, `Final distance of neighbor ${neighborNode} from source is ${ currentGraphInfo.visitState[neighborNode]}`)
-                    // console.log(`Visitstate of ${neighborNode} after sum : ${currentGraphInfo.visitState[neighborNode]}`);
-                    // console.log(`node ${currentNode}th process : `, currentGraphInfo.visitState[neighborNode]);
             } else {
                 iterationPush(`Iteration: ${backupVariables.globalteration++} :`, `Current Node : ${currentNode}`, ``, `Current Adjacents : ${printSet(currentGraphInfo.graphRelations[currentNode])}`, `Tried to visit already visited ${neighborNode}`)
-                    // console.log(`Visitstate of ${neighborNode} after sum : ${currentGraphInfo.visitState[neighborNode]}`);
-                    // console.log(`Tried to visit ${currentNode}, neighbor ${neighborNode}`);
-
             }
         })
     }
-    invoke_floater('left:10px;top:20px', `Iterated : ${backupVariables.globalteration-1} times. Shortest distance from ${currentGraphInfo.source} to ${target} is ${currentGraphInfo.visitState[target]}`, 2000);
 }
