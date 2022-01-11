@@ -247,6 +247,7 @@ function resetGridInfo() {
     currentGridInfo.timeVar = 0;
     tempi = 0;
     illuminatePath('override', currentGridInfo.allCheckedNodes, 'rgb(0, 255, 0)');
+    illuminatePath('override', blockades, 'rgb(0, 0, 0)');
     currentGridInfo.allCheckedNodes = [];
     currentGridInfo.tsSortendTime = [];
     currentGridInfo.tsSortstartTime = [];
@@ -371,9 +372,7 @@ function processAndReturn(id) {
                 tempArr.push(currentGridInfo.lastSelectedNode)
             }
         }
-        // console.log(pos, startPos, distanceX, distanceY, Xreq, Yreq);
-
-
+        console.log(blockades);
 
         currentGridInfo.lastSelectedNode = null;
         return tempArr;

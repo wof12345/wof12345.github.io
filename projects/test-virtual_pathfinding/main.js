@@ -9,11 +9,18 @@ function driverFunction(currentNode) {
         currentNode = +currentNode;
         let arrayToFollow = neighborParams.middle;
 
+        if (elementStat.mode === '4-Directional')
+            arrayToFollow = neighborParams.middle4Dir;
+
         if (currentNode % gridStats.columns === 0) {
             arrayToFollow = neighborParams.right;
+            if (elementStat.mode === '4-Directional')
+                arrayToFollow = neighborParams.right4Dir;
         }
         if ((currentNode - 1) % gridStats.columns === 0) {
             arrayToFollow = neighborParams.left;
+            if (elementStat.mode === '4-Directional')
+                arrayToFollow = neighborParams.left4Dir;
         }
 
         for (let i = 0; i < arrayToFollow.length; i++) {
@@ -75,6 +82,7 @@ background.addEventListener('click', function(e) {
     let goingto = +e.target.id;
     let pos = getPosition(goingto);
     if (!pageLogics.add_block_mode_on) {
+        currentGridInfo.lastSelectedNode = null;
         let topPos = pos[1];
         let leftPos = pos[0];
         updatePosition();
@@ -100,6 +108,8 @@ background.addEventListener('click', function(e) {
                 let isValid = processAndReturn(goingto);
                 if (isValid)
                     tempArr = isValid;
+            } else {
+                currentGridInfo.lastSelectedNode = null;
             }
             add_blockade(tempArr);
             // console.log(blockades);
@@ -109,10 +119,22 @@ background.addEventListener('click', function(e) {
 
 algo_select.addEventListener('change', function(e) {
     let algorithm = algo_select.value;
-    algorithmView.textContent = `Movement algorithm is ${algorithm}.`;
+    let mode = mode_select.value;
+    algorithmView.textContent = `Movement algorithm is ${algorithm}. Movement is ${mode}.`;
     elementStat.currentAlgorithm = algorithm;
+    elementStat.mode = mode;
 
     showFloatingMsg(`Algorithm changed to ${elementStat.currentAlgorithm}`, 1000);
+})
+
+mode_select.addEventListener('change', function(e) {
+    let algorithm = algo_select.value;
+    let mode = mode_select.value;
+    algorithmView.textContent = `Movement algorithm is ${algorithm}. Movement is ${mode}.`;
+    elementStat.currentAlgorithm = algorithm;
+    elementStat.mode = mode;
+
+    showFloatingMsg(`Movement changed to ${ elementStat.mode}.`, 1000);
 })
 
 

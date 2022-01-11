@@ -73,6 +73,7 @@ h1 {
 }
 
 .node_traversal_info,
+.node_traversal_info_head,
 .view_cont,
 .grid_info {
     display: flex;
@@ -81,6 +82,7 @@ h1 {
 }
 
 .node_traversal_info>*,
+.node_traversal_info_head>*,
 .view_cont>*,
 .grid_info>* {
     margin: 5px;
@@ -95,7 +97,8 @@ h1 {
 }
 
 @media screen and (max-width: 1084px) {
-    .node_traversal_info {
+    .node_traversal_info,
+    .node_traversal_info_head {
         flex-direction: column;
     }
 }

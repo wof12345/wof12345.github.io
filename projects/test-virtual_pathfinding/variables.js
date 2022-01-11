@@ -6,6 +6,7 @@ let gridBlocks = document.getElementById('blocks')
 let gridGenerationBtn = document.querySelector('.grid_gen')
 let gridresetBtn = document.querySelector(`.grid_reset`)
 let algo_select = document.getElementById(`algo`);
+let mode_select = document.getElementById(`mode`);
 let animation_select = document.getElementById(`animation_type`);
 let sourceView = document.getElementById(`source`)
 let currentView = document.getElementById(`current`)
@@ -47,13 +48,17 @@ let playerCharacterPosition = {
 let elementStat = {
     moveComplete: true,
     currentAlgorithm: 'DFS',
-    animationType: 'Normal'
+    animationType: 'Normal',
+    mode: '8-Directional',
 }
 
 let neighborParams = {
     left: [-gridStats.columns, -(gridStats.columns - 1), 1, (gridStats.columns + 1), gridStats.columns],
     middle: [-(gridStats.columns + 1), -gridStats.columns, -(gridStats.columns - 1), -1, 1, (gridStats.columns - 1), gridStats.columns, (gridStats.columns + 1)],
     right: [-(gridStats.columns + 1), -gridStats.columns, -1, gridStats.columns, (gridStats.columns - 1)],
+    left4Dir: [-gridStats.columns, 1, gridStats.columns],
+    middle4Dir: [-gridStats.columns, -1, 1, gridStats.columns],
+    right4Dir: [-1, gridStats.columns],
     singleLeft: -1,
     singleRight: 1,
     singleTop: -gridStats.columns,

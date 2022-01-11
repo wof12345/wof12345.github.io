@@ -26,6 +26,9 @@ function quickSort(arr, low, high) {
 }
 
 function binarySearch(arr, start, end, target) {
+    if (arr[0] > target || arr[end] < target) {
+        return false;
+    }
 
     if (end >= start) {
         let mid = Math.floor(start + (end - start) / 2);
