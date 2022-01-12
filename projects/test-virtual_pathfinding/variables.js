@@ -43,8 +43,8 @@ let playerCharacterPosition = {
   posX: 0,
   posY: 0,
   yChangeConstant: gridStats.columns,
-  xDistanceConstant: 10,
-  yDistanceConstant: 10,
+  xDistanceConstant: 20,
+  yDistanceConstant: 20,
 };
 let elementStat = {
   moveComplete: true,

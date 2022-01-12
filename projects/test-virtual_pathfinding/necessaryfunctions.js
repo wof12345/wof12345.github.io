@@ -119,17 +119,28 @@ function updateGridInfo() {
 
 function setGrid() {
   gridStats.rows = Math.ceil(numOfGrid / gridStats.columns);
-  background.style = ` grid-template-columns: repeat(${gridStats.columns}, 10px); grid-template-rows: repeat(${gridStats.rows}, 10px);`;
-  background.style.width = `${gridStats.columns * 10}px`;
-  background.style.height = `${gridStats.rows * 10}px`;
+  background.style = ` grid-template-columns: repeat(${gridStats.columns}, 20px); grid-template-rows: repeat(${gridStats.rows}, 20px);`;
+  background.style.width = `${
+    gridStats.columns * playerCharacterPosition.xDistanceConstant
+  }px`;
+  background.style.height = `${
+    gridStats.rows * playerCharacterPosition.yDistanceConstant
+  }px`;
 }
 
 function generateBackground(count) {
-  for (let counter = 1; counter <= count; counter++)
-    background.insertAdjacentHTML(
-      "beforeend",
-      `<div class="landmark seed_${counter}" id="${counter}"></div>`
-    );
+  let tempArr = "";
+  for (let counter = 1; counter <= count; counter++) {
+    tempArr += `<div class="landmark seed_${counter}" id="${counter}"></div>`;
+    tempArr += "\n";
+  }
+  background.innerHTML = tempArr;
+  // console.log(tempArr);
+
+  // background.insertAdjacentHTML(
+  // "beforeend",
+
+  // );
 }
 
 function generateBlockades(count) {
@@ -492,4 +503,16 @@ function remove_blockade(id) {
   }
   PQfyArray(currentGridInfo.blockades, blockades);
   //   console.log(blockades);
+}
+
+function timer(command) {
+  if (command === `start`) {
+    let dateob = performance.now();
+    lastTimerValue = dateob;
+  }
+
+  if (command === `stop`) {
+    let dateob = performance.now();
+    return (Math.abs(dateob - lastTimerValue) / 1000).toFixed(8);
+  }
 }

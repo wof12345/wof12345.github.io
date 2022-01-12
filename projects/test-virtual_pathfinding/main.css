@@ -22,8 +22,8 @@ h1 {
   height: 2540px;
   margin: 10px 6px;
   display: grid;
-  grid-template-columns: repeat(100, 10px);
-  grid-template-rows: repeat(200, 10px);
+  grid-template-columns: repeat(100, 20px);
+  grid-template-rows: repeat(200, 20px);
 }
 
 /* 96,256 */
@@ -42,7 +42,7 @@ h1 {
 
 .playerCharacter {
   background-color: rgb(8, 8, 8);
-  width: 10px;
+  width: 15px;
   aspect-ratio: 1/1;
   border-radius: 40px;
   position: absolute;

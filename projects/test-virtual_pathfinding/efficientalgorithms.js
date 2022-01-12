@@ -225,27 +225,46 @@ function Astar(target) {
   }
   currentNode = +currentGridInfo.pqForPathfinding.front().element;
 
+  // timer("start");
   driverFunction(currentNode);
+  // console.log("Driver Complexity : ", timer("stop"));
+
   currentGridInfo.pqForPathfinding.remove();
   currentGridInfo.closedNode.push(currentNode);
   if (currentNode == target) {
     algorithmEndingAction(target, "");
     return;
   }
+
+  // timer("start");
   illuminatePath("", [currentNode], "rgb(255, 255, 255)");
+  // console.log("Single illumination Complexity : ", timer("stop"));
+
   for (
     let i = 0;
     i < currentGridInfo.gridToNodeRelations[currentNode].length;
     i++
   ) {
     let neighborNode = +currentGridInfo.gridToNodeRelations[currentNode][i];
+
+    // timer("start");
+    let element = document.getElementById(neighborNode);
+    let elementColor = element.style.backgroundColor + "";
+    // console.log("Dom traversal Complexity", timer("stop"));
+
+    // timer("start");
+    // let bool = !binarySearch(blockades, 0, blockades.length - 1, neighborNode);
+    // console.log(timer("stop"));
+
+    // console.log(elementColor);
+
     let gCost = calculateDistance(currentGridInfo.currentSource, neighborNode);
     let hCost = calculateDistance(neighborNode, target);
     let fCost = gCost + hCost;
 
     if (
       fCost < currentGridInfo.gridToNodeDistanceFromSource[neighborNode] &&
-      !binarySearch(blockades, 0, blockades.length - 1, neighborNode) &&
+      elementColor !== "rgb(0, 0, 0)" &&
       !binarySearch(
         currentGridInfo.closedNode,
         0,
