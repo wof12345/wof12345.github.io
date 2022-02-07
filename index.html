@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@100;200;300;400;500&family=Montserrat:ital,wght@0,200;0,300;1,100;1,200;1,300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@100;200;300;400;500&family=Montserrat:ital,wght@0,200;0,300;1,100;1,200;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./global.css" />
     <link rel="stylesheet" href="./mainpage/index.css" />
     <title>My-portfolio</title>
-
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="./Variables.js"></script>
@@ -20,116 +21,126 @@
     <script defer src="./encrypt.js" type="module"></script>
     <script defer src="./global.js"></script>
     <script defer src="./mainpage/index.js"></script>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <!-- <form action="get.php">
         <input type="text" name="" id="">
         <button>submit</button>
     </form> -->
 
     <header class="nav_cont">
-        <div class="empty"></div>
-        <nav class="nav">
-            <img src="./img/logo.png" alt="logo" class="nav_logo" id="logo" desginer="atif" />
-            <div class="nav_links">
-                <a class="nav_link" href="./index.html">Home</a>
-                <a class="nav_link" href="./about/about.html">About</a>
-                <a class="nav_link" href="./portfolio/portfolio.html">Portfolio</a>
-        </nav>
-
-        <div class="admin_panel"> <img src="./img/pp01.jpg" alt="pic" class="picture1" /></div>
+      <div class="empty"></div>
+      <nav class="nav">
+        <img
+          src="./img/logo.png"
+          alt="logo"
+          class="nav_logo"
+          id="logo"
+          desginer="atif"
+        />
+        <div class="nav_links">
+          <a class="nav_link" href="./index.html">Home</a>
+          <a class="nav_link" href="./about/about.html">About</a>
+          <a class="nav_link" href="./portfolio/portfolio.html">Portfolio</a>
         </div>
+      </nav>
 
-        <aside>
-            <img src="./img/menu.svg" alt="" class="table_icon">
-            <div class="nav_links-aside">
-                <a class="nav_link" href="./index.html">Home</a>
-                <a class="nav_link" href="./about/about.html">About</a>
-                <a class="nav_link" href="./portfolio/portfolio.html">Portfolio</a>
+      <div class="admin_panel">
+        <img src="./img/pp01.jpg" alt="pic" class="picture1" />
+      </div>
 
-            </div>
-        </aside>
+      <aside>
+        <img src="./img/menu.svg" alt="" class="table_icon" />
+        <div class="nav_links-aside">
+          <a class="nav_link" href="./index.html">Home</a>
+          <a class="nav_link" href="./about/about.html">About</a>
+          <a class="nav_link" href="./portfolio/portfolio.html">Portfolio</a>
+        </div>
+      </aside>
     </header>
 
     <section class="admin_login">
-        <div class="message">
-            Not logged in.
-        </div>
+      <div class="message">Not logged in.</div>
 
-        <div class="login_panel">
-            <label for="password">Login</label>
-            <input type="text" name="password" id="pass_field" placeholder="Password">
-        </div>
+      <div class="login_panel">
+        <label for="password">Login</label>
+        <input
+          type="text"
+          name="password"
+          id="pass_field"
+          placeholder="Password"
+        />
+      </div>
     </section>
 
-    <section class="decription ">
-
-        <section class="section_container">
-            <div class="container section">
-                <h1> Desgin, Build, Publish. </h1>
-                <h2> Smooth UI and interactive desgins</h2>
-                <ul class="characteristics">
-                    <li>Fast and responsive</li>
-                    <li>Extensive and easily modifiable</li>
-                    <li>Clean code</li>
-
-            </div>
-            </ul>
-        </section>
-
+    <section class="decription">
+      <section class="section_container">
+        <div class="container section">
+          <h1>Desgin, Build, Publish.</h1>
+          <h2>Smooth UI and interactive desgins</h2>
+          <ul class="characteristics">
+            <li>Fast and responsive</li>
+            <li>Extensive and easily modifiable</li>
+            <li>Clean code</li>
+          </ul>
+        </div>
+      </section>
     </section>
 
     <h4>My recent projects</h4>
 
     <section class="section_container">
-        <section class="recent_showcase section">
-            <a class="card" href="./projects/test-virtual_pathfinding/main.html">
-                <div class="card_card">
-                    <img class="showcase" src="./img/img8.png" alt="">
-                    <div class="description"> A webpage to simulate different pathfinding algorithms.
+      <section class="recent_showcase section">
+        <a class="card" href="./projects/test-virtual_pathfinding/main.html">
+          <div class="card_card">
+            <img class="showcase" src="./img/img8.png" alt="" />
+            <div class="description">
+              A webpage to simulate different pathfinding algorithms.
+            </div>
+          </div>
+        </a>
 
-                    </div>
-                </div>
-            </a>
-
-            <!-- <a class="card" href="./projects/Stat-Sim/main.html">
+        <!-- <a class="card" href="./projects/Stat-Sim/main.html">
             <div class="card_card">
                 <img class="showcase" src="./img/7.png" alt="">
                 <div class="description">A statistic simulation webpage.</div>
             </div>
         </a> -->
-
-        </section>
+      </section>
     </section>
 
-
     <section class="section_container">
-        <section class="features section">
-
-            <article class="feature_card">
-                <div class="feature_card-img"><img src="./img/img8.jpg" alt=""></div>
-                <div class="feature_card-dec">
-                    <h3>Simple, Elegant and Creative desgins</h3>
-                    <p>An idea turned into an initiation and then a reality. Order now and start your own business/blog/service.</p>
-                    <a href="https://www.fiverr.com/users/c19_30_03_atif/seller_dashboard"> <button class="feature_card-dec-btn">Order a desgin</button></a>
-                </div>
-            </article>
-
-        </section>
+      <section class="features section">
+        <article class="feature_card">
+          <div class="feature_card-img">
+            <img src="./img/img8.jpg" alt="" />
+          </div>
+          <div class="feature_card-dec">
+            <h3>Simple, Elegant and Creative desgins</h3>
+            <p>
+              An idea turned into an initiation and then a reality. Order now
+              and start your own business/blog/service.
+            </p>
+            <a
+              href="https://www.fiverr.com/users/c19_30_03_atif/seller_dashboard"
+            >
+              <button class="feature_card-dec-btn">Order a desgin</button></a
+            >
+          </div>
+        </article>
+      </section>
     </section>
 
     <footer>
-        <div class="footer_links">
-            <a class="nav_link-footer" href="./about/about.html">About</a>
-            <a class="nav_link-footer" href="./portfolio/portfolio.html">Portfolio</a>
-        </div>
+      <div class="footer_links">
+        <a class="nav_link-footer" href="./about/about.html">About</a>
+        <a class="nav_link-footer" href="./portfolio/portfolio.html"
+          >Portfolio</a
+        >
+      </div>
 
-        <div class="end_dec">
-            Personal Portfolio made by @atif
-        </div>
+      <div class="end_dec">Personal Portfolio made by @atif</div>
     </footer>
-</body>
-
+  </body>
 </html>
