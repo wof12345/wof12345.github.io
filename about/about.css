@@ -7,8 +7,8 @@
   padding: 4rem;
 }
 
-.about>*{
-  margin:10px 0px;
+.about > * {
+  margin: 10px 0px;
 }
 
 article {
@@ -16,6 +16,7 @@ article {
   padding: 0.3rem;
   transform-style: preserve-3d;
   box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.349);
+  transition: 0.2s;
 }
 
 .about_desc {

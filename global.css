@@ -60,6 +60,7 @@ aside {
   overflow: hidden;
   right: 0;
   top: 0;
+  bottom: 0;
   display: none;
   background-color: #fcfcfc00;
   transition: 0.5s;
@@ -238,6 +239,7 @@ aside {
     display: none;
   }
   .nav_links-aside {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -260,8 +262,8 @@ aside {
     min-width: 140px;
   }
   .admin_panel {
-    top: 10%;
-    right: 70%;
+    top: 50px;
+    right: 40%;
   }
   #pass_field {
     width: 120px;
