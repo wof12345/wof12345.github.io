@@ -11,9 +11,12 @@
   margin: 10px 0px;
 }
 
+.container_article {
+  padding: 1rem;
+}
+
 article {
   background-color: rgba(223, 213, 231, 0.26);
-  padding: 0.3rem;
   transform-style: preserve-3d;
   box-shadow: 2px 0px 2px 0px rgba(0, 0, 0, 0.349);
   transition: 0.2s;

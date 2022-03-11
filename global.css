@@ -19,7 +19,7 @@ body {
   line-height: 1.9;
   background-color: #fcfcfc;
   overflow-x: hidden;
-  perspective: 300px;
+  perspective: 200px;
   /* overflow-x: hidden; */
 }
 

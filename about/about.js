@@ -1,16 +1,35 @@
 let container = document.querySelectorAll(`article`);
-console.log(container);
+let articleContainer = document.querySelectorAll(`.container_article`);
+let paragraphs = document.querySelectorAll(`.paragraph`);
 
-container.forEach((elm) => {
+articleContainer.forEach((elm, ind) => {
   elm.addEventListener("mousemove", (e) => {
-    let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-    let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-    console.log(xAxis, yAxis);
+    let targetClass = e.target.className;
+    if (!targetClass.includes("link")) {
+      // console.log(targetClass);
 
-    elm.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+      let xAxis = Math.round((window.innerWidth / 2 - e.pageX) / 28);
+      let yAxis = Math.round((window.innerHeight / 2 - e.pageY) / 28);
+
+      if (yAxis < -10) {
+        yAxis = -8;
+      }
+      // console.log(xAxis, yAxis);
+
+      container[
+        ind
+      ].style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+      paragraphs[ind].onmousemove = (e) => {
+        e.stopPropagation();
+      };
+      paragraphs[
+        ind
+      ].style.transform = `rotateY(${-xAxis}deg) rotateX(${-yAxis}deg)`;
+    }
   });
 
   elm.addEventListener("mouseout", (e) => {
-    elm.style.transform = `rotateY(${0}deg) rotateX(${0}deg)`;
+    container[ind].style.transform = `rotateY(${0}deg) rotateX(${0}deg)`;
+    paragraphs[ind].style.transform = `rotateY(${0}deg) rotateX(${0}deg)`;
   });
 });
