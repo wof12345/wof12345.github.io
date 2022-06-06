@@ -1,0 +1,76 @@
+.art_details {
+  position: fixed;
+  inset: 0;
+  margin: 100px 20px 10px;
+  z-index: 80;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  overflow: auto;
+}
+
+.details_img_part {
+  width: 100%;
+}
+
+.details_text_part {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0px 40px 0px 30px;
+  width: 70%;
+}
+
+.details_text_part > * {
+  width: 100%;
+  text-align: start;
+  color: black;
+  margin-bottom: 5px;
+}
+
+.back_details {
+  font-size: 10px;
+  border: none;
+  background-color: white;
+  padding: 4px;
+}
+
+.back_details:hover {
+  background-color: rgba(199, 193, 193, 0.427);
+  padding: 2px;
+}
+
+h2 {
+  font-size: 19px;
+}
+h3 {
+  margin-bottom: 15px;
+}
+
+.canvas_details,
+.description_details,
+.estimation,
+.address,
+.smallDesc {
+  color: rgba(82, 80, 80, 0.701);
+}
+
+.description_details {
+  padding: 15px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(134, 131, 131, 0.523);
+  max-height: 190px;
+  overflow: auto;
+}
+
+.add_to_cart {
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
+@media screen and (max-width: 540px) {
+  .art_details {
+    flex-direction: column;
+  }
+}
