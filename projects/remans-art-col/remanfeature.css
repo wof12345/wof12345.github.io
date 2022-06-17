@@ -10,12 +10,12 @@
 }
 
 .featured_section_header h1 {
-  font-size: 2.5em;
-  font-weight: 100;
+  font-size: 1.6rem;
+  font-weight: 300;
 }
 
 .featured_section_header img {
-  height: 2.2rem;
+  height: 1.7rem;
   margin-left: 200px;
 }
 
@@ -88,12 +88,12 @@
 
 .feature_title,
 .artist_title {
-  font-weight: 900;
-  font-size: 1.2em;
+  font-weight: 300;
+  font-size: 0.9rem;
 }
 
 .feature_artist {
-  font-size: 1.1em;
+  font-size: 0.7rem;
   color: rgba(87, 90, 90, 0.681);
 }
 
@@ -101,6 +101,7 @@
 .feature_source,
 .feature_size {
   color: rgba(131, 139, 139, 0.496);
+  font-size: 0.7rem;
 }
 
 .feature_pricing {
@@ -113,7 +114,7 @@
 }
 
 .price {
-  font-size: 1.4em;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
@@ -146,8 +147,8 @@
 }
 
 .artists_section_header h1 {
-  font-size: 1.4em;
-  font-weight: 100;
+  font-size: 1rem;
+  font-weight: 300;
   margin-left: 200px;
 }
 
@@ -164,7 +165,7 @@
 .artists_card img {
   /* max-width: 80px; */
   height: 81.5px;
-  margin-top: 6px;
+  margin-bottom: -11px;
   margin-left: -2px;
   border: 1px solid rgba(0, 0, 0, 0);
 }
@@ -190,4 +191,16 @@
   flex-wrap: wrap;
   overflow: visible;
   justify-content: space-around;
+}
+
+.cart_indicator {
+  position: absolute;
+  background-color: red;
+  width: 10px;
+  height: 10px;
+  font-size: 7px;
+  border-radius: 10px;
+  right: 0;
+  top: 0;
+  color: white;
 }

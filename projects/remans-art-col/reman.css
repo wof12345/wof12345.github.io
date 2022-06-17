@@ -1,27 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&family=Raleway:ital,wght@0,100;0,500;0,700;1,200;1,900&family=Syne+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@100;300;500;700&display=swap");
 @import url("./remanfeature.css");
 @import url("./dedicated_art_page.css");
+@import url("./showcasepage.css");
 
 * {
   margin: 0;
   padding-left: 0;
   transition: 0.5s;
-  font-family: "Syne Mono", monospace;
   scroll-behavior: smooth;
 }
 
-html {
-  font-size: 62.5%;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: "Poppins", sans-serif;
   font-weight: 300;
   color: #444;
   line-height: 1.9;
   overflow-x: hidden;
   background-color: #ffffff;
+  font-family: "Anek Malayalam", sans-serif;
 }
 
 button:hover {
@@ -57,9 +52,10 @@ button:hover {
   right: 0;
   /* bottom: 0; */
   padding: 1rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.245);
   /* background-color: #bde4c469; */
   z-index: 100;
-  font-size: 1.7rem;
+  font-size: 1rem;
   font-weight: 400;
   text-align: center;
   list-style: none;
@@ -70,7 +66,7 @@ button:hover {
 }
 
 .nav__logo {
-  height: 2.6rem;
+  height: 1.8rem;
   transition: all 0.3s;
 }
 
@@ -78,7 +74,7 @@ button:hover {
   display: flex;
   align-items: center;
   list-style: none;
-  font-size: 1.7rem;
+  font-size: 14px;
   font-weight: 400;
   text-align: center;
 }
@@ -91,10 +87,10 @@ button:hover {
 }
 
 .nav__item {
+  position: relative;
   display: flex;
   align-items: center;
   margin-left: 4rem;
-  font-size: 0.8em;
 }
 
 .nav__item:hover {
@@ -147,19 +143,20 @@ svg:hover {
   background: rgba(85, 85, 85, 0.425);
 }
 
-@media screen and (max-width: 822px) {
+@media screen and (max-width: 990px) {
   .nav__links {
     display: none;
   }
 
   .nav_aside_links {
     display: flex;
-    right: -110px;
+    top: -240px;
+    right: 0;
     position: absolute;
     background-color: rgba(252, 252, 252, 0.819);
   }
 
   .nav_aside_links:hover {
-    right: 0px;
+    top: 0px;
   }
 }
