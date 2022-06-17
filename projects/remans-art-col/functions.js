@@ -6,7 +6,7 @@ let mainDetailsImage = document.querySelector(".main_pic");
 let showPage = document.querySelector(`.showcase_page`);
 let backShowPgae = document.querySelector(`.showpage_back`);
 let showPic = document.querySelector(`.show_img`);
-let cardIndicator = document.querySelector(`.cart_indicator`);
+let cardIndicator = document.querySelectorAll(`.cart_indicator`);
 
 let pageUserData = {
   cart: [],
@@ -31,7 +31,9 @@ document.addEventListener("click", (e) => {
 
   if (targetElmClass === "add_to_cart" || targetElmClass === "buy_btn") {
     pageUserData.cart.push(targetElm);
-    cardIndicator.innerHTML = pageUserData.cart.length;
+    cardIndicator.forEach((elm) => {
+      elm.innerHTML = pageUserData.cart.length;
+    });
   }
 });
 
