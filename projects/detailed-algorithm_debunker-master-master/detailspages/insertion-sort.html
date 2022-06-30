@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="global.css" />
+    <title>Document</title>
+  </head>
+  <body style="background-color: white; text-align: center">
+    <h2>Source: Geek for Geeks</h2>
+    <h1>Insertion sort</h1>
+    <p>
+      Insertion sort is a simple sorting algorithm that works similar to the way you sort playing cards in your hands. The array is virtually split into a sorted and an unsorted part. Values from the unsorted part are picked and placed at the correct position in the sorted part.
+    </p>
+    <h3>Code:</h3>
+
+    <code>
+      // C++ program for insertion sort
+
+      #include <bits/stdc++.h>
+      using namespace std;
+      
+      // Function to sort an array using
+      // insertion sort
+      void insertionSort(int arr[], int n)
+      {
+        int i, key, j;
+        for (i = 1; i < n; i++)
+        {
+          key = arr[i];
+          j = i - 1;
+      
+          // Move elements of arr[0..i-1],
+          // that are greater than key, to one
+          // position ahead of their
+          // current position
+          while (j >= 0 && arr[j] > key)
+          {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+          }
+          arr[j + 1] = key;
+        }
+      }
+      
+      // A utility function to print an array
+      // of size n
+      void printArray(int arr[], int n)
+      {
+        int i;
+        for (i = 0; i < n; i++)
+          cout << arr[i] << " ";
+        cout << endl;
+      }
+      
+      // Driver code
+      int main()
+      {
+        int arr[] = { 12, 11, 13, 5, 6 };
+        int N = sizeof(arr) / sizeof(arr[0]);
+      
+        insertionSort(arr, N);
+        printArray(arr, N);
+      
+        return 0;
+      }
+      // This is code is contributed by rathbhupendra
+      
+    </code>
+  </body>
+</html>

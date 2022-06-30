@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+
+    <script defer src="./scripts/necessary_functions.js"></script>
+    <script
+      defer
+      type="text/javascript"
+      src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"
+    ></script>
+    <script defer src="./scripts/graphandtreecode.js"></script>
+    <script defer src="./scripts/dragCode.js"></script>
+    <script defer src="./scripts/algorithmdesclib.js"></script>
+    <script defer src="./scripts/algorithmstagefillerfunctions.js"></script>
+    <script defer src="./scripts/variables.js"></script>
+    <script defer src="./scripts/uicode.js"></script>
+    <script defer src="./scripts/algorithms.js"></script>
+    <script defer src="./scripts/subfunctions.js"></script>
+    <script defer src="./scripts/basicfunctions.js"></script>
+    <script defer src="./scripts/algorithmfunctions.js"></script>
+    <script defer src="./scripts/algorithmbasecodes.js"></script>
+    <script defer src="./scripts/script.js"></script>
+  </head>
+  <body>
+    <h1>Algorithm Debunker</h1>
+    <h4>Attempt at a visual representation for algorithms</h4>
+
+    <section class="algorithm_container">
+      <div class="algorithm_btn_cont" data-alg="Bubble-sort">
+        <button class="algorithm_item" data-alg="Bubble-sort">
+          Bubble-sort
+        </button>
+      </div>
+      <div class="algorithm_btn_cont" data-alg="Insertion-sort">
+        <button class="algorithm_item" data-alg="Insertion-sort">
+          Insertion-sort
+        </button>
+      </div>
+      <div class="algorithm_btn_cont" data-alg="Selection-sort">
+        <button class="algorithm_item" data-alg="Selection-sort">
+          Selection-sort
+        </button>
+      </div>
+      <div class="algorithm_btn_cont" data-alg="Quick-sort">
+        <button class="algorithm_item" data-alg="Quick-sort">Quick-sort</button>
+      </div>
+      <div class="algorithm_btn_cont" data-alg="Merge-sort">
+        <button class="algorithm_item" data-alg="Merge-sort">Merge-sort</button>
+      </div>
+      <!-- <div class="algorithm_btn_cont" data-alg="Counting-sort">
+        <button class="algorithm_item" data-alg="Counting-sort">
+          Counting-sort
+        </button>
+      </div>
+      <div class="algorithm_btn_cont" data-alg="Bucket-sort">
+        <button class="algorithm_item" data-alg="Bucket-sort">
+          Bucket-sort
+        </button>
+      </div> -->
+      <div class="algorithm_btn_cont" data-alg="Heapify and Heap-sort">
+        <button class="algorithm_item" data-alg="Heapify and Heap-sort">
+          Heapify and Heap-sort
+        </button>
+      </div>
+    </section>
+
+    <section class="simulation">
+      <div class="simulation_desc_cont simulation_child">
+        <h2 class="current_algorithm_name"></h2>
+
+        <article class="algorithm_desc"></article>
+      </div>
+      <div class="simulation_sec simulation_child">
+        <h3>Elements :</h3>
+        <div class="simulation_sec_cont inner_obbj_cont">
+          <!-- <div class="sim_obj ${objClassNum}">
+            <div class="sim_obj_movable ${objClassNum}">
+              <div class="sim_obj_item">${objItem}</div>
+            </div>
+            <div class="sim_obj_item_index">${objItemIdx}</div>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="simulation_sec_extra simulation_child empty">
+        <!-- <div class="simulation_sec_cont_extra_${number} inner_obbj_cont"></div> -->
+      </div>
+
+      <div id="mynetwork"></div>
+
+      <div class="stage_tracker_cont simulation_child">
+        <h3>Stages :</h3>
+        <div class="stage_tracker inner_obbj_cont">
+          <!-- <div class="tree_item ti${number} draggable">
+            <p class="tree_item_content">1</p>
+          </div> -->
+          <!-- <div class="tree_item ti${number} tiv${treeItem} draggable">
+            <p class="tree_item_content">${treeItem}</p>
+            <div class="link edge${edgeNo}">
+              <div class="tree_item ti${number} tiv${treeItem} draggable">
+                <p class="tree_item_content">${treeItem}</p>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="simulation_text_sec simulation_child">
+        <label for="sim">Please enter input : </label>
+        <input type="text" name="sim" id="text_inp" />
+        <button class="start_sim">Start</button>
+      </div>
+
+      <img src="./images/cross.svg" alt="" class="close_btn" />
+    </section>
+
+    <algorithm-stages-details-cont
+      class="stage_details_cont_cont stage_visible"
+    >
+      <div class="_stage_container_container">
+        <div class="stage_container"></div>
+      </div>
+      <div class="arrow_shape">
+        <div class="shape_item ai_1 arrow"></div>
+        <div class="shape_item ai_2 arrow"></div>
+      </div>
+    </algorithm-stages-details-cont>
+
+    <!-- <div class="mouse_tracker_hover">
+      <p class="posX">0</p>
+      <p class="posY">0</p>
+    </div> -->
+
+    <div class="algorithm_controls_cont draggable">
+      <select name="type" id="sort_type_general">
+        <option value="Descending">Descending</option>
+        <option value="Ascending">Ascending</option>
+      </select>
+
+      <select name="type_string" id="sort_type_string" style="display: none">
+        <option value="Ascii-sort">Ascii-sort</option>
+        <option value="Lexicographical">Lexicographical</option>
+        <option value="Alphabetical">Alphabetical</option>
+      </select>
+      <div class="algorithm_controls">
+        <button class="next_step">Next step</button>
+        <div class="auto_step_cont">
+          <button class="auto_step_btn">Play steps</button>
+          <input type="text" class="auto_step_interval" value="1s" />
+          <button class="stop_step">Stop step</button>
+        </div>
+        <button class="prev_step">Previous step</button>
+      </div>
+    </div>
+
+    <div class="notification_corner"></div>
+
+    <div class="algorithm_iframe_cont iframe_st">
+      <iframe
+        class="iframe_st"
+        id="iframe_st"
+        width="560"
+        height="505"
+        src=""
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <!-- <section class="class_work">
+      <main class="cont">
+        <button class="menu_drop">menu</button>
+        <div class="menu_cont">
+          <div class="menu_item sub_menu">Item1</div>
+          <div class="sub_menu_cont">
+            <div class="sub_menu_item"></div>
+          </div>
+        </div>
+      </main>
+    </section> -->
+  </body>
+</html>
