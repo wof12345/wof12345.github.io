@@ -2,6 +2,8 @@
 	import { stackingNotificationStore } from './store.svelte.js';
 	import Notification from './Notification.svelte';
 	import { untrack } from 'svelte';
+	import Button from '../Button/Button.svelte';
+	import { IconX } from '@tabler/icons-svelte';
 
 	let notShown = [];
 	let view = $state([]);
@@ -107,7 +109,7 @@
 
 				exitAnimationLoop();
 			},
-			animationDelayBase * 2 * (notificationElements.length - 2)
+			animationDelayBase * 2 * notificationElements.length
 		);
 	}
 
@@ -143,9 +145,9 @@
 		elm.addEventListener('click', handleClickEvent);
 	}
 
-	function handleNotificationClick(target) {
-		let canInteract = target.dataset.interact;
-		let index = target.dataset.index;
+	function handleNotificationClick(target, interact = false, index = -1) {
+		let canInteract = target?.dataset.interact || interact;
+		index = target?.dataset.index || index;
 
 		if (canInteract === 'false') return;
 
@@ -221,6 +223,24 @@
 	});
 </script>
 
+{#if stackingNotificationStore.getActiveNotifications.length > 0}
+	<div
+		style="top: {(defaultHeight + defaultGap) *
+			stackingNotificationStore.getActiveNotifications.length}px;"
+		class="fixed left-0 right-0 m-auto w-max"
+	>
+		<Button
+			onclick={() => {
+				stackingNotificationStore.getActiveNotifications.forEach((elm, idx) => {
+					handleNotificationClick(undefined, false, idx);
+				});
+			}}
+			class="flex w-max items-center justify-center rounded-full bg-slate-100 p-2 text-black"
+		>
+			<IconX />
+		</Button>
+	</div>
+{/if}
 {#if children}
 	{@render children()}
 {:else}

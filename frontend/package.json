@@ -61,6 +61,7 @@
 	},
 	"dependencies": {
 		"@inlang/paraglide-sveltekit": "^0.11.1",
+		"@tabler/icons-svelte": "^3.28.1",
 		"@tailwindcss/typography": "^0.5.15",
 		"tw-merge": "^0.0.1-alpha.3"
 	}
