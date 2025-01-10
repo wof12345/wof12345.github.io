@@ -9,7 +9,13 @@
 	let count = $state(0);
 	let addEvents = $state(false);
 
-	let { defaultHeight = 80, defaultGap = 20, show = 3, children } = $props();
+	let {
+		defaultHeight = 80,
+		defaultGap = 20,
+		show = 3,
+		animationDelayBase = 100,
+		children
+	} = $props();
 
 	let notificationElements = [];
 
@@ -24,10 +30,10 @@
 
 		notificationElements[idx].style.right = '-200vw';
 
-		let lastIndexFactor = 0;
+		let lastIndexFactor = 0.5;
 
 		//iterate over the previous notifications and set their new position
-		for (let index = idx, iteration = 1; index != -1; index--, iteration++) {
+		for (let index = idx, iteration = 2; index != -1; index--, iteration++) {
 			let element = notificationElements[index];
 			let elementTop = parseInt(notificationElements[index].style.top);
 
@@ -61,13 +67,13 @@
 					view[0] = targetElm;
 					view = view;
 
+					targetElm.style = `top:${20}px; transition-delay: ${0.2}s; height: ${defaultHeight}px;`;
 					targetElm.classList.add('popInAnimation');
-					targetElm.style = `top:${20}px; transition-delay: ${lastIndexFactor + 1 * 0.2}s; height: ${defaultHeight}px;`;
 
 					exitAnimationLoop();
 				}, 50);
 			},
-			100 * lastIndexFactor * 2.5
+			animationDelayBase * lastIndexFactor * 2.5
 		);
 	}
 
@@ -101,7 +107,7 @@
 
 				exitAnimationLoop();
 			},
-			200 * notificationElements.length - 2
+			animationDelayBase * 2 * (notificationElements.length - 2)
 		);
 	}
 

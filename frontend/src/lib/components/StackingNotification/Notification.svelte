@@ -6,7 +6,7 @@
 
 <button
 	style="opacity: 0;"
-	class={`active-notification fixed left-0 right-0 mx-auto transition-all duration-200 ease-in-out` +
+	class={`active-notification fixed left-0 right-0 mx-auto w-max transition-all duration-200 ease-in-out` +
 		props.class}
 >
 	{@render props.children?.()}
