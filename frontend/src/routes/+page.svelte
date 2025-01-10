@@ -19,7 +19,7 @@
 </script>
 
 <div>
-	<StackingNotification show={2}>
+	<StackingNotification show={3}>
 		<!-- {#each array as elm}
 			<Notification>
 				<div class="bg-red-50">

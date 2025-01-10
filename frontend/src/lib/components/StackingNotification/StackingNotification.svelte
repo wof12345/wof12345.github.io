@@ -1,22 +1,15 @@
 <script>
 	import { stackingNotificationStore } from './store.svelte.js';
 	import Notification from './Notification.svelte';
+	import { untrack } from 'svelte';
 
-	let modifiedNotifications = $state([]);
 	let notShown = [];
 	let view = $state([]);
 
 	let count = $state(0);
 	let addEvents = $state(false);
 
-	let {
-		defaultHeight = 80,
-		defaultGap = 20,
-		show = 3,
-		element = { class: '' },
-
-		children
-	} = $props();
+	let { defaultHeight = 80, defaultGap = 20, show = 3, children } = $props();
 
 	let notificationElements = [];
 
@@ -49,9 +42,9 @@
 
 		setTimeout(
 			() => {
-				modifiedNotifications.splice(idx, 1);
+				stackingNotificationStore.spliceCurrentActiveNotifications(idx, 1);
 
-				modifiedNotifications.unshift(notShown[0]);
+				stackingNotificationStore.addToCurrentActiveNotificationsFront(notShown[0]);
 
 				notShown = notShown.slice(1, notShown.length);
 
@@ -81,8 +74,6 @@
 	function handleRemoveWhenNoNoficationsLeft(idx) {
 		notificationElements = document.querySelectorAll('.active-notification');
 
-		console.log(idx);
-
 		if (!notificationElements[idx]) return;
 
 		let lastElementTop = parseInt(notificationElements[idx].style.top);
@@ -106,7 +97,7 @@
 
 		setTimeout(
 			() => {
-				modifiedNotifications.splice(idx, 1);
+				stackingNotificationStore.spliceCurrentActiveNotifications(idx, 1);
 
 				exitAnimationLoop();
 			},
@@ -170,7 +161,11 @@
 
 		notShown = modifiedNotificationHardCopy.slice(show + 1, modifiedNotificationHardCopy.length);
 
-		modifiedNotifications = modifiedNotificationHardCopy.slice(0, show);
+		untrack(() =>
+			stackingNotificationStore.updateCurrentActiveNotifications(
+				modifiedNotificationHardCopy.slice(0, show)
+			)
+		);
 
 		//wait for svelte to handle dom insertions
 		setTimeout(() => {
@@ -223,7 +218,7 @@
 {#if children}
 	{@render children()}
 {:else}
-	{#each modifiedNotifications as notification, index (notification.uuid)}
+	{#each stackingNotificationStore.getActiveNotifications as notification, index (notification.uuid)}
 		<Notification
 			class="flex w-[200px] items-center justify-center rounded-full bg-black px-2 text-white"
 		>
@@ -234,7 +229,7 @@
 
 <!-- logic that sets the notification to come from bottom for a new pop in, to be used in handleRemoveWhenNoficationsLeft -->
 <!-- if (notShown.length > 0) {
-	modifiedNotifications.push(notShown[0]);
+	stackingNotificationStore.getActiveNotifications.push(notShown[0]);
 	notShown = notShown.slice(1, notShown.length);
 
 	setTimeout(() => {

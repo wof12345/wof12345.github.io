@@ -19,12 +19,21 @@ export function stackingNotification({ notifications = [], options = {} }) {
 
     return {
         get getModifiedNotifications() { return modifiedNotifications },
+        get getActiveNotifications() { return currentActiveNotifications },
         updateNotifications: (notifications) => {
             modifiedNotifications = _generateModifiedNotifcations(notifications);
             return modifiedNotifications
         },
         updateCurrentActiveNotifications: (notifications) => {
             currentActiveNotifications = _generateModifiedNotifcations(notifications);
+            return currentActiveNotifications
+        },
+        addToCurrentActiveNotificationsFront: (notification) => {
+            currentActiveNotifications.unshift(notification)
+            return currentActiveNotifications
+        },
+        spliceCurrentActiveNotifications: (idx, range = 1) => {
+            currentActiveNotifications.splice(idx, range);
             return currentActiveNotifications
         }
     }
