@@ -1,6 +1,4 @@
 <script>
-	import { twMerge } from 'tw-merge';
-
 	let props = $props();
 </script>
 

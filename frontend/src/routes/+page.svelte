@@ -2,9 +2,14 @@
 	import Notification from '$lib/components/StackingNotification/Notification.svelte';
 	import StackingNotification from '$lib/components/StackingNotification/StackingNotification.svelte';
 	import { stackingNotificationStore } from '$lib/components/StackingNotification/store.svelte.js';
+	import { IconBell } from '@tabler/icons-svelte';
 
 	let array = [
-		{ id: 1, message: 'You have a new notification 1!', type: 'success' },
+		{
+			id: 1,
+			message: 'You have a new notification 1! asdasdas asd asd asd asd asda sdsa',
+			type: 'success'
+		},
 		{ id: 1, message: 'You have a new notification! 2', type: 'success' },
 		{ id: 1, message: 'You have a new notification! 3', type: 'success' },
 		{ id: 1, message: 'You have a new notification! 4', type: 'success' },
@@ -24,7 +29,15 @@
 			<Notification
 				class="flex w-[200px] items-center justify-center rounded-full bg-blue-400 px-2 text-white"
 			>
-				{notification.message}
+				<div class="m-auto flex max-w-[90%] items-center justify-center gap-4">
+					<div class="rounded-full bg-slate-200 p-2 text-blue-400">
+						<IconBell size={26} />
+					</div>
+
+					<p class=" text-start">
+						{notification.message}
+					</p>
+				</div>
 			</Notification>
 		{/each}
 	</StackingNotification>

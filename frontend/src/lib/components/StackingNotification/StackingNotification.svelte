@@ -1,3 +1,5 @@
+<!-- big O complextiy estimated O(n) -->
+
 <script>
 	import { stackingNotificationStore } from './store.svelte.js';
 	import Notification from './Notification.svelte';
@@ -16,6 +18,8 @@
 		defaultGap = 20,
 		show = 3,
 		animationDelayBase = 100,
+		onNotificationClick = () => {},
+		removeNotificationOnClick = true,
 		children
 	} = $props();
 
@@ -23,6 +27,19 @@
 
 	function exitAnimationLoop() {
 		addEvents = true;
+	}
+
+	function handleRemoveAll() {
+		notificationElements = document.querySelectorAll('.active-notification');
+
+		notificationElements.forEach((elm, idx) => {
+			elm.style.right = '-200vw';
+		});
+
+		setTimeout(() => {
+			stackingNotificationStore.updateCurrentActiveNotifications([]);
+			exitAnimationLoop();
+		}, 150);
 	}
 
 	function handleRemoveWhenNoficationsLeft(idx) {
@@ -60,7 +77,7 @@
 				view = view;
 
 				setTimeout(() => {
-					notificationElements = document.querySelectorAll('.active-notification');
+					notificationElements = document.querySelectorAll('.active-notification'); //refresh dom list after manual injection
 
 					let targetElm = notificationElements[0];
 
@@ -133,12 +150,13 @@
 	function handleClickEvent(e) {
 		let target = e.target.closest('.active-notification');
 
+		onNotificationClick(e);
 		handleNotificationClick(target);
 	}
 
 	function attachClickEventIfNotExisting(elm, index) {
-		// elm.textContent = index;
 		elm.dataset.index = index;
+		elm.dataset.removeOnClick = removeNotificationOnClick;
 
 		elm.removeEventListener('click', handleClickEvent);
 
@@ -148,8 +166,9 @@
 	function handleNotificationClick(target, interact = false, index = -1) {
 		let canInteract = target?.dataset.interact || interact;
 		index = target?.dataset.index || index;
+		let removeOnClick = target?.dataset.removeOnClick;
 
-		if (canInteract === 'false') return;
+		if (canInteract === 'false' || removeOnClick === 'false') return;
 
 		addEvents = false;
 
@@ -169,6 +188,7 @@
 
 		notShown = modifiedNotificationHardCopy.slice(show + 1, modifiedNotificationHardCopy.length);
 
+		//untrack makes the compiler ignore the rerun of this effect when stackingNotificationStore.getActiveNotifications(state) changes
 		untrack(() =>
 			stackingNotificationStore.updateCurrentActiveNotifications(
 				modifiedNotificationHardCopy.slice(0, show)
@@ -231,13 +251,11 @@
 	>
 		<Button
 			onclick={() => {
-				stackingNotificationStore.getActiveNotifications.forEach((elm, idx) => {
-					handleNotificationClick(undefined, false, idx);
-				});
+				handleRemoveAll();
 			}}
-			class="flex w-max items-center justify-center rounded-full bg-slate-100 p-2 text-black"
+			class="flex w-max items-center justify-center rounded-full bg-slate-100 p-1  text-gray-400 hover:bg-slate-200"
 		>
-			<IconX />
+			<IconX size={14} />
 		</Button>
 	</div>
 {/if}
