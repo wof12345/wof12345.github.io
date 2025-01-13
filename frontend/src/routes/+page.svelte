@@ -1,8 +1,6 @@
 <script>
-	import Notification from '$lib/components/StackingNotification/Notification.svelte';
 	import StackingNotification from '$lib/components/StackingNotification/StackingNotification.svelte';
 	import { stackingNotificationStore } from '$lib/components/StackingNotification/store.svelte.js';
-	import { IconBell } from '@tabler/icons-svelte';
 
 	let array = [
 		{
@@ -24,8 +22,8 @@
 </script>
 
 <div>
-	<StackingNotification show={3}>
-		{#each stackingNotificationStore.getActiveNotifications as notification, index (notification.uuid)}
+	<StackingNotification show={4}>
+		<!-- {#each stackingNotificationStore.getActiveNotifications as notification, index (notification.uuid)}
 			<Notification
 				class="flex w-[200px] items-center justify-center rounded-full bg-blue-400 px-2 text-white"
 			>
@@ -39,6 +37,6 @@
 					</p>
 				</div>
 			</Notification>
-		{/each}
+		{/each} -->
 	</StackingNotification>
 </div>

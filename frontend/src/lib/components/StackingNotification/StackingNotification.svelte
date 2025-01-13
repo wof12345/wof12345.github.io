@@ -5,7 +5,7 @@
 	import Notification from './Notification.svelte';
 	import { untrack } from 'svelte';
 	import Button from '../Button/Button.svelte';
-	import { IconX } from '@tabler/icons-svelte';
+	import { IconBell, IconX } from '@tabler/icons-svelte';
 
 	let notShown = [];
 	let view = $state([]);
@@ -246,6 +246,7 @@
 {#if stackingNotificationStore.getActiveNotifications.length > 0}
 	<div
 		style="top: {(defaultHeight + defaultGap) *
+			0.99 *
 			stackingNotificationStore.getActiveNotifications.length}px;"
 		class="fixed left-0 right-0 m-auto w-max"
 	>
@@ -266,7 +267,15 @@
 		<Notification
 			class="flex w-[200px] items-center justify-center rounded-full bg-black px-2 text-white"
 		>
-			{notification.message}
+			<div class="m-auto flex max-w-[90%] items-center justify-center gap-4">
+				<div class="rounded-full bg-slate-200 p-2 text-black">
+					<IconBell size={26} />
+				</div>
+
+				<p class=" text-start">
+					{notification.message}
+				</p>
+			</div>
 		</Notification>
 	{/each}
 {/if}
