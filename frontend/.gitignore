@@ -27,4 +27,4 @@ vite.config.ts.timestamp-*
 src/lib/paraglide
 
 # IED
-.code-workspace
+*.code-workspace
