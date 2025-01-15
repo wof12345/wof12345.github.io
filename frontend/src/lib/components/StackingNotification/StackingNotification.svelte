@@ -13,6 +13,17 @@
 	let count = $state(0);
 	let addEvents = $state(false);
 
+	/**
+	 * @typedef {Object} Props
+	 * @property {int} [defaultHeight] default fixed height for the notifications (needs to be greater than original height)
+	 * @property {int} [defaultGap] default gaps between notifications
+	 * @property {int} [show] how many should be shown
+	 * @property {int} [animationDelayBase] animation delay base (interval between notification transitions)
+	 * @property {boolean} [removeNotificationOnClick] does notification close on-click
+	 * @property {() => void} [onNotificationClick] onclick event handler
+	 */
+
+	/** @type {Props} */
 	let {
 		defaultHeight = 80,
 		defaultGap = 20,
@@ -111,6 +122,10 @@
 		notificationElements.forEach((element, index) => {
 			if (index > idx) {
 				let indexFactor = index - idx - 1;
+
+				defaultHeight = element.offsetHeight;
+
+				console.log(defaultHeight);
 
 				element.style = `top:${lastElementTop + indexFactor * (5 + defaultHeight)}px; transition-delay: ${(indexFactor + 1) * 0.2}s; height: ${defaultHeight}px; `;
 

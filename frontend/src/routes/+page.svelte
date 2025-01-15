@@ -22,7 +22,7 @@
 </script>
 
 <div>
-	<StackingNotification show={4}>
+	<StackingNotification>
 		<!-- {#each stackingNotificationStore.getActiveNotifications as notification, index (notification.uuid)}
 			<Notification
 				class="flex w-[200px] items-center justify-center rounded-full bg-blue-400 px-2 text-white"
