@@ -12,7 +12,7 @@
 
 <style>
 	.popInAnimation {
-		animation: appear 0.3s ease-in-out;
+		animation: appear 0.2s ease-in-out;
 		z-index: 5;
 	}
 

@@ -7,12 +7,6 @@
 	import Button from '../Button/Button.svelte';
 	import { IconBell, IconX } from '@tabler/icons-svelte';
 
-	let notShown = [];
-	let view = $state([]);
-
-	let count = $state(0);
-	let addEvents = $state(false);
-
 	/**
 	 * @typedef {Object} Props
 	 * @property {int} [defaultHeight] default fixed height for the notifications (needs to be greater than original height)
@@ -25,7 +19,6 @@
 
 	/** @type {Props} */
 	let {
-		defaultHeight = 80,
 		defaultGap = 20,
 		show = 3,
 		animationDelayBase = 100,
@@ -33,6 +26,17 @@
 		removeNotificationOnClick = true,
 		children
 	} = $props();
+
+	let defaultHeight = 0;
+
+	let notShown = [];
+	let view = $state([]);
+
+	let count = $state(0);
+	let addEvents = $state(false);
+
+	let totalTopOccupied = $state(0);
+	let clearAllButtonTop = $derived(Math.round(totalTopOccupied * 1.1 + defaultGap));
 
 	let notificationElements = [];
 
@@ -66,11 +70,12 @@
 		for (let index = idx, iteration = 2; index != -1; index--, iteration++) {
 			let element = notificationElements[index];
 			let elementTop = parseInt(notificationElements[index].style.top);
+			defaultHeight = element.getBoundingClientRect().height;
 
 			if (index < idx) {
 				let indexFactor = iteration;
 
-				element.style = `top:${elementTop + 1 * (5 + defaultHeight)}px; transition-delay: ${(indexFactor + 1) * 0.2}s; height: ${defaultHeight}px; `;
+				element.style = `top:${elementTop + 1 * (5 + defaultHeight)}px; transition-delay: ${(indexFactor + 1) * 0.2}s; `;
 
 				lastIndexFactor = iteration;
 			}
@@ -93,6 +98,7 @@
 					let targetElm = notificationElements[0];
 
 					targetElm.style = 'top: -200px';
+					defaultHeight = targetElm.getBoundingClientRect().height;
 
 					view[0] = targetElm;
 					view = view;
@@ -123,11 +129,9 @@
 			if (index > idx) {
 				let indexFactor = index - idx - 1;
 
-				defaultHeight = element.offsetHeight;
+				defaultHeight = element.getBoundingClientRect().height;
 
-				console.log(defaultHeight);
-
-				element.style = `top:${lastElementTop + indexFactor * (5 + defaultHeight)}px; transition-delay: ${(indexFactor + 1) * 0.2}s; height: ${defaultHeight}px; `;
+				element.style = `top:${lastElementTop + indexFactor * (5 + defaultHeight)}px; transition-delay: ${(indexFactor + 1) * 0.2}s;  `;
 
 				if (index == notificationElements.length - 1) {
 					lastIndexFactor = indexFactor;
@@ -147,10 +151,13 @@
 
 	function determineTop(idx, notificationElement) {
 		//get existing top position for element or set a calculated new one
+
 		if (!notificationElement)
 			notificationElements = document.querySelectorAll('.active-notification');
 
 		let targetElm = notificationElement || notificationElements[idx];
+
+		defaultHeight = targetElm.getBoundingClientRect().height;
 
 		if (notificationElements.length > 0 && targetElm && notificationElement) {
 			return parseInt(targetElm.style.top);
@@ -160,7 +167,8 @@
 	}
 
 	let getInitialStyle = (index) =>
-		`top: ${determineTop(index)}px; height: ${defaultHeight}px; z-index: ${index}; ${view[index] ? 'opacity:1' : 'opacity:0'} `;
+		`top: ${determineTop(index)}px;  z-index: ${index}; ${view[index] ? 'opacity:1' : 'opacity:0'} `;
+	// height: ${defaultHeight}px;
 
 	function handleClickEvent(e) {
 		let target = e.target.closest('.active-notification');
@@ -195,6 +203,7 @@
 
 	$effect(() => {
 		addEvents = false;
+		totalTopOccupied = 0;
 
 		// $effect seems to run whenever any states referenced inside it's block scope is modified
 		let modifiedNotificationHardCopy = JSON.parse(
@@ -224,7 +233,7 @@
 					elm.classList.add('popInAnimation');
 
 					determineTop(index, elm); //manually determine position and force calculate top
-				}, index * 100);
+				}, index * 300);
 			});
 			addEvents = true;
 		}, 10);
@@ -247,29 +256,38 @@
 
 		setTimeout(() => {
 			notificationElements = document.querySelectorAll('.active-notification');
+			totalTopOccupied = 0;
+			let totalTop = 0;
+
+			console.log(notificationElements.length);
 
 			notificationElements.forEach((elm, index) => {
 				elm.style = getInitialStyle(index);
 
+				//calculate clear all button top
+				defaultHeight = elm.getBoundingClientRect().height;
+				totalTop += defaultHeight;
+
 				attachClickEventIfNotExisting(elm, index);
 				elm.dataset.interact = true;
 			});
+
+			totalTopOccupied = totalTop;
 		}, 200);
+	});
+
+	$effect(() => {
+		console.log(clearAllButtonTop);
 	});
 </script>
 
 {#if stackingNotificationStore.getActiveNotifications.length > 0}
-	<div
-		style="top: {(defaultHeight + defaultGap) *
-			0.99 *
-			stackingNotificationStore.getActiveNotifications.length}px;"
-		class="fixed left-0 right-0 m-auto w-max"
-	>
+	<div style="top: {clearAllButtonTop}px;" class="fixed left-0 right-0 m-auto w-max">
 		<Button
 			onclick={() => {
 				handleRemoveAll();
 			}}
-			class="flex w-max items-center justify-center rounded-full bg-slate-100 p-1  text-gray-400 hover:bg-slate-200"
+			class=" flex w-max items-center justify-center rounded-full bg-slate-200  p-1 text-gray-400 hover:bg-slate-200"
 		>
 			<IconX size={14} />
 		</Button>
@@ -280,7 +298,7 @@
 {:else}
 	{#each stackingNotificationStore.getActiveNotifications as notification, index (notification.uuid)}
 		<Notification
-			class="flex w-[200px] items-center justify-center rounded-full bg-black px-2 text-white"
+			class="flex h-max w-[200px] items-center justify-center rounded-full bg-black px-2 py-4 text-white"
 		>
 			<div class="m-auto flex max-w-[90%] items-center justify-center gap-4">
 				<div class="rounded-full bg-slate-200 p-2 text-black">
