@@ -9,7 +9,6 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {int} [defaultHeight] default fixed height for the notifications (needs to be greater than original height)
 	 * @property {int} [defaultGap] default gaps between notifications
 	 * @property {int} [show] how many should be shown
 	 * @property {int} [animationDelayBase] animation delay base (interval between notification transitions)
@@ -205,14 +204,14 @@
 		addEvents = false;
 		totalTopOccupied = 0;
 
-		// $effect seems to run whenever any states referenced inside it's block scope is modified
+		// $effect seems to run whenever any states referenced (in an assignment gesture) inside it's block scope is modified
 		let modifiedNotificationHardCopy = JSON.parse(
 			JSON.stringify(stackingNotificationStore.getModifiedNotifications)
 		);
 
 		notShown = modifiedNotificationHardCopy.slice(show + 1, modifiedNotificationHardCopy.length);
 
-		//untrack makes the compiler ignore the rerun of this effect when stackingNotificationStore.getActiveNotifications(state) changes
+		//untrack makes the compiler ignore the rerun of this $effect when stackingNotificationStore.getActiveNotifications(state) changes
 		untrack(() =>
 			stackingNotificationStore.updateCurrentActiveNotifications(
 				modifiedNotificationHardCopy.slice(0, show)
