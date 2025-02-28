@@ -3,6 +3,7 @@
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
 	import '../app.css';
 	import Navigation from '$lib/components/Navigation/Navigation.svelte';
+	
 	let { children } = $props();
 </script>
 
