@@ -4,7 +4,7 @@
 	let { children, ...rest } = $props();
 </script>
 
-<div class={twMerge('float absolute', rest.class)}>
+<div class={twMerge('float', rest.class)}>
 	{@render children()}
 </div>
 

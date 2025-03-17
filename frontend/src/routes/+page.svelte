@@ -1,4 +1,5 @@
 <script>
+	import DropInFromAbove from '$lib/components/Animated/Entity/DropInFromAbove.svelte';
 	import Floating from '$lib/components/Animated/Entity/Floating.svelte';
 	import LeftToRightFadeInDown from '$lib/components/Animated/Text/LeftToRightFadeInDown.svelte';
 	import Star from '$lib/components/Base/Star.svelte';
@@ -9,9 +10,11 @@
 		>Welcome to your abode!
 	</LeftToRightFadeInDown>
 
-	<Floating class="left-10 top-52 z-10">
-		<img src="/planet-1.png" alt="" />
-	</Floating>
+	<DropInFromAbove class="absolute left-10 top-52 z-10">
+		<Floating>
+			<img src="/planet-1.png" alt="" />
+		</Floating>
+	</DropInFromAbove>
 
 	{#each Array(300) as star, idx (idx)}
 		<Star seed={idx} />
