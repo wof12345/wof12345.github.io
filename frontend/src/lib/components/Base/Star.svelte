@@ -12,7 +12,29 @@
 	let idleInterval = $state();
 
 	const uuid = uuidv4();
+
 	let star;
+	let alight = false;
+
+	const defaultStyle = (placementStyle) => {
+		return `clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40% ); opacity: 0.8; ${placementStyle}; transform: scale(1); transition: 0.4s;`;
+	};
+	const alightStyle = (placementStyle) => `
+					clip-path: polygon(
+						50% 0%, 60% 40%, 100% 50%, 60% 60%, 
+						50% 100%, 40% 60%, 0% 50%, 40% 40%
+					);
+					background: white;
+					opacity: 1;
+					${placementStyle};
+ 					transform: scale(2);
+					box-shadow:
+					0 0 10px rgba(255, 255, 255, 0.6),
+					0 0 20px rgba(255, 255, 255, 0.4),
+					0 0 30px rgba(255, 255, 255, 0.2);
+					border-radius: 2px;
+					transition: 0.4s;
+					`;
 
 	function determineStarPosition() {
 		let left = generateRandomNumber(5, windowWidth - 20);
@@ -23,13 +45,24 @@
 
 	function startIdleAnimation(placementStyle) {
 		idleInterval = setInterval(() => {
-			const param1 = generateRandomNumber(30, 50);
-			const param2 = generateRandomNumber(30, 50);
-			const param3 = generateRandomNumber(30, 50);
-			const param4 = generateRandomNumber(50, 100);
+			if (!star) {
+				clearInterval(idleInterval);
+				return;
+			}
+
+			alight = !alight;
 
 			requestAnimationFrame(() => {
-				star.style = `clip-path: polygon(${param1}% ${param2}%, 48% 1%, 58% 46%, 96% 52%, 59% 58%, ${param3}% ${param4}%, 47% 57%, 0% 30%); opacity: 1;  ${placementStyle}; transform: scale(2);`;
+				if (alight) {
+					star.style = alightStyle(placementStyle);
+
+					setTimeout(() => {
+						star.style = alightStyle(placementStyle) + 'transform: scale(2) rotate(180deg);';
+					}, 420);
+				} else {
+					star.style = defaultStyle(placementStyle);
+					star.classList.remove('star-rotate');
+				}
 			});
 		}, 1000);
 	}
@@ -43,7 +76,7 @@
 		setTimeout(() => {
 			if (!star) return;
 			requestAnimationFrame(() => {
-				star.style = `clip-path: polygon(47% 47%, 48% 1%, 58% 46%, 96% 52%, 59% 58%, 51% 100%, 47% 57%, 0% 30%); opacity: 1; ${placementStyle}`;
+				star.style = defaultStyle(placementStyle);
 			});
 
 			if (seed % 25 === 0) startIdleAnimation(placementStyle);

@@ -3,6 +3,7 @@
 	import Floating from '$lib/components/Animated/Entity/Floating.svelte';
 	import LeftToRightFadeInDown from '$lib/components/Animated/Text/LeftToRightFadeInDown.svelte';
 	import Star from '$lib/components/Base/Star.svelte';
+	import { generateRandomNumber } from '$lib/utils/number.js';
 </script>
 
 <div class="relative h-screen bg-black">
@@ -16,7 +17,7 @@
 		</Floating>
 	</DropInFromAbove>
 
-	{#each Array(300) as star, idx (idx)}
+	{#each Array(generateRandomNumber(100, 500)) as star, idx (idx)}
 		<Star seed={idx} />
 	{/each}
 </div>
