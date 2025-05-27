@@ -36,7 +36,7 @@
 					transition: 0.4s;
 					`;
 
-	function determineStarPosition() {
+	function determineStarPosition(seed) {
 		let left = generateRandomNumber(5, windowWidth - 20);
 		let top = generateRandomNumber(5, windowHeight - 20);
 
@@ -88,7 +88,7 @@
 	bind:this={star}
 	style={rest.style}
 	class={twMerge(
-		`start-${uuid} absolute left-10 top-2 aspect-square w-[3px] rounded-full bg-white opacity-0 transition-all hover:cursor-pointer`,
+		`start-${uuid} absolute left-1/2 top-1/2 z-10 aspect-square w-[3px] rounded-full bg-white opacity-0 transition-all hover:cursor-pointer`,
 		rest.class
 	)}
 >

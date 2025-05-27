@@ -1,10 +1,23 @@
 <script>
 	import { twMerge } from 'tailwind-merge';
 
-	let { children, ...rest } = $props();
+	let {
+		children,
+		delayFactor = 1,
+		defaultDelay = 100,
+		defaultAnimationDuration = 5,
+		animationDurationFactor = 1,
+		...rest
+	} = $props();
+
+	let animationDelay = $derived(`${defaultDelay * delayFactor}ms`);
+	let animationDuration = $derived(`${defaultAnimationDuration * animationDurationFactor}s`);
 </script>
 
-<div class={twMerge('float', rest.class)}>
+<div
+	class={twMerge('float', rest.class)}
+	style={`animation-delay: ${animationDelay}; animation-duration: ${animationDuration};`}
+>
 	{@render children()}
 </div>
 
@@ -15,7 +28,7 @@
 
 	.float {
 		transition: all 0.5s;
-		animation: float 5s infinite both;
+		animation: float infinite both;
 	}
 
 	@keyframes float {

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 
-	let { children, ...rest } = $props();
+	let { children, delayFactor = 1, defaultDelay = 100, ...rest } = $props();
 
 	const initialStyle = 'opacity: 0; transform: translateY(-100vw)';
 
@@ -11,7 +11,7 @@
 			requestAnimationFrame(() => {
 				animatedContainer.style = 'opacity: 1; transform: translateY(0)';
 			});
-		}, 100);
+		}, delayFactor * defaultDelay);
 	}
 
 	let animatedContainer;
