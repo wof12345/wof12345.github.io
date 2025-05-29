@@ -64,19 +64,25 @@
 </script>
 
 <section id="home-space" class="relative h-screen bg-black">
-	<LeftToRightFadeInDown class="mt-24 w-full text-center text-6xl font-bold text-white"
-		>Welcome to your abode!
-	</LeftToRightFadeInDown>
+	<div class="flex flex-col items-center justify-center pt-24">
+		<div class="flex aspect-square w-52 items-center justify-center rounded-full bg-blue-200 p-4">
+			<div class="h-full w-full rounded-full bg-red-300"></div>
+		</div>
 
-	<div class="solar-system relative h-[400px] w-full">
+		<LeftToRightFadeInDown class="w-full text-center text-6xl font-bold text-white"
+			>Welcome to your abode!
+		</LeftToRightFadeInDown>
+	</div>
+
+	<div class="solar-system relative h-[400px] w-full scale-50 lg:scale-100">
 		{#each Object.keys(planets) as planet, idx (idx)}
 			<Planet randomizePos={false} class={`${getPlanetPosition(planet)}`} {planet} seed={idx} />
 		{/each}
 	</div>
 
-	{#each Array(generateRandomNumber(300, 500)) as star, idx (idx)}
+	<!-- {#each Array(generateRandomNumber(300, 500)) as star, idx (idx)}
 		<Star seed={idx} />
-	{/each}
+	{/each} -->
 </section>
 
 <section id="home-space_to_home-earth-clouds" class="h-[1000px] w-full"></section>
