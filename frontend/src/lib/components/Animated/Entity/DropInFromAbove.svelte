@@ -9,6 +9,10 @@
 	function startSequence() {
 		setTimeout(() => {
 			requestAnimationFrame(() => {
+				if (!animatedContainer) {
+					return;
+				}
+
 				animatedContainer.style = 'opacity: 1; transform: translateY(0)';
 			});
 		}, delayFactor * defaultDelay);

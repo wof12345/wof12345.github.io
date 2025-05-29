@@ -44,27 +44,26 @@
 	}
 
 	function startIdleAnimation(placementStyle) {
-		idleInterval = setInterval(() => {
-			if (!star) {
-				clearInterval(idleInterval);
-				return;
-			}
+		try {
+			idleInterval = setInterval(() => {
+				alight = !alight;
 
-			alight = !alight;
+				requestAnimationFrame(() => {
+					if (alight) {
+						star.style = alightStyle(placementStyle);
 
-			requestAnimationFrame(() => {
-				if (alight) {
-					star.style = alightStyle(placementStyle);
-
-					setTimeout(() => {
-						star.style = alightStyle(placementStyle) + 'transform: scale(2) rotate(180deg);';
-					}, 290);
-				} else {
-					star.style = defaultStyle(placementStyle);
-					star.classList.remove('star-rotate');
-				}
-			});
-		}, 1000);
+						setTimeout(() => {
+							star.style = alightStyle(placementStyle) + 'transform: scale(2) rotate(180deg);';
+						}, 290);
+					} else {
+						star.style = defaultStyle(placementStyle);
+						star.classList.remove('star-rotate');
+					}
+				});
+			}, 1000);
+		} catch (error) {
+			clearInterval(idleInterval);
+		}
 	}
 
 	onMount(() => {
@@ -74,8 +73,8 @@
 		const placementStyle = determineStarPosition(seed);
 
 		setTimeout(() => {
-			if (!star) return;
 			requestAnimationFrame(() => {
+				if (!star) return;
 				star.style = defaultStyle(placementStyle);
 			});
 

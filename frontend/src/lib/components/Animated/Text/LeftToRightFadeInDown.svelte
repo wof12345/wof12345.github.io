@@ -75,6 +75,11 @@
 		let iterator = 0;
 
 		requestAnimationFrame(() => {
+			if (!animatedContainer) {
+				clearInterval(exitSequenceInterval);
+				return;
+			}
+
 			animatedContainer.style.opacity = 1;
 
 			entrySequenceInterval = setInterval(() => {
@@ -83,8 +88,6 @@
 					entryComplete = true;
 					return;
 				}
-
-				console.log('r');
 
 				entryInit = true;
 

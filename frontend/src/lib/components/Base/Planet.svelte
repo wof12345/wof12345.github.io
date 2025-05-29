@@ -2,13 +2,15 @@
 	import { generateRandomNumber } from '$lib/utils/number';
 	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
+	import DropInFromAbove from '$lib/components/Animated/Entity/DropInFromAbove.svelte';
+	import Floating from '$lib/components/Animated/Entity/Floating.svelte';
 
-	let { seed, top, left, ...rest } = $props();
+	let { seed, planet, randomizePos = true, ...rest } = $props();
 
 	let windowWidth = $state(0);
 	let windowHeight = $state(0);
 
-	let planet = $state();
+	let planetElement = $state();
 
 	function determinePlanetPosition(seed) {
 		let left = generateRandomNumber(40, windowWidth - 50);
@@ -18,6 +20,8 @@
 	}
 
 	onMount(() => {
+		if (!randomizePos) return;
+
 		windowHeight = window.innerHeight;
 		windowWidth = window.innerWidth;
 
@@ -25,7 +29,7 @@
 
 		setTimeout(() => {
 			if (!planet) return;
-			1;
+
 			requestAnimationFrame(() => {
 				planet.style = placementStyle;
 			});
@@ -33,6 +37,13 @@
 	});
 </script>
 
-<div bind:this={planet} class={twMerge('absolute z-20 aspect-square w-10', rest.class)}>
-	<img src={`/planets/planet-${seed + 1}.png`} alt="" />
+<div
+	bind:this={planetElement}
+	class={twMerge('absolute z-20 aspect-square w-10 hover:cursor-pointer', rest.class)}
+>
+	<DropInFromAbove delayFactor={seed * 4}>
+		<Floating delayFactor={seed * 3} animationDurationFactor={seed + 2}>
+			<img src={`/planets/${planet}.png`} alt="" />
+		</Floating>
+	</DropInFromAbove>
 </div>
