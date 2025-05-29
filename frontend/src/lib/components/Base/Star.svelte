@@ -58,7 +58,7 @@
 
 					setTimeout(() => {
 						star.style = alightStyle(placementStyle) + 'transform: scale(2) rotate(180deg);';
-					}, 420);
+					}, 290);
 				} else {
 					star.style = defaultStyle(placementStyle);
 					star.classList.remove('star-rotate');
