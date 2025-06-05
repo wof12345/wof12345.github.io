@@ -1,12 +1,13 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "$lib/*": ["src/lib/*"],
-      "$routes/*": ["src/routes/*"]
-    },
-    "checkJs": true,
-    "allowJs": true
-  },
-  "include": ["src"]
+	"compilerOptions": {
+		"extends": "./.svelte-kit/tsconfig.json",
+		"baseUrl": ".",
+		"paths": {
+			"$lib/*": ["src/lib/*"],
+			"$routes/*": ["src/routes/*"]
+		},
+		"checkJs": true,
+		"allowJs": true
+	},
+	"include": ["src"]
 }
