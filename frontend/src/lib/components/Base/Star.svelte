@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 	import { v4 as uuidv4 } from 'uuid';
+	import MoveOnScroll from '../Animated/Entity/MoveOnScroll.svelte';
 
 	let { children, seed, ...rest } = $props();
 
@@ -11,10 +12,14 @@
 
 	let idleInterval = $state();
 
+	let placementStyle = $state();
+
 	const uuid = uuidv4();
 
 	let star;
 	let alight = false;
+
+	let isAlight = $derived(seed % 25 === 0);
 
 	const defaultStyle = (placementStyle) => {
 		return `clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40% ); opacity: 0.8; ${placementStyle}; transform: scale(1); transition: 0.4s;`;
@@ -57,7 +62,6 @@
 						}, 290);
 					} else {
 						star.style = defaultStyle(placementStyle);
-						star.classList.remove('star-rotate');
 					}
 				});
 			}, 1000);
@@ -70,7 +74,7 @@
 		windowHeight = window.innerHeight;
 		windowWidth = window.innerWidth;
 
-		const placementStyle = determineStarPosition(seed);
+		placementStyle = determineStarPosition(seed);
 
 		setTimeout(() => {
 			requestAnimationFrame(() => {
@@ -78,7 +82,7 @@
 				star.style = defaultStyle(placementStyle);
 			});
 
-			if (seed % 25 === 0) startIdleAnimation(placementStyle);
+			if (isAlight) startIdleAnimation(placementStyle);
 		}, 30 * seed);
 	});
 </script>
@@ -90,11 +94,4 @@
 		`start-${uuid} absolute left-1/2 top-1/2 z-10 aspect-square w-[3px] rounded-full bg-white opacity-0 transition-all hover:cursor-pointer`,
 		rest.class
 	)}
->
-	<!-- <div
-		class="absolute bottom-0 left-0 right-0 top-0 m-auto h-[10px] w-[0.5px] rotate-45 bg-white"
-	></div>
-	<div
-		class="absolute bottom-0 left-0 right-0 top-0 m-auto h-[7px] w-[0.5px] rotate-90 bg-white"
-	></div> -->
-</div>
+></div>

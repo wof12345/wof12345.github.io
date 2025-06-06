@@ -5,6 +5,8 @@
 	import Planet from '$lib/components/Base/Planet.svelte';
 	import { onMount } from 'svelte';
 	import { scrollToSection } from '$lib/utils/dom/scroll';
+	import { scrollState } from '$lib/stores/dom.svelte';
+	import MoveOnScroll from '$lib/components/Animated/Entity/MoveOnScroll.svelte';
 
 	let planets = {
 		mercury: { class: `top-[35%] left-[65%] scale-[50%] z-[21]` },
@@ -49,8 +51,10 @@
 		}
 	};
 
-	const handleScroll = (e, direction) => {
+	const handleScroll = async (e, direction) => {
 		const currentScrollY = window.scrollY;
+
+		scrollState.set(currentScrollY);
 
 		if (direction) {
 			scrollDirection = direction;
@@ -65,11 +69,13 @@
 		// console.log('Scroll Y:', currentScrollY);
 		// console.log('Direction:', scrollDirection);
 
+		console.log('dd', e, scrolling);
+
 		e?.preventDefault();
 
-		if (scrolling) return;
+		if (scrolling || e) return;
 
-		scrollToNextOrPreviousSection(scrollDirection);
+		await scrollToNextOrPreviousSection(scrollDirection);
 	};
 
 	function populateSectionCollection() {
@@ -82,8 +88,6 @@
 			});
 		});
 
-		console.log(sectionCollection);
-
 		detectActiveSection();
 	}
 
@@ -92,12 +96,10 @@
 			(entries) => {
 				for (const entry of entries) {
 					if (entry.isIntersecting) {
-						console.log(entry.target.id);
 						const sectionIndex = sectionCollection.findIndex(
 							(sectionItem) => sectionItem.id === entry.target.id
 						);
 						currentSectionIndex = sectionIndex;
-						console.log('Currently in section:', currentSectionIndex);
 					}
 				}
 			},
@@ -115,7 +117,7 @@
 	}
 
 	async function handleWheel(e) {
-		if (currentSectionIndex !== sectionCollection.length - 1) e.preventDefault();
+		e.preventDefault();
 
 		const direction = e.deltaY > 0 ? 'down' : 'up';
 
@@ -135,22 +137,42 @@
 	});
 </script>
 
-<section id="home-space" class="site-section relative h-screen bg-black">
-	<div class="flex flex-col items-center justify-center pt-24">
-		<div class="flex aspect-square w-52 items-center justify-center rounded-full bg-blue-200 p-4">
-			<div class="h-full w-full rounded-full bg-red-300"></div>
-		</div>
+<section id="home-space" class="site-section relative h-screen bg-black" style="perspective: 2px;">
+	<MoveOnScroll>
+		<div class="relative z-30 flex flex-col items-center justify-center pt-24">
+			<div
+				class="flex aspect-square w-52 items-center justify-center rounded-full bg-gray-50 bg-opacity-5 p-4"
+			>
+				<div class="h-full w-full overflow-hidden rounded-full">
+					<img src="/dev/dev.jpg" alt="" class="object-cover object-center" />
+				</div>
+			</div>
 
-		<LeftToRightFadeInDown class="w-full text-center text-6xl font-bold text-white"
-			>Welcome to your abode!
-		</LeftToRightFadeInDown>
-	</div>
+			<div class="flex flex-col">
+				<LeftToRightFadeInDown class="w-full text-center text-2xl font-bold text-white"
+					>The only limit to your imagination is the one you set yourself.
+				</LeftToRightFadeInDown>
+
+				<LeftToRightFadeInDown
+					class="w-full text-end text-sm font-bold text-white"
+					entryDelay={6000}
+					>— Roy T. Bennett
+				</LeftToRightFadeInDown>
+			</div>
+		</div>
+	</MoveOnScroll>
 
 	{#each Object.keys(planets) as planet, idx (idx)}
-		<Planet randomizePos={false} class={`${getPlanetPosition(planet)}`} {planet} seed={idx} />
+		<Planet
+			randomizePos={false}
+			class={`${getPlanetPosition(planet)}`}
+			planet={planets[planet]}
+			name={planet}
+			seed={idx + 1}
+		/>
 	{/each}
 
-	<!-- {#each Array(generateRandomNumber(300, 500)) as star, idx (idx)}
+	<!-- {#each Array(generateRandomNumber(300, 350)) as star, idx (idx)}
 		<Star seed={idx} />
 	{/each} -->
 </section>

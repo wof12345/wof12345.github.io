@@ -32,6 +32,6 @@ export async function scrollToSection(id) {
 
 	if (el) {
 		const y = el.offsetTop;
-		return await smoothScrollTo(y, 2000); //(px, ms)
+		return await smoothScrollTo(y, 2500); //(px, ms)
 	}
 }

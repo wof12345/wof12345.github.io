@@ -3,7 +3,7 @@
 	import { twMerge } from 'tailwind-merge';
 	import { v4 as uuidv4 } from 'uuid';
 
-	let { children, ...rest } = $props();
+	let { children, entryDelay = 200, intervalDelay = 100, ...rest } = $props();
 
 	let animtedTextId = uuidv4();
 
@@ -53,14 +53,12 @@
 					return;
 				}
 
-				console.log('e');
-
 				exitInit = true;
 
 				animatedParts[iterator].style = initialStyle;
 
 				iterator--;
-			}, 200);
+			}, intervalDelay);
 		});
 	}
 
@@ -96,7 +94,7 @@
 				animatedParts[iterator].style = 'transition: 1s; opacity: 1; transform: translateY(0);';
 
 				iterator++;
-			}, 200);
+			}, intervalDelay);
 		});
 	}
 
@@ -111,7 +109,9 @@
 			`.animated-text-${animtedTextId} .animated-character`
 		);
 
-		triggerEntrySequence();
+		setTimeout(() => {
+			triggerEntrySequence();
+		}, entryDelay);
 	});
 </script>
 
