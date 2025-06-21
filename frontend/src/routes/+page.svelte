@@ -7,6 +7,7 @@
 	import { scrollToSection } from '$lib/utils/dom/scroll';
 	import { scrollState } from '$lib/stores/dom.svelte';
 	import MoveOnScroll from '$lib/components/Animated/Entity/MoveOnScroll.svelte';
+	import Building from '$lib/components/Base/Building/Building.svelte';
 
 	let planets = {
 		mercury: { class: `top-[35%] left-[65%] scale-[50%] z-[21]` },
@@ -138,29 +139,25 @@
 </script>
 
 <section id="home-space" class="site-section relative h-screen bg-black" style="perspective: 2px;">
-	<MoveOnScroll>
-		<div class="relative z-30 flex flex-col items-center justify-center pt-24">
-			<div
-				class="flex aspect-square w-52 items-center justify-center rounded-full bg-gray-50 bg-opacity-5 p-4"
-			>
-				<div class="h-full w-full overflow-hidden rounded-full">
-					<img src="/dev/dev.jpg" alt="" class="object-cover object-center" />
-				</div>
-			</div>
-
-			<div class="flex flex-col">
-				<LeftToRightFadeInDown class="w-full text-center text-2xl font-bold text-white"
-					>The only limit to your imagination is the one you set yourself.
-				</LeftToRightFadeInDown>
-
-				<LeftToRightFadeInDown
-					class="w-full text-end text-sm font-bold text-white"
-					entryDelay={6000}
-					>— Roy T. Bennett
-				</LeftToRightFadeInDown>
+	<div class="relative z-30 flex flex-col items-center justify-center pt-24">
+		<div
+			class="flex aspect-square w-52 items-center justify-center rounded-full bg-gray-50 bg-opacity-5 p-4"
+		>
+			<div class="h-full w-full overflow-hidden rounded-full">
+				<img src="/dev/dev.jpg" alt="" class="object-cover object-center" />
 			</div>
 		</div>
-	</MoveOnScroll>
+
+		<div class="flex flex-col">
+			<LeftToRightFadeInDown class="w-full text-center text-2xl font-bold text-white"
+				>The only limit to your imagination is the one you set yourself.
+			</LeftToRightFadeInDown>
+
+			<LeftToRightFadeInDown class="w-full text-end text-sm font-bold text-white" entryDelay={6000}
+				>— Roy T. Bennett
+			</LeftToRightFadeInDown>
+		</div>
+	</div>
 
 	{#each Object.keys(planets) as planet, idx (idx)}
 		<Planet
@@ -179,7 +176,17 @@
 
 <section id="home-space_to_home-earth-clouds" class="site-section h-[1000px] w-full"></section>
 
-<section id="earth-sea-level" class="site-section h-[1000px] w-full bg-black"></section>
+<section id="earth-sea-level" class="site-section relative h-[1000px] w-full bg-black">
+	<div class="absolute bottom-[47%] w-full overflow-hidden">
+		<div class="flex w-max items-end">
+			{#each Array(100) as building, index}
+				<Building seed={index} />
+			{/each}
+		</div>
+	</div>
+
+	<div class="absolute top-[53%] w-full border border-white"></div>
+</section>
 
 <section
 	id="earth-sea-level_to_ground-level"
