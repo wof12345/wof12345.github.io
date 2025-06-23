@@ -1,4 +1,5 @@
 <script>
+	import { tabVisibleState } from '$lib/stores/dom.svelte';
 	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 	import { v4 as uuidv4 } from 'uuid';
@@ -18,6 +19,8 @@
 
 	let entrySequenceInterval = $state();
 	let exitSequenceInterval = $state();
+
+	let animated = $state(false);
 
 	const initialStyle = 'transition: 1s; opacity: 0; transform: translateY(-10px)';
 
@@ -84,6 +87,7 @@
 				if (iterator >= animatedParts.length || !animatedParts[iterator]) {
 					clearInterval(entrySequenceInterval);
 					entryComplete = true;
+					animated = true;
 					return;
 				}
 
@@ -98,7 +102,10 @@
 		});
 	}
 
-	onMount(() => {
+	$effect(() => {
+		const tabVisible = tabVisibleState.get();
+		if (animated || !tabVisible) return;
+
 		const text = animatedContainer.textContent;
 
 		const fragmentedHtml = fragmentStringToElement(text);

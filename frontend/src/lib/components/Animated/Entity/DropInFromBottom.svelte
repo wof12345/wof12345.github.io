@@ -5,7 +5,7 @@
 
 	let { children, delayFactor = 1, defaultDelay = 100, ...rest } = $props();
 
-	const initialStyle = 'opacity: 0; transform: translateY(-100vw)';
+	const initialStyle = 'opacity: 0; transform: translateY(100vw)';
 
 	let animated = $state(false);
 
