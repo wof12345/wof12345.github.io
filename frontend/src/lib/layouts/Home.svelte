@@ -6,7 +6,7 @@
 </script>
 
 <DropInFromBottom>
-	<Bubble expand={true} expandDelay={3300}>
+	<Bubble class="le" expand={true} expandDelay={3300}>
 		{#snippet coverChildren()}
 			<div class="text-lg text-white">T</div>
 		{/snippet}

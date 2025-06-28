@@ -12,8 +12,13 @@
 	function expandBubble(delay) {
 		setTimeout(() => {
 			fillerCircle.style =
-				'border-radius: 0; width: 100vw; height: 100vh; top: 0; position: absolute;';
+				'border-radius: 100%; width: 1500px; height: 1500px; top: 0; left: 0; position: absolute;';
 		}, delay);
+
+		setTimeout(() => {
+			fillerCircle.style =
+				'border-radius: 0; width: 100vw; height: 100vh; top: 0; left: 0; position: absolute; transition: 130ms';
+		}, delay + 350);
 
 		setTimeout(() => {
 			fillerCover.style = 'opacity: 0; transition: 0.5s;';
@@ -36,13 +41,19 @@
 	});
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
+	onclick={rest.onclick}
+	style={rest.style}
 	bind:this={fillerCircle}
 	class={twMerge(
-		`bg-primary-950 border-primary-700 absolute bottom-0 left-0 right-0 top-20 mx-auto aspect-square h-10 w-10 overflow-hidden rounded-full border-[2px] transition-all`,
+		`bg-primary-950 border-primary-700 absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-14 w-14 overflow-hidden rounded-full border-[2px] transition-all duration-700`,
 		rest.class
 	)}
 >
+	<div class={twMerge(`absolute aspect-square w-20 rounded-full bg-white`, rest.class)}></div>
+
 	<div
 		bind:this={fillerCover}
 		class={twMerge(
@@ -55,7 +66,7 @@
 		{/if}
 	</div>
 
-	<div class="relative z-10">
+	<div class="relative">
 		{#if children}
 			{@render children()}
 		{/if}
