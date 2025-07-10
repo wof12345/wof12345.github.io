@@ -5,7 +5,6 @@
 	import Projects from '$lib/layouts/Projects.svelte';
 	import Contact from '$lib/layouts/Contact.svelte';
 
-	$state.snapshot(routeState.getRoutes());
 	$effect(() => {
 		routeState.getRoutes().forEach((route) => console.log(route.active, route.name));
 		// console.log(routeState.getIntro());
@@ -13,7 +12,7 @@
 	});
 </script>
 
-<section id="home-space" class="site-section bg-primary-200 relative h-screen overflow-hidden">
+<section id="home-space" class="site-section relative h-screen overflow-hidden bg-white">
 	<Home />
 
 	<Projects />

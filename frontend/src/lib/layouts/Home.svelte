@@ -9,7 +9,7 @@
 	let bubble = $state(undefined);
 
 	let reset = $state(false);
-	let expandDelay = $state(3300);
+	let expandDelay = $derived(routeState.getIntro() ? 400 : 3300);
 
 	const routeIndex = 0;
 
@@ -41,10 +41,10 @@
 	class={routeState.getIntro() ? route?.initialClass + ' m-0' : ''}
 	coverClass={`hover:cursor-pointer`}
 	{expandDelay}
-	shrinkDelay={400}
+	{route}
 >
 	<div class="relative z-30 flex flex-col items-center justify-center pt-24">
-		<DropInFromAbove defaultDelay={2500}>
+		<DropInFromAbove defaultDelay={500}>
 			<div
 				class="flex aspect-square w-52 items-center justify-center rounded-full bg-gray-50 bg-opacity-5"
 			>
@@ -54,24 +54,16 @@
 			</div>
 		</DropInFromAbove>
 
-		<button
-			class="text-white"
-			onclick={(e) => {
-				reset = true;
-				expandDelay = 400;
-			}}>Close</button
-		>
-
 		<div class="flex flex-col p-2">
 			<LeftToRightFadeInDown
-				entryDelay={5200}
+				entryDelay={2500}
 				class="w-full text-center text-4xl font-bold text-white"
 				>Hello,
 			</LeftToRightFadeInDown>
 
 			<LeftToRightFadeInDown
 				class="text-md ml-20 w-full text-end font-bold text-white"
-				entryDelay={6000}
+				entryDelay={3500}
 				>My name is Atif
 			</LeftToRightFadeInDown>
 		</div>
@@ -79,7 +71,7 @@
 
 	{#snippet coverChildren()}
 		{@const CoverIcon = route.icon}
-		<div class="text-lg font-bold text-black">
+		<div class="text-lg font-bold text-white">
 			<CoverIcon />
 		</div>
 	{/snippet}

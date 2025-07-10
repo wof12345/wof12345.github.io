@@ -6,29 +6,30 @@ function routeStateController() {
 			name: 'Home',
 			active: true,
 			icon: IconHome,
-			initialClass: 'left-10 top-[20px] z-30'
+			initialClass: 'left-7 top-[40px] z-30'
 		},
 		{
 			name: 'Projects',
 			active: false,
 			icon: IconStack,
-			initialClass: 'left-10 top-[110px] z-30'
+			initialClass: 'left-7 top-[110px] z-30'
 		},
 		{
 			name: 'About',
 			active: false,
 			icon: IconExclamationMark,
-			initialClass: 'left-10 top-[180px] z-30'
+			initialClass: 'left-7 top-[180px] z-30'
 		},
 		{
 			name: 'Contact',
 			active: false,
 			icon: IconMail,
-			initialClass: 'left-10 top-[250px] z-30'
+			initialClass: 'left-7 top-[250px] z-30'
 		}
 	]);
 	let activeRoute = $state(routes[0]);
 	let introComplete = $state(false);
+	let activeAnimation = $state(false);
 
 	return {
 		set(index) {
@@ -43,6 +44,12 @@ function routeStateController() {
 		},
 		setIntro(state = true) {
 			introComplete = state;
+		},
+		setAnimationStatus(state = true) {
+			activeAnimation = state;
+		},
+		getAnimationStatus(state = true) {
+			return activeAnimation;
 		},
 		getIntro() {
 			return introComplete;

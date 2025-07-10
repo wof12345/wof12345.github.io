@@ -30,6 +30,7 @@
 		routeState.set(routeIndex);
 	}}
 	onExpand={() => {}}
+	{route}
 >
 	{#snippet coverChildren()}
 		{@const CoverIcon = route.icon}
@@ -38,5 +39,5 @@
 		</div>
 	{/snippet}
 
-	Text
+	Projects
 </Bubble>
