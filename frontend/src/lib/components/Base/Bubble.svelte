@@ -1,15 +1,23 @@
 <script>
 	import { tabVisibleState } from '$lib/stores/dom.svelte';
+	import { routeState } from '$lib/stores/navigation.svelte';
 	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 
-	const { children, expandDelay = 3000, expand = false, ...rest } = $props();
+	const {
+		children,
+		expandDelay = 3000,
+		shrinkDelay = 1000,
+		onExpand = () => {},
+		onShrink = () => {},
+		...rest
+	} = $props();
 
 	let fillerCircle = $state();
 	let fillerCover = $state();
 	let animated = $state(false);
 
-	function expandBubble(delay) {
+	export function expand(delay = expandDelay) {
 		setTimeout(() => {
 			fillerCircle.style =
 				'border-radius: 100%; width: 1500px; height: 1500px; top: 0; left: 0; position: absolute;';
@@ -17,7 +25,7 @@
 
 		setTimeout(() => {
 			fillerCircle.style =
-				'border-radius: 0; width: 100vw; height: 100vh; top: 0; left: 0; position: absolute; transition: 130ms';
+				'border-radius: 0; width: 100vw; height: 100vh; top: 0; left: 0; position: absolute; transition: 130ms; z-index: 20;';
 		}, delay + 350);
 
 		setTimeout(() => {
@@ -26,25 +34,27 @@
 
 		setTimeout(() => {
 			fillerCover.style = 'display: none;';
+			animated = true;
+			onExpand();
 		}, delay + 2000);
-
-		animated = true;
 	}
 
-	$effect(() => {
-		const tabVisible = tabVisibleState.get();
-		console.log(expand);
+	export function shrink(delay = shrinkDelay) {
+		setTimeout(() => {
+			fillerCover.style = 'transition: 0.5s;';
+		}, delay);
 
-		if (!animated && tabVisible && expand) {
-			expandBubble(expandDelay);
-		}
-	});
+		setTimeout(() => {
+			fillerCircle.style = 'transition: 0.5s;';
+			animated = true;
+			onShrink();
+		}, delay + 2000);
+	}
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
-	onclick={rest.onclick}
 	style={rest.style}
 	bind:this={fillerCircle}
 	class={twMerge(
@@ -52,12 +62,13 @@
 		rest.class
 	)}
 >
-	<div class={twMerge(`absolute aspect-square w-20 rounded-full bg-white`, rest.class)}></div>
+	<!-- <div class={twMerge(`absolute aspect-square w-20 rounded-full bg-white`, rest.class)}></div> -->
 
 	<div
+		onclick={rest.onclick}
 		bind:this={fillerCover}
 		class={twMerge(
-			'bg-primary-950 opacity-1 absolute z-20 flex h-full w-full items-center justify-center transition-all',
+			'bg-primary-950 opacity-1 absolute z-50 flex h-full w-full items-center justify-center transition-all',
 			rest.coverClass
 		)}
 	>

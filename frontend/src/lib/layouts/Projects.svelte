@@ -6,7 +6,7 @@
 
 	let bubble = $state(undefined);
 
-	const routeIndex = 1;
+	const routeIndex = 2;
 
 	let route = $state(routeState.getRoutes()[routeIndex]);
 
