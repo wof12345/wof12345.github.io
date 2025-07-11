@@ -12,7 +12,11 @@
 	});
 </script>
 
-<section id="home-space" class="site-section relative h-screen overflow-hidden bg-white">
+<section
+	id="home-space"
+	class="site-section relative h-screen overflow-hidden"
+	style="background: linear-gradient(180deg,rgba(6, 7, 14, 1) 0%, rgba(41, 82, 74, 1) "
+>
 	<Home />
 
 	<Projects />

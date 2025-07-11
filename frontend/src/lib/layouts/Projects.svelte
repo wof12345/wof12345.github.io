@@ -1,12 +1,10 @@
 <script>
-	import DropInFromAbove from '$lib/components/Animated/Entity/DropInFromAbove.svelte';
 	import Bubble from '$lib/components/Base/Bubble.svelte';
 	import { routeState } from '$lib/stores/navigation.svelte';
-	import { IconExclamationMark } from '@tabler/icons-svelte';
 
 	let bubble = $state(undefined);
 
-	const routeIndex = 2;
+	const routeIndex = 1;
 
 	let route = $state(routeState.getRoutes()[routeIndex]);
 
@@ -22,22 +20,23 @@
 
 <Bubble
 	bind:this={bubble}
-	class="{route.initialClass} m-0 bg-white"
-	coverClass={`bg-white hover:cursor-pointer`}
-	expandDelay={400}
+	class="{route.initialClass} m-0 bg-[#{route.primaryColor}]"
+	coverClass="hover:cursor-pointer bg-[#${route.primaryColor}]"
 	onclick={() => {
 		bubble.expand();
 		routeState.set(routeIndex);
 	}}
 	onExpand={() => {}}
+	initDelayFactor={(routeState.getRoutes().length - routeIndex) * 0.5}
+	initDelay={2500}
 	{route}
 >
 	{#snippet coverChildren()}
 		{@const CoverIcon = route.icon}
-		<div class="text-lg font-bold text-black">
+		<div class="text-lg font-bold text-white">
 			<CoverIcon />
 		</div>
 	{/snippet}
 
-	Projects
+	<div class="flex h-full items-center justify-center text-white">Projects</div>
 </Bubble>

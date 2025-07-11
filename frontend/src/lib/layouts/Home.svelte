@@ -8,8 +8,7 @@
 
 	let bubble = $state(undefined);
 
-	let reset = $state(false);
-	let expandDelay = $derived(routeState.getIntro() ? 400 : 3300);
+	let expandDelay = $derived(routeState.getIntro() ? 1000 : 3300);
 
 	const routeIndex = 0;
 
@@ -31,6 +30,7 @@
 
 <Bubble
 	bind:this={bubble}
+	destroyContentOnShrink={false}
 	onclick={() => {
 		routeState.set(routeIndex);
 		bubble.expand();
@@ -38,13 +38,16 @@
 	onExpand={() => {
 		routeState.setIntro(true);
 	}}
-	class={routeState.getIntro() ? route?.initialClass + ' m-0' : ''}
-	coverClass={`hover:cursor-pointer`}
+	class={`${routeState.getIntro() ? route?.initialClass + ' m-0' : ''} bg-[#${route.primaryColor}]`}
+	coverClass={`hover:cursor-pointer bg-[#${route.primaryColor}]`}
 	{expandDelay}
 	{route}
+	initDelayFactor={routeIndex}
+	initDelay={1000}
+	ascend={true}
 >
 	<div class="relative z-30 flex flex-col items-center justify-center pt-24">
-		<DropInFromAbove defaultDelay={500}>
+		<DropInFromAbove defaultDelay={2500}>
 			<div
 				class="flex aspect-square w-52 items-center justify-center rounded-full bg-gray-50 bg-opacity-5"
 			>
@@ -54,24 +57,32 @@
 			</div>
 		</DropInFromAbove>
 
-		<div class="flex flex-col p-2">
+		<div class="flex flex-col gap-1 p-2">
 			<LeftToRightFadeInDown
-				entryDelay={2500}
-				class="w-full text-center text-4xl font-bold text-white"
+				entryDelay={5300}
+				class="w-full text-center text-3xl font-bold text-white"
 				>Hello,
 			</LeftToRightFadeInDown>
 
-			<LeftToRightFadeInDown
-				class="text-md ml-20 w-full text-end font-bold text-white"
-				entryDelay={3500}
-				>My name is Atif
+			<LeftToRightFadeInDown class="w-full text-end text-lg font-bold text-white" entryDelay={6000}
+				>My name is <span class="text-2xl"> Atif</span>
+			</LeftToRightFadeInDown>
+
+			<LeftToRightFadeInDown class="w-full text-2xl font-bold text-white" entryDelay={7400}
+				>And
+			</LeftToRightFadeInDown>
+			<LeftToRightFadeInDown class="ml-10 w-full text-sm font-bold text-white" entryDelay={8000}
+				>I am a
+			</LeftToRightFadeInDown>
+			<LeftToRightFadeInDown class="w-full text-end text-4xl font-bold text-white" entryDelay={8600}
+				>Software Developer
 			</LeftToRightFadeInDown>
 		</div>
 	</div>
 
 	{#snippet coverChildren()}
 		{@const CoverIcon = route.icon}
-		<div class="text-lg font-bold text-white">
+		<div class="text-xl font-extrabold text-white">
 			<CoverIcon />
 		</div>
 	{/snippet}

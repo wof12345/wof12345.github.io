@@ -11,8 +11,6 @@
 	onMount(() => {
 		tabVisibleState.set(document.visibilityState === 'visible');
 
-		console.log(document.visibilityState);
-
 		document.addEventListener('visibilitychange', () => {
 			if (document.visibilityState === 'visible') {
 				tabVisibleState.set(true);
