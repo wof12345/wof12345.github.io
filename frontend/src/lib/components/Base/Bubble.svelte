@@ -6,8 +6,8 @@
 
 	const {
 		children,
-		expandDelay = 800,
-		shrinkDelay = 300,
+		expandDelay = 60,
+		shrinkDelay = 10,
 		onExpand = () => {},
 		onShrink = () => {},
 		destroyContentOnShrink = true,
@@ -39,7 +39,7 @@
 
 		routeState.setAnimationStatus(true);
 		setTimeout(() => {
-			bubble.style = `border-radius: 100%; width: 110vw; height: 110vw; top: 0; left: 0; position: absolute; z-index: 20; ${styleMemory} transition: 0.5s;`;
+			bubble.style = `border-radius: 100%; width: 100vw; height: 100vw; top: 0; left: 0; position: absolute; z-index: 20; ${styleMemory} transition: 0.5s;`;
 		}, delay);
 
 		setTimeout(() => {
@@ -49,7 +49,7 @@
 		setTimeout(() => {
 			fillerCover.style = 'opacity: 0; transition: 0.5s;';
 			expanded = true;
-		}, delay + 1000);
+		}, delay + 500);
 
 		setTimeout(() => {
 			fillerCover.style = 'display: none;';
@@ -57,7 +57,7 @@
 
 			onExpand();
 			routeState.setAnimationStatus(false);
-		}, delay + 2000);
+		}, delay + 1500);
 	}
 
 	export function shrink(delay = shrinkDelay) {
@@ -78,7 +78,7 @@
 			animated = true;
 			onShrink();
 			expanded = false;
-		}, delay + 10);
+		}, delay + 1000);
 	}
 
 	$effect(() => {

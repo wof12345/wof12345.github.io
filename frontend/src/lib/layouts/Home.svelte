@@ -8,7 +8,7 @@
 
 	let bubble = $state(undefined);
 
-	let expandDelay = $derived(routeState.getIntro() ? 1000 : 3300);
+	let expandDelay = $derived(routeState.getIntro() ? 60 : 3300);
 
 	const routeIndex = 0;
 
@@ -38,8 +38,8 @@
 	onExpand={() => {
 		routeState.setIntro(true);
 	}}
-	class={`${routeState.getIntro() ? route?.initialClass + ' m-0' : ''} bg-[#${route.primaryColor}]`}
-	coverClass={`hover:cursor-pointer bg-[#${route.primaryColor}]`}
+	class={`${routeState.getIntro() ? route?.initialClass + ' m-0' : ''} bg-primary-950`}
+	coverClass={`hover:cursor-pointer bg-primary-950`}
 	{expandDelay}
 	{route}
 	initDelayFactor={routeIndex}

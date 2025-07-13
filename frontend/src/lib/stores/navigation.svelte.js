@@ -6,29 +6,25 @@ function routeStateController() {
 			name: 'Home',
 			active: true,
 			icon: IconHome,
-			initialClass: 'left-7 top-[40px] z-30',
-			primaryColor: '06070E'
+			initialClass: 'left-7 top-[40px] z-30'
 		},
 		{
 			name: 'Projects',
 			active: false,
 			icon: IconStack,
-			initialClass: 'left-7 top-[110px] z-30',
-			primaryColor: '29524A'
+			initialClass: 'left-7 top-[110px] z-30'
 		},
 		{
 			name: 'About',
 			active: false,
 			icon: IconExclamationMark,
-			initialClass: 'left-7 top-[180px] z-30',
-			primaryColor: 'C5AFA0'
+			initialClass: 'left-7 top-[180px] z-30'
 		},
 		{
 			name: 'Contact',
 			active: false,
 			icon: IconMail,
-			initialClass: 'left-7 top-[250px] z-30',
-			primaryColor: '94A187'
+			initialClass: 'left-7 top-[250px] z-30'
 		}
 	]);
 	let activeRoute = $state(routes[0]);

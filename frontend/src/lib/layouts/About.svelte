@@ -20,8 +20,8 @@
 
 <Bubble
 	bind:this={bubble}
-	class="{route.initialClass} m-0 bg-[#{route.primaryColor}]"
-	coverClass={`hover:cursor-pointer bg-[#${route.primaryColor}]`}
+	class="{route.initialClass} bg-tertiary-600 m-0"
+	coverClass={`hover:cursor-pointer  bg-tertiary-600`}
 	onclick={() => {
 		bubble.expand();
 		routeState.set(routeIndex);
