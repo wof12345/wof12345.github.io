@@ -48,7 +48,7 @@
 	onExpand={() => {
 		routeState.setIntro(true);
 	}}
-	class={`${routeState.getIntro() ? route?.initialClass + ' m-0' : ''} bg-${route.primaryColor}-800`}
+	class={`${routeState.getIntro() ? route?.initialClass + ' m-0' : ''} text-white bg-${route.primaryColor}-800`}
 	coverClass={`hover:cursor-pointer bg-${route.primaryColor}-800`}
 	{expandDelay}
 	{route}
@@ -78,41 +78,39 @@
 				<div class="-ml-20 flex flex-col items-center justify-center gap-1 p-2">
 					<LeftToRightFadeInDownText
 						entryDelay={5300}
-						class="w-full text-center text-3xl font-bold text-white"
+						class="w-full text-center text-3xl font-bold "
 						>Hello,
 					</LeftToRightFadeInDownText>
 
 					<LeftToRightFadeInDownText
-						class="ml-4 w-full text-end text-lg font-bold text-white"
+						class="ml-4 w-full text-end text-lg font-bold"
 						entryDelay={6000}
 						>My name is
 					</LeftToRightFadeInDownText>
 					<LeftToRightFadeInDownText
 						byWord={true}
-						class="w-full text-end text-4xl font-bold text-white"
-						entryDelay={6300}
+						class="w-full text-end text-4xl font-bold"
+						entryDelay={6500}
 					>
 						Atif
 					</LeftToRightFadeInDownText>
 
-					<LeftToRightFadeInDownText
-						class="mt-10 w-full text-2xl font-bold text-white"
-						entryDelay={7400}
+					<LeftToRightFadeInDownText class="mt-10 w-full text-2xl font-bold" entryDelay={7400}
 						>And
 					</LeftToRightFadeInDownText>
 				</div>
 			</div>
-			<LeftToRightFadeInDownText class="mt-5 w-full text-sm font-bold text-white" entryDelay={8000}
+			<LeftToRightFadeInDownText class="mt-5 w-full text-sm font-bold" entryDelay={8000}
 				>I am a
 			</LeftToRightFadeInDownText>
 			<LeftToRightFadeInDownText
 				byWord={true}
-				class="w-full text-end text-4xl font-bold text-white"
+				class="w-full text-end text-4xl font-bold"
 				entryDelay={8600}
 				>Software Developer
 			</LeftToRightFadeInDownText>
 
-			<FadeIn defaultDelay={8800} class="mr-3 flex justify-end">
+			<!-- <FadeIn defaultDelay={8800} class="mr-3 flex justify-end">
 				<button
 					onclick={() => {
 						routeState.set(2);
@@ -122,12 +120,12 @@
 
 						// targetBubble.expand();
 					}}
-					class="text-end text-sm text-white underline">More About Me</button
+					class="text-end text-sm underline">More About Me</button
 				>
-			</FadeIn>
+			</FadeIn> -->
 		</div>
 
-		<div class="flex gap-8 py-6 text-white">
+		<div class="flex gap-8 py-6">
 			<DropInFromBottom defaultDelay={8600} delayFactor={1}>
 				<a href="https://discord.com/channels/wof12345">
 					<IconBrandDiscord />
@@ -161,7 +159,7 @@
 
 	{#snippet coverChildren()}
 		{@const CoverIcon = route.icon}
-		<div class="text-xl font-extrabold text-white">
+		<div class="text-xl font-extrabold">
 			<CoverIcon />
 		</div>
 	{/snippet}
