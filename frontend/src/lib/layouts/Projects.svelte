@@ -1,6 +1,7 @@
 <script>
 	import Bubble from '$lib/components/Base/Bubble.svelte';
 	import { routeState } from '$lib/stores/navigation.svelte';
+	import { onMount } from 'svelte';
 
 	let bubble = $state(undefined);
 
@@ -16,18 +17,21 @@
 			bubble.shrink();
 		}
 	});
+
+	onMount(() => {
+		routeState.setBubble(bubble, routeIndex);
+	});
 </script>
 
 <Bubble
 	bind:this={bubble}
-	class="{route.initialClass} bg-secondary-600 m-0"
-	coverClass="hover:cursor-pointer bg-secondary-600"
+	class="{route.initialClass} bg-{route.primaryColor}-800 m-0"
+	coverClass="hover:cursor-pointer bg-{route.primaryColor}-800"
 	onclick={() => {
-		bubble.expand();
 		routeState.set(routeIndex);
 	}}
 	onExpand={() => {}}
-	initDelayFactor={(routeState.getRoutes().length - routeIndex) * 0.5}
+	initDelayFactor={(routeState.getRoutes().length - routeIndex) * 0.3}
 	initDelay={2500}
 	{route}
 >
@@ -38,5 +42,5 @@
 		</div>
 	{/snippet}
 
-	<div class="flex h-full items-center justify-center text-white">Projects</div>
+	<div class="flex h-full items-center justify-center text-white">Portfolio</div>
 </Bubble>

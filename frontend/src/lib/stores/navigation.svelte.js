@@ -6,25 +6,33 @@ function routeStateController() {
 			name: 'Home',
 			active: true,
 			icon: IconHome,
-			initialClass: 'left-7 top-[40px] z-30'
+			initialClass: 'left-7 top-[40px] z-30',
+			primaryColor: 'primary',
+			bubble: undefined
 		},
 		{
-			name: 'Projects',
+			name: 'Portfolio',
 			active: false,
 			icon: IconStack,
-			initialClass: 'left-7 top-[110px] z-30'
+			initialClass: 'left-7 top-[110px] z-30',
+			primaryColor: 'secondary',
+			bubble: undefined
 		},
 		{
 			name: 'About',
 			active: false,
 			icon: IconExclamationMark,
-			initialClass: 'left-7 top-[180px] z-30'
+			initialClass: 'left-7 top-[180px] z-30',
+			primaryColor: 'tertiary',
+			bubble: undefined
 		},
 		{
 			name: 'Contact',
 			active: false,
 			icon: IconMail,
-			initialClass: 'left-7 top-[250px] z-30'
+			initialClass: 'left-7 top-[250px] z-30',
+			primaryColor: 'fourth',
+			bubble: undefined
 		}
 	]);
 	let activeRoute = $state(routes[0]);
@@ -34,16 +42,23 @@ function routeStateController() {
 	return {
 		set(index) {
 			routes.forEach((route) => {
-				route.active = false;
+				if (route.active) {
+					route.active = false;
+					route.bubble.shrink();
+				}
 			});
 
 			routes[index].active = true;
+			routes[index].bubble.expand();
 			activeRoute = routes[index];
 
 			routes = [...routes];
 		},
 		setIntro(state = true) {
 			introComplete = state;
+		},
+		setBubble(bubble, idx) {
+			routes[idx].bubble = bubble;
 		},
 		setAnimationStatus(state = true) {
 			activeAnimation = state;

@@ -4,7 +4,7 @@
 	import { twMerge } from 'tailwind-merge';
 	import { v4 as uuidv4 } from 'uuid';
 
-	let { children, entryDelay = 200, intervalDelay = 100, ...rest } = $props();
+	let { children, entryDelay = 200, intervalDelay = 100, byWord = false, ...rest } = $props();
 
 	let animtedTextId = uuidv4();
 
@@ -27,10 +27,14 @@
 	function fragmentStringToElement(string) {
 		let reconstructedHtml = '';
 
-		string.split('').forEach((character, idx) => {
-			if (character.trim() !== '')
-				reconstructedHtml += `<span class='inline-block animated-character' style='${initialStyle}'>${character}</span>`;
-			else reconstructedHtml += `<span class='inline-block'>&nbsp;</span>`;
+		string.split(byWord ? ' ' : '').forEach((character, idx) => {
+			if (!byWord) {
+				if (character.trim() !== '')
+					reconstructedHtml += `<span class='inline-block animated-character' style='${initialStyle}'>${character}</span>`;
+				else reconstructedHtml += `<span class='inline-block'>&nbsp;</span>`;
+			} else {
+				reconstructedHtml += `<span class='inline-block animated-character' style='${initialStyle}'>${character}&nbsp;</span>`;
+			}
 		});
 
 		return reconstructedHtml;
@@ -83,22 +87,25 @@
 
 			animatedContainer.style.opacity = 1;
 
-			entrySequenceInterval = setInterval(() => {
-				if (iterator >= animatedParts.length || !animatedParts[iterator]) {
-					clearInterval(entrySequenceInterval);
-					entryComplete = true;
-					animated = true;
-					return;
-				}
+			entrySequenceInterval = setInterval(
+				() => {
+					if (iterator >= animatedParts.length || !animatedParts[iterator]) {
+						clearInterval(entrySequenceInterval);
+						entryComplete = true;
+						animated = true;
+						return;
+					}
 
-				entryInit = true;
+					entryInit = true;
 
-				// let rand = Math.floor(Math.random() * animatedParts.length);
+					// let rand = Math.floor(Math.random() * animatedParts.length);
 
-				animatedParts[iterator].style = 'transition: 1s; opacity: 1; transform: translateY(0);';
+					animatedParts[iterator].style = 'transition: 1s; opacity: 1; transform: translateY(0);';
 
-				iterator++;
-			}, intervalDelay);
+					iterator++;
+				},
+				byWord ? intervalDelay * 3 : intervalDelay
+			);
 		});
 	}
 

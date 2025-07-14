@@ -3,6 +3,20 @@ import typography from '@tailwindcss/typography';
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
+	safelist: [
+		{
+			pattern: /bg-primary-.+/
+		},
+		{
+			pattern: /bg-secondary-.+/
+		},
+		{
+			pattern: /bg-tertiary-.+/
+		},
+		{
+			pattern: /bg-fourth-.+/
+		}
+	],
 
 	theme: {
 		extend: {

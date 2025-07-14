@@ -23,6 +23,10 @@
 	let animated = $state(false);
 	let expanded = $state(false);
 
+	let hover = $state(false);
+
+	let infoBox = $state(undefined);
+
 	let styleMemory = $state('');
 
 	let animationQueue = $state(undefined);
@@ -38,18 +42,16 @@
 		}
 
 		routeState.setAnimationStatus(true);
+		bubble.style = 'border-radius: 0;';
+
 		setTimeout(() => {
-			bubble.style = `border-radius: 100%; width: 100vw; height: 100vw; top: 0; left: 0; position: absolute; z-index: 20; ${styleMemory} transition: 0.5s;`;
+			bubble.style = `border-radius: 0; width: 100vw; height: 100vh; top: 0; left: 0; position: absolute; z-index: 20; ${styleMemory} transition: 0.2s;`;
 		}, delay);
 
 		setTimeout(() => {
-			bubble.style = `border-radius: 0; width: 100vw; height: 100vh; top: 0; left: 0; position: absolute; transition: 130ms; z-index: 20; ${styleMemory} transition: 0.5s;`;
-		}, delay + 350);
-
-		setTimeout(() => {
-			fillerCover.style = 'opacity: 0; transition: 0.5s;';
+			fillerCover.style = 'opacity: 0; transition: 0.3s;';
 			expanded = true;
-		}, delay + 500);
+		}, delay + 650);
 
 		setTimeout(() => {
 			fillerCover.style = 'display: none;';
@@ -57,7 +59,7 @@
 
 			onExpand();
 			routeState.setAnimationStatus(false);
-		}, delay + 1500);
+		}, delay + 900);
 	}
 
 	export function shrink(delay = shrinkDelay) {
@@ -69,12 +71,12 @@
 		}
 
 		setTimeout(() => {
-			bubble.style = `opacity: 0; z-index: 19; ${styleMemory} transition: 1;`;
+			bubble.style = `opacity: 0; z-index: 19; ${styleMemory} transition: 0.6;`;
 			fillerCover.style = 'transition: 0.5s;';
 		}, delay);
 
 		setTimeout(() => {
-			bubble.style = `transition: 0.5s;  opacity: 1; ${styleMemory} transition: 0.5s;`;
+			bubble.style = `transition: 0.5s;  opacity: 1; ${styleMemory} transition: 0.3s;`;
 			animated = true;
 			onShrink();
 			expanded = false;
@@ -127,7 +129,7 @@
 	style={rest.style + (ascend ? initialAscendingStyle : initialDescendingStyle)}
 	bind:this={bubble}
 	class={twMerge(
-		`bg-primary-950 absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-14 w-14 overflow-hidden rounded-full border-[1px] border-black shadow-lg transition-all duration-700 `,
+		`bg-primary-950 absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-12 w-12 overflow-hidden rounded-md border-black shadow-lg transition-all duration-500`,
 		rest.class
 	)}
 >
@@ -144,6 +146,20 @@
 	{/if}
 
 	<div
+		onmouseenter={(e) => {
+			hover = true;
+			const { clientX, clientY } = e;
+
+			// Adjust to prevent the box going off-screen if needed
+
+			if (!infoBox) return;
+
+			infoBox.style.top = `${clientY + 5}px`;
+			infoBox.style.left = `${clientX + 5}px`;
+		}}
+		onmouseleave={() => {
+			hover = false;
+		}}
 		onclick={(e) => {
 			if (routeState.getAnimationStatus()) return;
 			rest.onclick(e);
@@ -160,10 +176,26 @@
 	</div>
 
 	{#if (expanded && destroyContentOnShrink) || !destroyContentOnShrink}
-		<div class="relative">
-			{#if children}
-				{@render children()}
-			{/if}
+		{#if children}
+			{@render children()}
+		{/if}
+	{/if}
+</div>
+
+<div bind:this={infoBox} class="absolute left-2 top-5 z-40 w-max">
+	{#if hover}
+		<div
+			transition:fade
+			onmouseenter={() => {
+				hover = true;
+			}}
+			onmouseleave={() => {
+				hover = false;
+			}}
+			class="w-max rounded-sm p-1 text-sm text-white bg-{route.primaryColor}-800"
+			style={route.initialStyle}
+		>
+			{route.name}
 		</div>
 	{/if}
 </div>
