@@ -19,6 +19,9 @@
 
 	let expandDelay = $derived(routeState.getIntro() ? 60 : 3300);
 
+	let intitalDelay = 1500;
+	let delayFactor = $state(2500 + intitalDelay);
+
 	const routeIndex = 0;
 
 	let route = $state(routeState.getRoutes()[routeIndex]);
@@ -35,7 +38,7 @@
 	onMount(() => {
 		setTimeout(() => {
 			routeState.set(routeIndex);
-		}, 1600);
+		}, intitalDelay);
 
 		routeState.setBubble(bubble, routeIndex);
 	});
@@ -61,7 +64,7 @@
 	<div class="flex h-full flex-col items-center justify-between">
 		<div class="relative z-30 flex flex-col justify-center gap-2 pt-12">
 			<div class="mt-28 flex w-max gap-4">
-				<DropInFromAbove defaultDelay={2500}>
+				<DropInFromAbove defaultDelay={delayFactor}>
 					<div
 						class="relative flex aspect-square w-52 items-center justify-center rounded-full bg-slate-100 bg-opacity-5"
 					>
@@ -79,36 +82,40 @@
 
 				<div class="-ml-20 flex flex-col items-center justify-center gap-1 p-2">
 					<LeftToRightFadeInDownText
-						entryDelay={5300}
+						entryDelay={delayFactor + 2800}
 						class="w-full text-center text-3xl font-bold "
 						>Hello,
 					</LeftToRightFadeInDownText>
 
 					<LeftToRightFadeInDownText
 						class="ml-4 w-full text-end text-lg font-bold"
-						entryDelay={6000}
+						entryDelay={delayFactor + 3800}
 						>My name is
 					</LeftToRightFadeInDownText>
 					<LeftToRightFadeInDownText
 						byWord={true}
 						class="w-full text-end text-4xl font-bold"
-						entryDelay={6500}
+						entryDelay={delayFactor + 4300}
 					>
 						Atif
 					</LeftToRightFadeInDownText>
 
-					<LeftToRightFadeInDownText class="mt-10 w-full text-2xl font-bold" entryDelay={7400}
+					<LeftToRightFadeInDownText
+						class="mt-10 w-full text-2xl font-bold"
+						entryDelay={delayFactor + 4900}
 						>And
 					</LeftToRightFadeInDownText>
 				</div>
 			</div>
-			<LeftToRightFadeInDownText class="mt-5 w-full text-sm font-bold" entryDelay={8000}
+			<LeftToRightFadeInDownText
+				class="mt-5 w-full text-sm font-bold"
+				entryDelay={delayFactor + 5800}
 				>I am a
 			</LeftToRightFadeInDownText>
 			<LeftToRightFadeInDownText
 				byWord={true}
 				class="w-full text-end text-4xl font-bold"
-				entryDelay={8600}
+				entryDelay={delayFactor + 6100}
 				>Software Developer
 			</LeftToRightFadeInDownText>
 
@@ -128,30 +135,30 @@
 		</div>
 
 		<div class="flex gap-8 py-6">
-			<DropInFromBottom defaultDelay={8600} delayFactor={1}>
+			<DropInFromBottom defaultDelay={delayFactor + 6100} delayFactor={1}>
 				<a href="https://discord.com/channels/wof12345">
 					<IconBrandDiscord />
 				</a>
 			</DropInFromBottom>
 
-			<DropInFromBottom defaultDelay={8600} delayFactor={1.05}>
+			<DropInFromBottom defaultDelay={delayFactor + 6100} delayFactor={1.05}>
 				<a href="https://www.facebook.com/wof12345w">
 					<IconBrandFacebook />
 				</a>
 			</DropInFromBottom>
 
-			<DropInFromBottom defaultDelay={8600} delayFactor={1.1}>
+			<DropInFromBottom defaultDelay={delayFactor + 6100} delayFactor={1.1}>
 				<a href="https://github.com/wof12345">
 					<IconBrandGithub />
 				</a>
 			</DropInFromBottom>
 
-			<DropInFromBottom defaultDelay={8600} delayFactor={1.15}>
+			<DropInFromBottom defaultDelay={delayFactor + 6100} delayFactor={1.15}>
 				<a href="https://x.com/wof1234567890">
 					<IconBrandX />
 				</a>
 			</DropInFromBottom>
-			<DropInFromBottom defaultDelay={8600} delayFactor={1.2}>
+			<DropInFromBottom defaultDelay={delayFactor + 6100} delayFactor={1.2}>
 				<a href="https://www.linkedin.com/in/atif-bin-ferdous-1b3602281">
 					<IconBrandLinkedin />
 				</a>
