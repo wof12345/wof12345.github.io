@@ -39,6 +39,8 @@
 	$effect(() => {
 		const tabVisible = tabVisibleState.get();
 
+		console.log(tabVisible);
+
 		if (!animated && tabVisible) {
 			startSequence();
 		}

@@ -41,25 +41,35 @@
 			return;
 		}
 
+		const delayFactor = !routeState.getIntro() ? 300 : 0;
+
 		routeState.setAnimationStatus(true);
-		bubble.style = 'border-radius: 0;';
+		setTimeout(() => {
+			bubble.style = `border-radius: 0.375rem; transition-duration: 1.2s;`;
+		}, delayFactor);
 
 		setTimeout(() => {
 			bubble.style = `border-radius: 0; width: 100vw; height: 100vh; top: 0; left: 0; position: absolute; z-index: 20; ${styleMemory} transition: 0.2s;`;
-		}, delay);
+		}, delay + delayFactor);
 
-		setTimeout(() => {
-			fillerCover.style = 'opacity: 0; transition: 0.3s;';
-			expanded = true;
-		}, delay + 650);
+		setTimeout(
+			() => {
+				fillerCover.style = 'opacity: 0; transition: 0.3s;';
+				expanded = true;
+			},
+			delay + 650 + delayFactor
+		);
 
-		setTimeout(() => {
-			fillerCover.style = 'display: none;';
-			animated = true;
+		setTimeout(
+			() => {
+				fillerCover.style = 'display: none;';
+				animated = true;
 
-			onExpand();
-			routeState.setAnimationStatus(false);
-		}, delay + 900);
+				onExpand();
+				routeState.setAnimationStatus(false);
+			},
+			delay + 900 + delayFactor
+		);
 	}
 
 	export function shrink(delay = shrinkDelay) {
@@ -129,7 +139,7 @@
 	style={rest.style + (ascend ? initialAscendingStyle : initialDescendingStyle)}
 	bind:this={bubble}
 	class={twMerge(
-		`bg-primary-950 absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-12 w-12 overflow-hidden rounded-md border-black shadow-lg transition-all duration-500`,
+		`absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-12 w-12 overflow-hidden rounded-md border-black bg-primary-950 shadow-lg transition-all duration-500 ${!routeState.getIntro() ? 'rounded-full' : ''}`,
 		rest.class
 	)}
 >
@@ -166,7 +176,7 @@
 		}}
 		bind:this={fillerCover}
 		class={twMerge(
-			'bg-primary-950 opacity-1 absolute z-50 flex h-full w-full items-center justify-center transition-all',
+			'opacity-1 absolute z-50 flex h-full w-full items-center justify-center bg-primary-950 transition-all',
 			rest.coverClass
 		)}
 	>

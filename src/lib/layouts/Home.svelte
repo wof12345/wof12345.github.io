@@ -33,7 +33,9 @@
 	});
 
 	onMount(() => {
-		bubble.expand();
+		setTimeout(() => {
+			routeState.set(routeIndex);
+		}, 1600);
 
 		routeState.setBubble(bubble, routeIndex);
 	});
