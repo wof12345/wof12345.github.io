@@ -11,5 +11,5 @@ const config = {
 		}
 	}
 };
-
+// force dep
 export default config;
