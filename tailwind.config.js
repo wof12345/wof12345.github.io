@@ -8,13 +8,25 @@ export default {
 			pattern: /bg-primary-.+/
 		},
 		{
+			pattern: /border-primary-.+/
+		},
+		{
 			pattern: /bg-secondary-.+/
+		},
+		{
+			pattern: /border-secondary-.+/
 		},
 		{
 			pattern: /bg-tertiary-.+/
 		},
 		{
+			pattern: /border-tertiary-.+/
+		},
+		{
 			pattern: /bg-fourth-.+/
+		},
+		{
+			pattern: /border-fourth-.+/
 		}
 	],
 

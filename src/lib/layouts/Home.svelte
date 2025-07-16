@@ -2,9 +2,12 @@
 	import DropInFromAbove from '$lib/components/Animated/Entity/DropInFromAbove.svelte';
 	import DropInFromBottom from '$lib/components/Animated/Entity/DropInFromBottom.svelte';
 	import FadeIn from '$lib/components/Animated/Entity/FadeIn.svelte';
+	import Floating from '$lib/components/Animated/Entity/Floating.svelte';
+	import ScaleIn from '$lib/components/Animated/Entity/ScaleIn.svelte';
 
 	import LeftToRightFadeInDownText from '$lib/components/Animated/Text/LeftToRightFadeInDownText.svelte';
 	import Bubble from '$lib/components/Base/Bubble.svelte';
+	import { tabVisibleState } from '$lib/stores/dom.svelte';
 	import { routeState } from '$lib/stores/navigation.svelte';
 	import {
 		IconBrandDiscord,
@@ -19,7 +22,7 @@
 
 	let expandDelay = $derived(routeState.getIntro() ? 60 : 3300);
 
-	let intitalDelay = 1500;
+	let intitalDelay = 2000;
 	let delayFactor = $state(2500 + intitalDelay);
 
 	const routeIndex = 0;
@@ -35,11 +38,18 @@
 		}
 	});
 
-	onMount(() => {
-		setTimeout(() => {
-			routeState.set(routeIndex);
-		}, intitalDelay);
+	$effect(() => {
+		const tabVisible = tabVisibleState.get();
+		const intro = routeState.getIntro();
 
+		if (tabVisible && !intro) {
+			setTimeout(() => {
+				routeState.set(routeIndex);
+			}, intitalDelay);
+		}
+	});
+
+	onMount(() => {
 		routeState.setBubble(bubble, routeIndex);
 	});
 </script>
@@ -58,19 +68,31 @@
 	{expandDelay}
 	{route}
 	initDelayFactor={routeIndex}
-	initDelay={1000}
+	initDelay={300}
 	ascend={true}
 >
 	<div class="flex h-full flex-col items-center justify-between">
 		<div class="relative z-30 flex flex-col justify-center gap-2 pt-12">
 			<div class="mt-28 flex w-max gap-4">
 				<DropInFromAbove defaultDelay={delayFactor}>
-					<div
-						class="relative flex aspect-square w-52 items-center justify-center rounded-full bg-slate-100 bg-opacity-5"
-					>
-						<div
-							class="absolute bottom-0 left-0 right-0 top-0 z-0 m-auto h-1/2 w-1/2 overflow-visible rounded-full bg-gray-50 bg-opacity-5"
-						></div>
+					<div class="relative flex aspect-square w-52 items-center justify-center">
+						<ScaleIn
+							class="absolute bottom-0 left-0 right-0 top-0 z-10 m-auto h-full w-full"
+							defaultDelay={delayFactor + 1600}
+						>
+							<Floating class="h-full w-full" delayFactor={3} animationDurationFactor={3}>
+								<div class="h-full w-full rounded-full bg-slate-100 bg-opacity-5"></div>
+							</Floating>
+						</ScaleIn>
+
+						<ScaleIn
+							class="absolute bottom-0 left-0 right-0 top-0 z-10 m-auto h-1/2 w-1/2"
+							defaultDelay={delayFactor + 1000}
+						>
+							<Floating class="h-full w-full" delayFactor={2} animationDurationFactor={2}>
+								<div class="h-full w-full rounded-full bg-gray-50 bg-opacity-5"></div>
+							</Floating>
+						</ScaleIn>
 
 						<img
 							src="/dev/pp.png"
