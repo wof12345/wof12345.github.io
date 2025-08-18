@@ -68,7 +68,7 @@
 	{expandDelay}
 	{route}
 	initDelayFactor={routeIndex}
-	initDelay={300}
+	initDelay={120}
 	ascend={true}
 >
 	<div class="flex h-full flex-col items-center justify-between">

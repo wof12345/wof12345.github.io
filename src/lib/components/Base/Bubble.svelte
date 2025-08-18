@@ -41,12 +41,11 @@
 			return;
 		}
 
-		const delayFactor = !routeState.getIntro() ? 300 : 0;
+		const delayFactor = !routeState.getIntro() ? 50 : 0;
 
 		routeState.setAnimationStatus(true);
 		setTimeout(() => {
-			bubble.style = `border-radius: 0.375rem; transition: 1s;`;
-			console.log('triggered expand');
+			bubble.style = `border-radius: 0.375rem; transition: 2s;`;
 		}, delayFactor);
 
 		setTimeout(() => {
@@ -120,8 +119,6 @@
 				styleMemory = bubble.style;
 
 				animated = true;
-
-				console.log('triggered start');
 			});
 		}, initDelay * initDelayFactor);
 	}
@@ -144,7 +141,7 @@
 		(ascend ? initialAscendingStyle : initialDescendingStyle)}
 	bind:this={bubble}
 	class={twMerge(
-		`absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-12 w-12 overflow-hidden rounded-md border-black bg-primary-950 shadow-lg transition-all ${!routeState.getIntro() ? `rounded-full border-${route.primaryColor}-200` : ''}`,
+		`bg-primary-950 absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-12 w-12 overflow-hidden rounded-md border-black shadow-lg transition-all ${!routeState.getIntro() ? `rounded-full border-${route.primaryColor}-200` : ''}`,
 		rest.class
 	)}
 >
@@ -181,7 +178,7 @@
 		}}
 		bind:this={fillerCover}
 		class={twMerge(
-			'opacity-1 absolute z-50 flex h-full w-full items-center justify-center bg-primary-950 transition-all',
+			'opacity-1 bg-primary-950 absolute z-50 flex h-full w-full items-center justify-center transition-all',
 			rest.coverClass
 		)}
 	>
