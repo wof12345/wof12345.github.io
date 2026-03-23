@@ -9,7 +9,7 @@
 <section id="home-space" class="site-section relative h-screen overflow-hidden" style="">
 	<Home />
 
-	<!-- <Projects /> -->
+	<Projects />
 
 	<!-- <About /> -->
 
