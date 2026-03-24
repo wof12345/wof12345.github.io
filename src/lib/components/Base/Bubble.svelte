@@ -141,7 +141,7 @@
 		(ascend ? initialAscendingStyle : initialDescendingStyle)}
 	bind:this={bubble}
 	class={twMerge(
-		`bg-primary-950 absolute bottom-0 left-0 right-0 top-20 z-10 mx-auto h-12 w-12 overflow-hidden rounded-md border-black shadow-lg transition-all ${!routeState.getIntro() ? `rounded-full border-${route.primaryColor}-200` : ''}`,
+		`bg-primary-950 absolute top-20 right-0 bottom-0 left-0 z-10 mx-auto h-12 w-12 overflow-hidden rounded-md border-black text-white shadow-lg transition-all ${!routeState.getIntro() ? `rounded-full border-${route.primaryColor}-200` : ''}`,
 		rest.class
 	)}
 >
@@ -178,7 +178,7 @@
 		}}
 		bind:this={fillerCover}
 		class={twMerge(
-			'opacity-1 bg-primary-950 absolute z-50 flex h-full w-full items-center justify-center transition-all',
+			'bg-primary-950 absolute z-50 flex h-full w-full items-center justify-center opacity-100 transition-all',
 			rest.coverClass
 		)}
 	>
@@ -194,7 +194,7 @@
 	{/if}
 </div>
 
-<div bind:this={infoBox} class="absolute left-2 top-5 z-40 w-max">
+<div bind:this={infoBox} class="absolute top-5 left-2 z-40 w-max">
 	{#if hover}
 		<div
 			transition:fade

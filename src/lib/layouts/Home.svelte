@@ -77,20 +77,20 @@
 				<DropInFromAbove defaultDelay={delayFactor}>
 					<div class="relative flex aspect-square w-52 items-center justify-center">
 						<ScaleIn
-							class="absolute bottom-0 left-0 right-0 top-0 z-10 m-auto h-full w-full"
+							class="absolute top-0 right-0 bottom-0 left-0 z-10 m-auto h-full w-full"
 							defaultDelay={delayFactor + 1600}
 						>
 							<Floating class="h-full w-full" delayFactor={3} animationDurationFactor={3}>
-								<div class="h-full w-full rounded-full bg-slate-100 bg-opacity-5"></div>
+								<div class="bg-opacity-5 h-full w-full rounded-full bg-slate-50/40"></div>
 							</Floating>
 						</ScaleIn>
 
 						<ScaleIn
-							class="absolute bottom-0 left-0 right-0 top-0 z-10 m-auto h-1/2 w-1/2"
+							class="absolute top-0 right-0 bottom-0 left-0 z-10 m-auto h-1/2 w-1/2"
 							defaultDelay={delayFactor + 1000}
 						>
 							<Floating class="h-full w-full" delayFactor={2} animationDurationFactor={2}>
-								<div class="h-full w-full rounded-full bg-gray-50 bg-opacity-5"></div>
+								<div class="bg-opacity-5 h-full w-full rounded-full bg-gray-50/80"></div>
 							</Floating>
 						</ScaleIn>
 
