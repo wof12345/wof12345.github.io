@@ -138,7 +138,7 @@
 				byWord={true}
 				class="w-full text-end text-4xl font-bold"
 				entryDelay={delayFactor + 6100}
-				>Software Developer
+				>Software Engineer
 			</LeftToRightFadeInDownText>
 
 			<!-- <FadeIn defaultDelay={8800} class="mr-3 flex justify-end">
