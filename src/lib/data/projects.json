@@ -1,26 +1,25 @@
 [
-  {
-    "id": "project-1",
-    "name": "Personal Portfolio",
-    "description": "A high-performance personal portfolio built with Svelte 5, Tailwind CSS, and Framer Motion for smooth animations. It showcases my projects and skills in an interactive way.",
-    "longDescription": "This portfolio project was designed to push the boundaries of modern web technologies. Using Svelte 5's new runes system, the state management is incredibly efficient. The animations are orchestrated to guide the user's attention without being intrusive. Integrated with a headless CMS for easy content updates and optimized for SEO and accessibility.",
-    "tags": ["Svelte 5", "Tailwind CSS", "Vite", "Animation"],
-    "image": "https://picsum.photos/seed/port/800/450"
-  },
-  {
-    "id": "project-2",
-    "name": "E-commerce Dashboard",
-    "description": "A comprehensive dashboard for managing online stores, featuring real-time analytics, inventory tracking, and customer management with a focus on UX.",
-    "longDescription": "This dashboard provides merchants with a bird's-eye view of their business performance. Key features include real-time sales charts using Chart.js, a robust inventory management system with batch editing capabilities, and a customer CRM that tracks purchase history and lifetime value. Built with accessibility and responsiveness in mind.",
-    "tags": ["React", "D3.js", "Firebase", "TypeScript"],
-    "image": "https://picsum.photos/seed/dash/800/450"
-  },
-  {
-    "id": "project-3",
-    "name": "Weather App",
-    "description": "A sleek weather application providing hyper-local forecasts, air quality indices, and severe weather alerts with dynamic background changes.",
-    "longDescription": "Utilizing the OpenWeatherMap API, this app delivers precise weather data. It features dynamic backgrounds that change based on the current weather condition (rainy, sunny, snowy). It also includes a 7-day forecast, air quality metrics, and UV index information. Developed with a mobile-first approach for seamless use on the go.",
-    "tags": ["JavaScript", "API Integration", "CSS3", "Mobile First"],
-    "image": "https://picsum.photos/seed/weather/800/450"
-  }
+	{
+		"id": "taajir",
+		"name": "Taajir",
+		"description": "A robust inventory management and point-of-sale system designed for small to medium-sized businesses, featuring real-time stock tracking, sales analytics and customized features to streamline operations.",
+		"tags": ["Svelte 5", "Tailwind CSS", "Vite", "Supabase", "FastAPI", "PostgreSQL"],
+		"image": "/taajir/p_1.png"
+	},
+	{
+		"id": "project-2",
+		"name": "E-commerce Dashboard",
+		"description": "A comprehensive dashboard for managing online stores, featuring real-time analytics, inventory tracking, and customer management with a focus on UX.",
+		"longDescription": "This dashboard provides merchants with a bird's-eye view of their business performance. Key features include real-time sales charts using Chart.js, a robust inventory management system with batch editing capabilities, and a customer CRM that tracks purchase history and lifetime value. Built with accessibility and responsiveness in mind.",
+		"tags": ["React", "D3.js", "Firebase", "TypeScript"],
+		"image": "https://picsum.photos/seed/dash/800/450"
+	},
+	{
+		"id": "project-3",
+		"name": "Weather App",
+		"description": "A sleek weather application providing hyper-local forecasts, air quality indices, and severe weather alerts with dynamic background changes.",
+		"longDescription": "Utilizing the OpenWeatherMap API, this app delivers precise weather data. It features dynamic backgrounds that change based on the current weather condition (rainy, sunny, snowy). It also includes a 7-day forecast, air quality metrics, and UV index information. Developed with a mobile-first approach for seamless use on the go.",
+		"tags": ["JavaScript", "API Integration", "CSS3", "Mobile First"],
+		"image": "https://picsum.photos/seed/weather/800/450"
+	}
 ]

@@ -1,9 +1,8 @@
 <script>
 	import { tabVisibleState } from '$lib/stores/dom.svelte';
-	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 
-	let { children, delayFactor = 1, defaultDelay = 100, ...rest } = $props();
+	let { children, delayFactor = 1, defaultDelay = 100, duration=3, ...rest } = $props();
 
 	const initialStyle = 'opacity: 0; transform: scale(0)';
 
@@ -35,7 +34,7 @@
 
 <div
 	bind:this={animatedContainer}
-	class={twMerge('transition-all duration-[3s]', rest.class)}
+	class={twMerge(`transition-all duration-[${duration}s]`, rest.class)}
 	style={initialStyle}
 >
 	{@render children()}

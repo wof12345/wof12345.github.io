@@ -11,7 +11,7 @@
 
 	<Projects />
 
-	<!-- <About /> -->
+	<About />
 
 	<!-- <Contact /> -->
 </section>

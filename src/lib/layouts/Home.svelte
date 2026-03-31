@@ -90,7 +90,7 @@
 							defaultDelay={delayFactor + 1000}
 						>
 							<Floating class="h-full w-full" delayFactor={2} animationDurationFactor={2}>
-								<div class="bg-opacity-5 h-full w-full rounded-full bg-gray-50/80"></div>
+								<div class="bg-opacity-5 h-full w-full rounded-full bg-gray-50/50"></div>
 							</Floating>
 						</ScaleIn>
 

@@ -12,12 +12,8 @@
 	const routeIndex = 1;
 	let route = $state(routeState.getRoutes()[routeIndex]);
 
-	// Get selected project from query param
 	let selectedProjectId = $derived(page.url.searchParams.get('project'));
 	let selectedProject = $derived(projects.find((p) => p.id === selectedProjectId));
-
-	// If project not found but ID exists, or no ID and desktop, we might want default
-	// On mobile, if no project ID, we show the list.
 
 	function selectProject(project) {
 		const url = new URL(page.url);
@@ -54,7 +50,8 @@
 	}}
 	onExpand={() => {}}
 	initDelayFactor={(routeState.getRoutes().length - routeIndex) * 0.3}
-	initDelay={2500}
+	initDelay={120}
+
 	{route}
 >
 	{#snippet coverChildren()}
@@ -70,7 +67,7 @@
 			<!-- Desktop: Always show Details (with a default if none selected) -->
 
 			<div
-				class="h-full flex-col overflow-hidden rounded-2xl bg-white p-4 shadow-xl md:p-6 dark:bg-gray-900
+				class="h-full flex-col overflow-hidden rounded-2xl  p-4 shadow-xl md:p-6 
 				{selectedProject ? 'flex w-full md:w-[65%]' : 'hidden md:flex md:w-[65%]'}"
 			>
 				{#if selectedProject}
@@ -91,7 +88,7 @@
 			<!-- Mobile: Only show List if NO project is selected -->
 			<!-- Desktop: Always show List -->
 			<div
-				class="h-full flex-col gap-4 overflow-hidden rounded-2xl bg-white p-4 shadow-xl dark:bg-gray-900
+				class="h-full flex-col gap-4 overflow-hidden rounded-2xl  p-4 shadow-xl 
 				{selectedProject ? 'hidden md:flex md:w-[35%]' : 'flex w-full md:w-[35%]'}"
 			>
 				<ProjectList {projects} onSelect={selectProject} />

@@ -11,7 +11,7 @@
 </script>
 
 <div
-	class="group flex w-full gap-3 overflow-hidden rounded-lg bg-gray-100 p-3 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-left"
+	class="group flex w-full gap-3 overflow-hidden rounded-lg bg-secondary-900  p-3 transition-colors hover:bg-gray-200 dark:hover:bg-secondary-800 text-left"
 >
 	<button
 		type="button"
