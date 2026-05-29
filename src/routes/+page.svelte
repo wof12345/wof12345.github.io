@@ -1,17 +1,11 @@
 <script>
 	import Home from '$lib/layouts/Home.svelte';
-	import About from '$lib/layouts/About.svelte';
-	import { routeState } from '$lib/stores/navigation.svelte';
 	import Projects from '$lib/layouts/Projects.svelte';
-	import Contact from '$lib/layouts/Contact.svelte';
+	import About from '$lib/layouts/About.svelte';
 </script>
 
-<section id="home-space" class="site-section relative h-screen overflow-hidden" style="">
+<main class="bg-primary-950 min-h-screen w-full overflow-x-clip text-white">
 	<Home />
-
 	<Projects />
-
 	<About />
-
-	<!-- <Contact /> -->
-</section>
+</main>

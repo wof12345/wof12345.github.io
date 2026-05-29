@@ -51,6 +51,7 @@
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@tailwindcss/vite": "^4.2.2",
 		"autoprefixer": "^10.4.20",
+		"mdsvex": "^0.12.7",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
 		"prettier-plugin-tailwindcss": "^0.6.5",
