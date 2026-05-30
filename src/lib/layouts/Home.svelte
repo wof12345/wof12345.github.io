@@ -1,6 +1,7 @@
 <script>
 	import DropInFromAbove from '$lib/components/Animated/Entity/DropInFromAbove.svelte';
 	import DropInFromBottom from '$lib/components/Animated/Entity/DropInFromBottom.svelte';
+	import FadeIn from '$lib/components/Animated/Entity/FadeIn.svelte';
 	import Floating from '$lib/components/Animated/Entity/Floating.svelte';
 	import ScaleIn from '$lib/components/Animated/Entity/ScaleIn.svelte';
 	import LeftToRightFadeInDownText from '$lib/components/Animated/Text/LeftToRightFadeInDownText.svelte';
@@ -9,6 +10,7 @@
 		IconBrandFacebook,
 		IconBrandGithub,
 		IconBrandLinkedin,
+		IconBrandWhatsapp,
 		IconBrandX
 	} from '@tabler/icons-svelte';
 
@@ -21,7 +23,7 @@
 >
 	<div class="relative z-30 flex flex-1 flex-col justify-center gap-2">
 		<div class="mt-12 flex w-max gap-4">
-			<DropInFromAbove defaultDelay={baseDelay}>
+			<FadeIn defaultDelay={baseDelay}>
 				<div class="relative flex aspect-square w-52 items-center justify-center">
 					<ScaleIn
 						class="absolute top-0 right-0 bottom-0 left-0 z-10 m-auto h-full w-full"
@@ -47,7 +49,7 @@
 						class="relative z-10 h-full w-full object-cover object-center"
 					/>
 				</div>
-			</DropInFromAbove>
+			</FadeIn>
 
 			<div class="-ml-20 flex flex-col items-center justify-center gap-1 p-2">
 				<LeftToRightFadeInDownText
@@ -120,10 +122,16 @@
 					<IconBrandLinkedin />
 				</a>
 			</DropInFromBottom>
+
+			<DropInFromBottom defaultDelay={baseDelay + 6100} delayFactor={1.3}>
+				<a href="https://wa.me/01680793142" target="_blank" aria-label="WhatsApp">
+					<IconBrandWhatsapp />
+				</a>
+			</DropInFromBottom>
 		</div>
 	</div>
 
-	<DropInFromBottom defaultDelay={baseDelay + 6100} delayFactor={1.3}>
+	<DropInFromBottom defaultDelay={baseDelay + 6100} delayFactor={1.4}>
 		<div
 			class="text-primary-200 absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-1 text-xs uppercase tracking-widest"
 		>

@@ -1,4 +1,5 @@
 <script>
+	import CompanyTag from '$lib/components/Projects/CompanyTag.svelte';
 	import ProjectTag from '$lib/components/Projects/ProjectTag.svelte';
 	import {
 		IconArrowLeft,
@@ -84,7 +85,12 @@
 				{/if}
 			</div>
 
-			<h1 class="text-4xl font-bold md:text-6xl">{project.name}</h1>
+			<div class="flex flex-wrap items-center gap-3 md:gap-4">
+				<h1 class="text-4xl font-bold md:text-6xl">{project.name}</h1>
+				{#if project.company}
+					<CompanyTag company={project.company} />
+				{/if}
+			</div>
 
 			<p class="text-secondary-100/80 max-w-3xl text-lg leading-relaxed">
 				{project.description}
@@ -156,14 +162,14 @@
 			{/if}
 		{/if}
 
-		{#if project.longDescription}
+		{#if data.longDescription}
 			<div class="mt-12">
 				<h2 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">
 					About this project
 				</h2>
-				<p class="text-secondary-50/80 max-w-3xl text-lg leading-relaxed whitespace-pre-line">
-					{project.longDescription}
-				</p>
+				<div class="text-secondary-50/80 max-w-3xl text-lg leading-relaxed">
+					{@html data.longDescription}
+				</div>
 			</div>
 		{/if}
 	</section>

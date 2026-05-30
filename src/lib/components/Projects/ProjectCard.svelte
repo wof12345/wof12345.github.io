@@ -1,60 +1,66 @@
 <script>
+	import CompanyTag from './CompanyTag.svelte';
 	import ProjectTag from './ProjectTag.svelte';
+	import { IconArrowRight } from '@tabler/icons-svelte';
 
-	let { project, onSelect } = $props();
-
-	let showFullDescription = $state(false);
-
-	const truncatedDescription = $derived(
-		project.description.length > 80 ? project.description.slice(0, 80) + '...' : project.description
-	);
+	let { project } = $props();
 </script>
 
 <div
-	class="group flex w-full gap-3 overflow-hidden rounded-lg bg-secondary-900  p-3 transition-colors hover:bg-gray-200 dark:hover:bg-secondary-800 text-left"
+	class="bg-secondary-700/40 hover:bg-secondary-700/60 ring-secondary-300/10 hover:ring-secondary-300/30 group relative flex w-full flex-col gap-3 overflow-hidden rounded-2xl p-5 shadow-2xl ring-1 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] md:gap-4 md:p-8"
 >
-	<button
-		type="button"
-		class="h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-0 p-0"
-		onclick={() => onSelect(project)}
-		aria-label="Select {project.name}"
-	>
-		<img
-			src={project.image}
-			alt=""
-			class="h-full w-full object-cover"
-		/>
-	</button>
+	<a
+		href="/projects/{project.id}"
+		aria-label="View {project.name}"
+		class="absolute inset-0 z-10 rounded-2xl"
+	></a>
 
-	<div class="flex min-w-0 flex-col gap-1">
-		<button
-			type="button"
-			class="cursor-pointer truncate text-left text-sm font-bold text-gray-900 dark:text-white border-0 bg-transparent p-0"
-			onclick={() => onSelect(project)}
-		>
-			{project.name}
-		</button>
+	<div class="pointer-events-none relative z-20 flex flex-col gap-3 md:gap-4 h-max">
+		{#if project.image}
+			<div class="aspect-video w-full shrink-0 overflow-hidden rounded-xl bg-black/20">
+				<img
+					src={project.image}
+					alt={project.name}
+					loading="lazy"
+					class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+				/>
+			</div>
+		{/if}
 
-		<div class="flex flex-wrap gap-1">
-			{#each project.tags as tag}
-				<ProjectTag {tag} />
-			{/each}
+		<div class="flex items-start justify-between gap-3">
+			<h3 class="text-xl leading-tight font-bold sm:text-2xl md:text-4xl">
+				{project.name}
+			</h3>
+
+			{#if project.company}
+				<div class="pointer-events-auto">
+					<CompanyTag company={project.company} />
+				</div>
+			{/if}
 		</div>
 
-		<p class="text-xs text-gray-600 dark:text-gray-400">
-			{showFullDescription ? project.description : truncatedDescription}
-			{#if project.description.length > 80}
-				<button
-					type="button"
-					class="ml-1 font-semibold text-blue-600 hover:underline dark:text-blue-400 bg-transparent border-0 p-0 cursor-pointer"
-					onclick={(e) => {
-						e.stopPropagation();
-						showFullDescription = !showFullDescription;
-					}}
-				>
-					{showFullDescription ? 'Show less' : 'See more'}
-				</button>
-			{/if}
+		<p
+			class="text-secondary-50/80 line-clamp-3 text-sm leading-relaxed md:line-clamp-none md:text-base"
+		>
+			{project.description}
 		</p>
+
+		{#if project.tags?.length}
+			<div class="flex flex-wrap gap-1.5 md:gap-2">
+				{#each project.tags as tag}
+					<ProjectTag {tag} />
+				{/each}
+			</div>
+		{/if}
+
+		<span
+			class="text-secondary-300 group-hover:text-white mt-auto inline-flex items-center gap-2 text-xs font-semibold transition-colors md:text-sm"
+		>
+			View project
+			<IconArrowRight
+				size={16}
+				class="transition-transform duration-200 group-hover:translate-x-1"
+			/>
+		</span>
 	</div>
 </div>

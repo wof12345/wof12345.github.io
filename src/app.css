@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@source "./lib/data/**/*.html";
 
 @theme {
 	--color-compulsory-50: #f6f6f6;

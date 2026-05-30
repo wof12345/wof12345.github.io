@@ -2,7 +2,7 @@
 	import Tooltip from '$lib/components/Base/Tooltip.svelte';
 	let { tag } = $props();
 
-	let tooltipContet = {
+	let tooltipContent = {
 		'Svelte 5': {
 			description: 'More information about the Svelte 5 technology used in this project.',
 			link: 'https://svelte.dev/blog/svelte-5'
@@ -36,8 +36,8 @@
 </script>
 
 <Tooltip>
-	{#if tooltipContet[tag]?.link}
-		<a href={tooltipContet[tag]?.link} target="_blank" rel="noopener noreferrer">
+	{#if tooltipContent[tag]?.link}
+		<a href={tooltipContent[tag]?.link} target="_blank" rel="noopener noreferrer">
 			<span
 				class="inline-block rounded bg-primary-900 px-2 py-1 text-xs font-semibold text-primary-50"
 			>
@@ -54,7 +54,7 @@
 
 	{#snippet tooltipSnippet()}
 		<div class="max-w-[200px] text-center">
-			{@html tooltipContet[tag]?.description ||
+			{@html tooltipContent[tag]?.description ||
 				`No additional information available for this ${tag}`}
 		</div>
 	{/snippet}
