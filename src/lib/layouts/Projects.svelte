@@ -1,46 +1,53 @@
 <script>
-	import Bubble from '$lib/components/Base/Bubble.svelte';
-	import { routeState } from '$lib/stores/navigation.svelte';
-	import { onMount } from 'svelte';
+	import projectsData from '$lib/data/projects.json';
+	import TimelineScene from '$lib/components/Timeline/TimelineScene.svelte';
+	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
 
-	let bubble = $state(undefined);
+	/** @param {typeof projectsData} items */
+	function groupByPeriod(items) {
+		const byPeriod = new Map();
 
-	const routeIndex = 1;
-
-	let route = $state(routeState.getRoutes()[routeIndex]);
-
-	$effect(() => {
-		route = routeState.getRoutes()[routeIndex];
-		let active = route.active;
-
-		if (!active) {
-			bubble.shrink();
+		for (const project of items) {
+			const key = project.period ?? 'Other';
+			if (!byPeriod.has(key)) {
+				byPeriod.set(key, {
+					period: key,
+					context: project.context,
+					projects: []
+				});
+			}
+			byPeriod.get(key).projects.push(project);
 		}
-	});
 
-	onMount(() => {
-		routeState.setBubble(bubble, routeIndex);
-	});
+		return Array.from(byPeriod.values()).sort((a, b) => {
+			const aNum = Number(a.period);
+			const bNum = Number(b.period);
+			if (Number.isNaN(aNum) || Number.isNaN(bNum)) {
+				return String(b.period).localeCompare(String(a.period));
+			}
+			return bNum - aNum;
+		});
+	}
+
+	const groups = groupByPeriod(projectsData);
 </script>
 
-<Bubble
-	bind:this={bubble}
-	class="{route.initialClass} bg-{route.primaryColor}-800 m-0"
-	coverClass="hover:cursor-pointer bg-{route.primaryColor}-800"
-	onclick={() => {
-		routeState.set(routeIndex);
-	}}
-	onExpand={() => {}}
-	initDelayFactor={(routeState.getRoutes().length - routeIndex) * 0.3}
-	initDelay={2500}
-	{route}
->
-	{#snippet coverChildren()}
-		{@const CoverIcon = route.icon}
-		<div class="text-lg font-bold text-white">
-			<CoverIcon />
-		</div>
-	{/snippet}
+<section id="projects" class="bg-secondary-800 relative w-full text-white">
+	<div class="px-6 py-16 md:py-20">
+		<Reveal class="mx-auto flex max-w-6xl flex-col items-center text-center">
+			<p class="text-secondary-300 text-sm font-semibold tracking-widest uppercase">
+				What I've built
+			</p>
+			<h2 class="mt-2 text-4xl font-bold md:text-5xl">Projects</h2>
+			<div class="bg-secondary-300 mt-4 h-1 w-16 rounded-full"></div>
+			<p class="text-secondary-100/70 mt-6 max-w-xl">
+				A timeline grouped by year. The year stays pinned while every project from that year scrolls
+				past — your reference frame for the timeline.
+			</p>
+		</Reveal>
+	</div>
 
-	<div class="flex h-full items-center justify-center text-white">Portfolio</div>
-</Bubble>
+	{#each groups as group, i}
+		<TimelineScene {group} index={i} total={groups.length} />
+	{/each}
+</section>

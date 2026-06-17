@@ -1,0 +1,12 @@
+[
+	{
+		"id": "taajir",
+		"name": "Taajir",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A robust inventory management and point-of-sale system designed for small to medium-sized businesses, featuring real-time stock tracking, sales analytics and customized features to streamline operations.",
+		"tags": ["Svelte 5", "Tailwind CSS", "Vite", "Supabase", "FastAPI", "PostgreSQL"],
+		"image": "/taajir/p_1.png"
+	}
+]
