@@ -3,28 +3,10 @@
 		"id": "taajir",
 		"name": "Taajir",
 		"period": "2024",
-		"context": "SaaS",
+		"context": "",
 		"company": "Brownbrick",
 		"description": "A robust inventory management and point-of-sale system designed for small to medium-sized businesses, featuring real-time stock tracking, sales analytics and customized features to streamline operations.",
 		"tags": ["Svelte 5", "Tailwind CSS", "Vite", "Supabase", "FastAPI", "PostgreSQL"],
 		"image": "/taajir/p_1.png"
-	},
-	{
-		"id": "project-2",
-		"name": "E-commerce Dashboard",
-		"period": "2024",
-		"context": "Freelance",
-		"description": "A comprehensive dashboard for managing online stores, featuring real-time analytics, inventory tracking, and customer management with a focus on UX.",
-		"tags": ["React", "D3.js", "Firebase", "TypeScript"],
-		"image": "https://picsum.photos/seed/dash/800/450"
-	},
-	{
-		"id": "project-3",
-		"name": "Weather App",
-		"period": "2022",
-		"context": "Side project",
-		"description": "A sleek weather application providing hyper-local forecasts, air quality indices, and severe weather alerts with dynamic background changes.",
-		"tags": ["JavaScript", "API Integration", "CSS3", "Mobile First"],
-		"image": "https://picsum.photos/seed/weather/800/450"
 	}
 ]

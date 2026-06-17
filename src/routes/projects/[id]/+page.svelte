@@ -4,7 +4,10 @@
 	import {
 		IconArrowLeft,
 		IconBrandGithub,
-		IconExternalLink
+		IconChevronLeft,
+		IconChevronRight,
+		IconExternalLink,
+		IconX
 	} from '@tabler/icons-svelte';
 
 	let { data } = $props();
@@ -13,6 +16,28 @@
 	let selectedImage = $state(data.project.image);
 	let images = $state([data.project.image].filter(Boolean));
 	let isLoading = $state(false);
+	let isLightboxOpen = $state(false);
+
+	function openLightbox() {
+		isLightboxOpen = true;
+	}
+
+	function closeLightbox() {
+		isLightboxOpen = false;
+	}
+
+	function handleKeydown(e) {
+		if (!isLightboxOpen) return;
+		if (e.key === 'Escape') {
+			closeLightbox();
+		} else if (e.key === 'ArrowRight' && images.length > 1) {
+			const i = images.indexOf(selectedImage);
+			selectedImage = images[(i + 1) % images.length];
+		} else if (e.key === 'ArrowLeft' && images.length > 1) {
+			const i = images.indexOf(selectedImage);
+			selectedImage = images[(i - 1 + images.length) % images.length];
+		}
+	}
 
 	$effect(() => {
 		const current = project;
@@ -57,6 +82,8 @@
 	<title>{project.name} · Atif</title>
 	<meta name="description" content={project.description} />
 </svelte:head>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <main class="bg-secondary-950 min-h-screen w-full text-white">
 	<header class="bg-secondary-800 w-full px-6 py-12 md:py-16">
@@ -127,13 +154,15 @@
 
 	<section class="mx-auto max-w-5xl px-6 py-12 md:py-16">
 		{#if selectedImage}
-			<div
-				class="ring-secondary-300/10 relative aspect-video w-full overflow-hidden rounded-2xl bg-black/30 shadow-2xl ring-1"
+			<button
+				type="button"
+				onclick={openLightbox}
+				class="ring-secondary-300/10 group relative block aspect-video w-full cursor-zoom-in overflow-hidden rounded-2xl bg-black/30 shadow-2xl ring-1"
 			>
 				<img
 					src={selectedImage}
 					alt={project.name}
-					class="h-full w-full object-cover transition-opacity duration-300"
+					class="h-full w-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
 				/>
 				{#if isLoading && images.length <= 1}
 					<div class="absolute inset-0 flex items-center justify-center bg-black/20">
@@ -142,7 +171,7 @@
 						></div>
 					</div>
 				{/if}
-			</div>
+			</button>
 
 			{#if images.length > 1}
 				<div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-5 md:grid-cols-6">
@@ -174,3 +203,63 @@
 		{/if}
 	</section>
 </main>
+
+{#if isLightboxOpen && selectedImage}
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+		role="dialog"
+		aria-modal="true"
+		aria-label="{project.name} image viewer"
+		tabindex="-1"
+		onclick={closeLightbox}
+		onkeydown={(e) => e.key === 'Enter' && closeLightbox()}
+	>
+		<button
+			type="button"
+			class="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+			aria-label="Close"
+			onclick={closeLightbox}
+		>
+			<IconX size={24} />
+		</button>
+
+		{#if images.length > 1}
+			<button
+				type="button"
+				class="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+				aria-label="Previous image"
+				onclick={(e) => {
+					e.stopPropagation();
+					const i = images.indexOf(selectedImage);
+					selectedImage = images[(i - 1 + images.length) % images.length];
+				}}
+			>
+				<IconChevronLeft size={28} />
+			</button>
+			<button
+				type="button"
+				class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+				aria-label="Next image"
+				onclick={(e) => {
+					e.stopPropagation();
+					const i = images.indexOf(selectedImage);
+					selectedImage = images[(i + 1) % images.length];
+				}}
+			>
+				<IconChevronRight size={28} />
+			</button>
+		{/if}
+
+		<div
+			class="contents"
+			role="presentation"
+			onclick={(e) => e.stopPropagation()}
+		>
+			<img
+				src={selectedImage}
+				alt={project.name}
+				class="max-h-[90vh] max-w-[90vw] rounded-lg object-contain shadow-2xl"
+			/>
+		</div>
+	</div>
+{/if}
