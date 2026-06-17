@@ -1,6 +1,7 @@
 <script>
 	import projectsData from '$lib/data/projects.json';
 	import TimelineScene from '$lib/components/Timeline/TimelineScene.svelte';
+	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
 
 	/** @param {typeof projectsData} items */
 	function groupByPeriod(items) {
@@ -33,7 +34,7 @@
 
 <section id="projects" class="bg-secondary-800 relative w-full text-white">
 	<div class="px-6 py-16 md:py-20">
-		<div class="mx-auto flex max-w-6xl flex-col items-center text-center">
+		<Reveal class="mx-auto flex max-w-6xl flex-col items-center text-center">
 			<p class="text-secondary-300 text-sm font-semibold tracking-widest uppercase">
 				What I've built
 			</p>
@@ -43,7 +44,7 @@
 				A timeline grouped by year. The year stays pinned while every project from that year scrolls
 				past — your reference frame for the timeline.
 			</p>
-		</div>
+		</Reveal>
 	</div>
 
 	{#each groups as group, i}

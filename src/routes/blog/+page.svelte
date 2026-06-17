@@ -1,5 +1,6 @@
 <script>
 	import { IconArrowLeft, IconArrowRight } from '@tabler/icons-svelte';
+	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
 
 	let { data } = $props();
 
@@ -49,8 +50,9 @@
 			</p>
 		{:else}
 			<ul class="flex flex-col gap-8">
-				{#each data.posts as post}
+				{#each data.posts as post, i}
 					<li>
+						<Reveal delay={i * 80} y={28}>
 						<a
 							href="/blog/{post.slug}"
 							class="bg-primary-900/60 hover:bg-primary-800 ring-primary-300/10 hover:ring-primary-300/30 group block rounded-2xl p-6 ring-1 transition-all duration-200 md:p-8"
@@ -95,6 +97,7 @@
 								</span>
 							</div>
 						</a>
+						</Reveal>
 					</li>
 				{/each}
 			</ul>

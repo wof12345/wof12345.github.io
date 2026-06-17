@@ -1,5 +1,6 @@
 <script>
 	import ProjectCard from '$lib/components/Projects/ProjectCard.svelte';
+	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
 
 	let { group, index, total } = $props();
 </script>
@@ -41,7 +42,9 @@
 				<div
 					class="flex min-h-max items-center py-6 first:pt-4 last:pb-12 md:min-h-screen md:py-12 md:first:pt-0 md:last:pb-0"
 				>
-					<ProjectCard {project} />
+					<Reveal class="w-full" y={40} threshold={0.2}>
+						<ProjectCard {project} />
+					</Reveal>
 				</div>
 			{/each}
 		</div>
