@@ -9,7 +9,8 @@
 		IconBrandTypescript,
 		IconBolt,
 		IconDatabase,
-		IconNotebook
+		IconNotebook,
+		IconUser
 	} from '@tabler/icons-svelte';
 	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
 	import CompanyTag from '$lib/components/Projects/CompanyTag.svelte';
@@ -119,17 +120,31 @@
 					source, or building small tools to scratch personal itches.
 				</p>
 
-				<a
-					href="/blog"
-					class="bg-tertiary-700/60 hover:bg-tertiary-600 ring-tertiary-300/20 hover:ring-tertiary-300/50 group mt-2 inline-flex w-fit items-center gap-3 rounded-2xl px-5 py-3 font-semibold ring-1 transition-all duration-200"
-				>
-					<IconNotebook size={20} stroke={1.75} class="text-tertiary-200" />
-					<span>Read the blog</span>
-					<IconArrowRight
-						size={18}
-						class="transition-transform duration-200 group-hover:translate-x-1"
-					/>
-				</a>
+				<div class="mt-2 flex flex-wrap gap-3">
+					<a
+						href="/blog"
+						class="bg-tertiary-700/60 hover:bg-tertiary-600 ring-tertiary-300/20 hover:ring-tertiary-300/50 group inline-flex w-fit items-center gap-3 rounded-2xl px-5 py-3 font-semibold ring-1 transition-all duration-200"
+					>
+						<IconNotebook size={20} stroke={1.75} class="text-tertiary-200" />
+						<span>Read the blog</span>
+						<IconArrowRight
+							size={18}
+							class="transition-transform duration-200 group-hover:translate-x-1"
+						/>
+					</a>
+
+					<a
+						href="/about"
+						class="bg-tertiary-700/60 hover:bg-tertiary-600 ring-tertiary-300/20 hover:ring-tertiary-300/50 group inline-flex w-fit items-center gap-3 rounded-2xl px-5 py-3 font-semibold ring-1 transition-all duration-200"
+					>
+						<IconUser size={20} stroke={1.75} class="text-tertiary-200" />
+						<span>More about me</span>
+						<IconArrowRight
+							size={18}
+							class="transition-transform duration-200 group-hover:translate-x-1"
+						/>
+					</a>
+				</div>
 			</Reveal>
 		</div>
 
