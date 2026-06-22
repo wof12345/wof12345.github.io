@@ -1,9 +1,25 @@
 <script>
 	import { IconArrowLeft } from '@tabler/icons-svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import { absoluteUrl, author } from '$lib/seo';
 
 	let { data } = $props();
 
 	let Content = $derived(data.content);
+
+	const articleJsonLd = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BlogPosting',
+			headline: data.meta.title ?? data.slug,
+			description: data.meta.excerpt ?? undefined,
+			datePublished: data.meta.date ?? undefined,
+			keywords: Array.isArray(data.meta.tags) ? data.meta.tags.join(', ') : undefined,
+			author: { '@type': 'Person', name: author },
+			url: absoluteUrl(`/blog/${data.slug}`),
+			mainEntityOfPage: absoluteUrl(`/blog/${data.slug}`)
+		})
+	);
 
 	function formatDate(d) {
 		if (!d) return '';
@@ -17,12 +33,14 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{data.meta.title ?? data.slug} · Atif</title>
-	{#if data.meta.excerpt}
-		<meta name="description" content={data.meta.excerpt} />
-	{/if}
-</svelte:head>
+<Seo
+	title="{data.meta.title ?? data.slug} · Atif Bin Ferdous"
+	description={data.meta.excerpt ?? `Read "${data.meta.title ?? data.slug}" on Atif Bin Ferdous's blog.`}
+	canonical="/blog/{data.slug}"
+	type="article"
+	keywords={Array.isArray(data.meta.tags) ? data.meta.tags : []}
+	jsonLd={articleJsonLd}
+/>
 
 <main class="bg-primary-950 min-h-screen w-full text-white">
 	<header class="bg-primary-800 w-full px-6 py-16 md:py-20">

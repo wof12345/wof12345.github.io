@@ -1,5 +1,6 @@
 <script>
 	import { IconArrowLeft, IconFileDownload } from '@tabler/icons-svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let frameEl;
 
@@ -14,10 +15,12 @@
 	}
 </script>
 
-<svelte:head>
-	<title>CV · Atif Bin Ferdous</title>
-	<meta name="description" content="Curriculum vitae of Atif Bin Ferdous — Full-Stack Software Engineer." />
-</svelte:head>
+<Seo
+	title="CV · Atif Bin Ferdous"
+	description="Curriculum vitae of Atif Bin Ferdous — Full-Stack Software Engineer. Experience, skills, and projects."
+	canonical="/cv"
+	keywords={['Atif Bin Ferdous CV', 'resume', 'curriculum vitae', 'software engineer resume']}
+/>
 
 <main class="bg-primary-950 flex min-h-screen w-full flex-col text-white">
 	<header

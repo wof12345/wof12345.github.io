@@ -9,6 +9,7 @@
 		IconExternalLink,
 		IconX
 	} from '@tabler/icons-svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 
@@ -78,10 +79,13 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{project.name} · Atif</title>
-	<meta name="description" content={project.description} />
-</svelte:head>
+<Seo
+	title="{project.name} · Atif Bin Ferdous"
+	description={project.description}
+	canonical="/projects/{project.id}"
+	image={project.image ?? undefined}
+	keywords={[project.name, ...(project.tags ?? []), 'Atif Bin Ferdous project', 'case study']}
+/>
 
 <svelte:window onkeydown={handleKeydown} />
 

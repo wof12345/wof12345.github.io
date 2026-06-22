@@ -1,5 +1,6 @@
 <script>
 	import { IconArrowLeft, IconArrowRight, IconExternalLink } from '@tabler/icons-svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 
@@ -7,10 +8,12 @@
 	let relatedProjects = $derived(data.relatedProjects);
 </script>
 
-<svelte:head>
-	<title>{company.name} · Atif</title>
-	<meta name="description" content="{company.role} at {company.name} — {company.period}." />
-</svelte:head>
+<Seo
+	title="{company.name} · Atif Bin Ferdous"
+	description="{company.role} at {company.name} ({company.period}). {company.tagline}"
+	canonical="/company/{company.id}"
+	keywords={['Atif Bin Ferdous experience', company.name, company.role, 'work history']}
+/>
 
 <main class="bg-tertiary-950 min-h-screen w-full text-white">
 	<header

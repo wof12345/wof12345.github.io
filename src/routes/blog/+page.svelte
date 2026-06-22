@@ -1,6 +1,7 @@
 <script>
 	import { IconArrowLeft, IconArrowRight } from '@tabler/icons-svelte';
 	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 
@@ -16,10 +17,12 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Blog · Atif</title>
-	<meta name="description" content="Writings on engineering, projects, and tools." />
-</svelte:head>
+<Seo
+	title="Blog · Atif Bin Ferdous"
+	description="Writings by Atif Bin Ferdous on software engineering, web development, projects, and developer tools."
+	canonical="/blog"
+	keywords={['engineering blog', 'web development articles', 'Svelte tutorials', 'developer writing']}
+/>
 
 <main class="bg-primary-950 min-h-screen w-full text-white">
 	<header class="bg-primary-800 relative w-full px-6 py-20 md:py-28">

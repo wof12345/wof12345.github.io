@@ -11,6 +11,7 @@
 	import { slide } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import { intro, quickFacts, currently, panels } from '$lib/data/about-me';
 
 	// Map the icon names stored in data → the imported components.
@@ -29,13 +30,13 @@
 	}
 </script>
 
-<svelte:head>
-	<title>More about me · Atif</title>
-	<meta
-		name="description"
-		content="The personal side — hobbies, lifestyle, ambitions, and what I care about beyond the code."
-	/>
-</svelte:head>
+<Seo
+	title="More about me · Atif Bin Ferdous"
+	description="The personal side of Atif Bin Ferdous — hobbies, lifestyle, ambitions, and what I care about beyond the code."
+	canonical="/about"
+	type="profile"
+	keywords={['about Atif Bin Ferdous', 'software engineer hobbies', 'developer bio']}
+/>
 
 <main class="bg-tertiary-950 min-h-screen w-full text-white">
 	<header class="relative w-full overflow-hidden px-6 py-20 md:py-28">
