@@ -11,10 +11,28 @@
 		IconBrandGithub,
 		IconBrandLinkedin,
 		IconBrandWhatsapp,
-		IconBrandX
+		IconBrandX,
+		IconFileCv
 	} from '@tabler/icons-svelte';
+	import { onMount } from 'svelte';
 
 	const baseDelay = 200;
+
+	// The CV badge only appears once the photo has loaded *and* the intro
+	// text sequence has finished playing.
+	let imgEl;
+	let imgLoaded = $state(false);
+	let textsDone = $state(false);
+	let showCv = $derived(imgLoaded && textsDone);
+
+	onMount(() => {
+		// Covers the cached case where `onload` fired before binding.
+		if (imgEl?.complete) {
+			imgLoaded = true;
+		}
+		const t = setTimeout(() => (textsDone = true), baseDelay + 7000);
+		return () => clearTimeout(t);
+	});
 </script>
 
 <section
@@ -44,10 +62,26 @@
 					</ScaleIn>
 
 					<img
+						bind:this={imgEl}
+						onload={() => (imgLoaded = true)}
 						src="/dev/pp.png"
 						alt=""
 						class="relative z-10 h-full w-full object-cover object-center"
 					/>
+
+					<FadeIn defaultDelay={baseDelay + 7000}>
+						<a
+							href="/cv"
+							aria-label="View CV"
+							title="View my CV"
+							class="text-primary-800 ring-primary-800/70 absolute left-1 top-1 z-20 grid size-10 place-items-center rounded-full bg-white shadow-lg ring-2 hover:scale-110"
+							style="opacity: {showCv ? 1 : 0}; pointer-events: {showCv
+								? 'auto'
+								: 'none'}; transition: opacity 0.8s ease, transform 0.2s ease;"
+						>
+							<IconFileCv size={22} stroke={1.8} />
+						</a>
+					</FadeIn>
 				</div>
 			</FadeIn>
 
