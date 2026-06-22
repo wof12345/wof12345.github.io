@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Atif Bin Ferdous — Full-Stack Software Engineer</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			/* ============================================================
+     DESIGN TOKENS — edit these to re-theme the whole resume
+     ============================================================ */
+			:root {
+				--ink: #16181d; /* primary text */
+				--ink-soft: #494f5c; /* secondary text */
+				--ink-faint: #8b91a0; /* meta / dates */
+				--paper: #ffffff; /* page background */
+				--panel: #f6f5f2; /* sidebar background */
+				--rule: #e4e3df; /* hairlines */
+				--accent: #2f5d50; /* deep pine — the signature color */
+				--accent-tint: #e9f0ed;
+				--tag-bg: #eceae5;
+
+				--display: 'Fraunces', Georgia, serif;
+				--body: 'Inter', -apple-system, sans-serif;
+				--mono: 'JetBrains Mono', ui-monospace, monospace;
+
+				--maxw: 920px;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			html {
+				-webkit-text-size-adjust: 100%;
+			}
+
+			body {
+				font-family: var(--body);
+				color: var(--ink);
+				background: #ecebe7;
+				line-height: 1.55;
+				font-size: 15px;
+				padding: 32px 16px;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			.page {
+				max-width: var(--maxw);
+				margin: 0 auto;
+				background: var(--paper);
+				box-shadow:
+					0 1px 2px rgba(0, 0, 0, 0.04),
+					0 12px 40px rgba(0, 0, 0, 0.07);
+				overflow: hidden;
+			}
+
+			/* ============================================================
+     HEADER
+     ============================================================ */
+			header {
+				padding: 44px 48px 34px;
+				border-bottom: 1px solid var(--rule);
+			}
+
+			.eyebrow {
+				font-family: var(--mono);
+				font-size: 11px;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--accent);
+				margin-bottom: 14px;
+			}
+
+			h1 {
+				font-family: var(--display);
+				font-weight: 600;
+				font-size: 42px;
+				line-height: 1.04;
+				letter-spacing: -0.01em;
+				color: var(--ink);
+			}
+
+			.role {
+				font-family: var(--display);
+				font-style: italic;
+				font-weight: 400;
+				font-size: 20px;
+				color: var(--accent);
+				margin-top: 4px;
+			}
+
+			.summary {
+				margin-top: 18px;
+				max-width: 62ch;
+				color: var(--ink-soft);
+				font-size: 15px;
+			}
+
+			.contact {
+				margin-top: 22px;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px 18px;
+				font-family: var(--mono);
+				font-size: 12.5px;
+			}
+			.contact a,
+			.contact span {
+				color: var(--ink-soft);
+				text-decoration: none;
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+			}
+			.contact a:hover {
+				color: var(--accent);
+			}
+			.contact .dot {
+				color: var(--ink-faint);
+			}
+			.contact .clabel {
+				color: var(--ink-faint);
+				font-weight: 600;
+			}
+
+			/* ============================================================
+     BODY GRID
+     ============================================================ */
+			.layout {
+				display: grid;
+				grid-template-columns: 1fr 268px;
+			}
+
+			main {
+				padding: 36px 48px 48px;
+			}
+			aside {
+				padding: 36px 32px 48px;
+				background: var(--panel);
+				border-left: 1px solid var(--rule);
+			}
+
+			/* ---- section heading shared ---- */
+			.sec-title {
+				font-family: var(--mono);
+				font-size: 11px;
+				letter-spacing: 0.16em;
+				text-transform: uppercase;
+				color: var(--ink-faint);
+				margin-bottom: 18px;
+				padding-bottom: 8px;
+				border-bottom: 1px solid var(--rule);
+			}
+			.block + .block {
+				margin-top: 32px;
+			}
+
+			/* ============================================================
+     EXPERIENCE
+     ============================================================ */
+			.job + .job {
+				margin-top: 24px;
+			}
+
+			.job-head {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 16px;
+				flex-wrap: wrap;
+			}
+			.job-title {
+				font-family: var(--display);
+				font-weight: 600;
+				font-size: 18px;
+				color: var(--ink);
+			}
+			.job-org {
+				color: var(--accent);
+				font-weight: 600;
+				font-size: 14px;
+			}
+			.job-date {
+				font-family: var(--mono);
+				font-size: 11.5px;
+				color: var(--ink-faint);
+				white-space: nowrap;
+			}
+			.job-org-line {
+				margin-top: 1px;
+				margin-bottom: 9px;
+			}
+
+			ul.points {
+				list-style: none;
+			}
+			ul.points li {
+				position: relative;
+				padding-left: 18px;
+				margin-bottom: 6px;
+				color: var(--ink-soft);
+				font-size: 14px;
+			}
+			ul.points li::before {
+				content: '';
+				position: absolute;
+				left: 0;
+				top: 9px;
+				width: 5px;
+				height: 5px;
+				background: var(--accent);
+				border-radius: 50%;
+			}
+			ul.points li b {
+				color: var(--ink);
+				font-weight: 600;
+			}
+
+			/* ============================================================
+     PROJECTS
+     ============================================================ */
+			.proj + .proj {
+				margin-top: 20px;
+			}
+			.proj-head {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 12px;
+			}
+			.proj-name {
+				font-weight: 600;
+				font-size: 14.5px;
+				color: var(--ink);
+			}
+			a.proj-link {
+				color: var(--ink);
+				text-decoration: none;
+				border-bottom: 1px solid var(--rule);
+				transition:
+					color 0.15s,
+					border-color 0.15s;
+			}
+			a.proj-link:hover {
+				color: var(--accent);
+				border-color: var(--accent);
+			}
+
+			.proj-title-row {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				flex-wrap: wrap;
+			}
+			.live {
+				font-family: var(--mono);
+				font-size: 9.5px;
+				font-weight: 600;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: var(--accent);
+				background: var(--accent-tint);
+				padding: 2px 7px 2px 16px;
+				border-radius: 3px;
+				position: relative;
+				white-space: nowrap;
+			}
+			.live::before {
+				content: '';
+				position: absolute;
+				left: 7px;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 5px;
+				height: 5px;
+				border-radius: 50%;
+				background: var(--accent);
+				box-shadow: 0 0 0 0 rgba(47, 93, 80, 0.5);
+				animation: livepulse 2s infinite;
+			}
+			@keyframes livepulse {
+				0% {
+					box-shadow: 0 0 0 0 rgba(47, 93, 80, 0.45);
+				}
+				70% {
+					box-shadow: 0 0 0 5px rgba(47, 93, 80, 0);
+				}
+				100% {
+					box-shadow: 0 0 0 0 rgba(47, 93, 80, 0);
+				}
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.live::before {
+					animation: none;
+				}
+			}
+			.job-org a {
+				color: var(--accent);
+				text-decoration: none;
+				border-bottom: 1px solid transparent;
+			}
+			.job-org a:hover {
+				border-bottom-color: var(--accent);
+			}
+			.proj-date {
+				font-family: var(--mono);
+				font-size: 11px;
+				color: var(--ink-faint);
+				white-space: nowrap;
+			}
+			.proj-desc {
+				margin-top: 3px;
+				font-size: 13.5px;
+				color: var(--ink-soft);
+			}
+			.proj-stack {
+				margin-top: 6px;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 6px;
+			}
+			.chip {
+				font-family: var(--mono);
+				font-size: 10.5px;
+				letter-spacing: 0.02em;
+				color: var(--accent);
+				background: var(--accent-tint);
+				padding: 2px 8px;
+				border-radius: 3px;
+			}
+
+			/* ============================================================
+     ASIDE — skills, education, etc.
+     ============================================================ */
+			.skillgroup + .skillgroup {
+				margin-top: 16px;
+			}
+			.skill-label {
+				font-size: 12px;
+				font-weight: 600;
+				color: var(--ink);
+				margin-bottom: 6px;
+			}
+			.tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 5px;
+			}
+			.tag {
+				font-family: var(--mono);
+				font-size: 10.5px;
+				color: var(--ink-soft);
+				background: var(--tag-bg);
+				padding: 3px 8px;
+				border-radius: 3px;
+				line-height: 1.3;
+			}
+
+			.edu-school {
+				font-family: var(--display);
+				font-weight: 600;
+				font-size: 15px;
+				color: var(--ink);
+				line-height: 1.25;
+			}
+			.edu-degree {
+				font-size: 13px;
+				color: var(--ink-soft);
+				margin-top: 3px;
+			}
+			.edu-meta {
+				font-family: var(--mono);
+				font-size: 11px;
+				color: var(--ink-faint);
+				margin-top: 5px;
+			}
+
+			.meta-list {
+				list-style: none;
+			}
+			.meta-list li {
+				font-size: 13px;
+				color: var(--ink-soft);
+				padding: 5px 0;
+				border-bottom: 1px solid var(--rule);
+			}
+			.meta-list li:last-child {
+				border-bottom: none;
+			}
+			.meta-list .k {
+				font-family: var(--mono);
+				font-size: 10.5px;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: var(--ink-faint);
+				display: block;
+			}
+
+			/* ============================================================
+     RESPONSIVE
+     ============================================================ */
+			@media (max-width: 760px) {
+				body {
+					padding: 16px 0;
+				}
+				.page {
+					box-shadow: none;
+				}
+				header {
+					padding: 34px 26px 26px;
+				}
+				h1 {
+					font-size: 33px;
+				}
+				.layout {
+					grid-template-columns: 1fr;
+				}
+				main {
+					padding: 28px 26px 8px;
+				}
+				aside {
+					border-left: none;
+					border-top: 1px solid var(--rule);
+					padding: 28px 26px 40px;
+				}
+				.job-date {
+					width: 100%;
+				}
+			}
+
+			/* ============================================================
+     PRINT
+     ============================================================ */
+			@media print {
+				/* Force every element to keep its colors — without this, the
+				   bullet dots (drawn with a background) and the accent chips/tags
+				   vanish in the printed/PDF output. */
+				* {
+					-webkit-print-color-adjust: exact !important;
+					print-color-adjust: exact !important;
+				}
+				body {
+					background: #fff;
+					padding: 0;
+					font-size: 12.5px;
+				}
+				.page {
+					box-shadow: none;
+					max-width: none;
+				}
+				aside {
+					background: #fff !important;
+				}
+				/* Let sections flow and fill each page instead of pushing a whole
+				   job/project to the next page (which left a big empty gap below
+				   the first experience). Only keep headings glued to their content
+				   and avoid splitting an individual bullet or project card. */
+				.block {
+					break-inside: auto;
+				}
+				.job,
+				.job-head {
+					break-inside: auto;
+				}
+				.job-head,
+				.proj-head {
+					break-after: avoid;
+				}
+				.sec-title {
+					break-after: avoid;
+				}
+				.proj {
+					break-inside: avoid;
+				}
+				ul.points li {
+					break-inside: avoid;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="page">
+			<!-- ========================= HEADER ========================= -->
+			<header>
+				<div class="eyebrow">Full-Stack · AI-Integrated Systems · SaaS</div>
+				<h1>Atif Bin Ferdous</h1>
+				<div class="role">Full-Stack Software Engineer</div>
+				<p class="summary">
+					Full-stack engineer building production SaaS and enterprise products — from role-based
+					inventory and hospital management systems to AI-integrated platforms. Comfortable across
+					the stack with Python, TypeScript, and modern JS frameworks, and across the lifecycle from
+					client requirements to delivery.
+				</p>
+				<div class="contact">
+					<span class="citem"
+						><span class="clabel">Email:</span>
+						<a href="mailto:lsampercot@gmail.com">lsampercot@gmail.com</a></span
+					>
+					<span class="dot">·</span>
+					<span class="citem"
+						><span class="clabel">Phone:</span>
+						<a href="tel:+8801680793142">+880 1680 793142</a></span
+					>
+					<span class="dot">·</span>
+					<span class="citem"
+						><span class="clabel">Location:</span> Mymensingh, Bangladesh</span
+					>
+					<span class="dot">·</span>
+					<span class="citem"
+						><span class="clabel">Website:</span>
+						<a href="https://wof12345.github.io" target="_blank" rel="noopener"
+							>wof12345.github.io</a
+						></span
+					>
+					<span class="dot">·</span>
+					<span class="citem"
+						><span class="clabel">GitHub:</span>
+						<a href="https://github.com/wof12345" target="_blank" rel="noopener"
+							>github.com/wof12345</a
+						></span
+					>
+					<span class="dot">·</span>
+					<span class="citem"
+						><span class="clabel">LinkedIn:</span>
+						<a
+							href="https://linkedin.com/in/atif-bin-ferdous-1b3602281"
+							target="_blank"
+							rel="noopener"
+							>in/atif-bin-ferdous</a
+						></span
+					>
+				</div>
+			</header>
+
+			<div class="layout">
+				<!-- ========================= MAIN ========================= -->
+				<main>
+					<!-- EXPERIENCE -->
+					<section class="block">
+						<div class="sec-title">Experience</div>
+
+						<div class="job">
+							<div class="job-head">
+								<div class="job-title">Software Engineer</div>
+								<div class="job-date">08/2025 — Present</div>
+							</div>
+							<div class="job-org-line">
+								<span class="job-org"
+									><a href="https://www.nanokingfisher.com/" target="_blank" rel="noopener"
+										>Nanokingfisher</a
+									></span
+								>
+							</div>
+							<ul class="points">
+								<li>
+									Build and maintain multiple AI-integrated SaaS projects spanning research-heavy
+									and client-facing work, <b>improving delivery productivity by 60%</b>.
+								</li>
+								<li>
+									<b>Led a team of 2</b> to deliver a section of an enterprise-level real-estate
+									platform.
+								</li>
+								<li>
+									Drove fast-paced, AI-assisted development and delivery while owning client
+									discussions and project orientation.
+								</li>
+								<li>
+									Contributed to company growth through development, applied research, and direct
+									client interaction.
+								</li>
+							</ul>
+						</div>
+
+						<div class="job">
+							<div class="job-head">
+								<div class="job-title">Co-Founder &amp; Software Engineer</div>
+								<div class="job-date">02/2024 — 07/2025</div>
+							</div>
+							<div class="job-org-line">
+								<span class="job-org"
+									><a href="https://brownbrick.io/" target="_blank" rel="noopener"
+										>BrownBrick</a
+									></span
+								>
+							</div>
+							<ul class="points">
+								<li>
+									Co-founded the company and established foundational processes for business and
+									engineering operations.
+								</li>
+								<li>
+									Delivered <b>6 real-world software products</b> — LMS, ERP, course management,
+									inventory management, video translation, and a transcription app.
+								</li>
+								<li>
+									<b>Oversaw all engineering work</b>, improving project efficiency and
+									maintainability by <b>20%</b>.
+								</li>
+								<li>
+									Recruited, interviewed, and onboarded staff and built internal training materials,
+									lifting team productivity by <b>20–25%</b>.
+								</li>
+								<li>
+									Owned international client relationships end to end —
+									<b>personally managing 2+ of clients</b> and ensuring
+									<b>on-time delivery of 3 projects</b>.
+								</li>
+							</ul>
+						</div>
+
+						<div class="job">
+							<div class="job-head">
+								<div class="job-title">Software Engineer (Intern → Full-Time)</div>
+								<div class="job-date">08/2023 — 02/2024</div>
+							</div>
+							<div class="job-org-line">
+								<span class="job-org"
+									><a href="https://liberate-labs.com/" target="_blank" rel="noopener"
+										>Liberate Labs</a
+									></span
+								>
+							</div>
+							<ul class="points">
+								<li>
+									Improved project load time by <b>10–15%</b> through source-code analysis and
+									targeted optimization.
+								</li>
+								<li>
+									Contributed to the launch of major products — <b>LiberateChat</b>,
+									<b>CareerChai</b>, and <b>Delineate</b>.
+								</li>
+								<li>
+									Partnered with developers and designers to scope and resolve software limitations.
+								</li>
+								<li>Wrote clean, maintainable code across multiple production projects.</li>
+							</ul>
+						</div>
+					</section>
+
+					<!-- PROJECTS -->
+					<section class="block">
+						<div class="sec-title">Projects</div>
+
+						<div class="proj">
+							<div class="proj-head">
+								<div class="proj-title-row">
+									<span class="proj-name"
+										><a
+											class="proj-link"
+											href="https://future-plus.co.uk/explore/#"
+											target="_blank"
+											rel="noopener"
+											>FuturePlus — ESG Compatibility Scoring</a
+										></span
+									>
+									<span class="live">Live</span>
+								</div>
+								<div class="proj-date">2024 — 2025</div>
+							</div>
+							<div class="proj-desc">
+								<b>Primary engineer</b> on an organization ESG compatibility scoring platform that
+								assesses and benchmarks companies on sustainability and ESG criteria. Owned the full
+								stack — scoring logic, data model, API, and responsive frontend — from architecture
+								to deployment.
+							</div>
+							<div class="proj-stack">
+								<span class="chip">SvelteKit</span>
+								<span class="chip">FastAPI</span>
+								<span class="chip">PostgreSQL</span>
+								<span class="chip">Supabase</span>
+							</div>
+						</div>
+
+						<div class="proj">
+							<div class="proj-head">
+								<div class="proj-title-row">
+									<span class="proj-name">Hospital Management System</span>
+								</div>
+								<div class="proj-date">09/2025 — 01/2026</div>
+							</div>
+							<div class="proj-desc">
+								Designed and built a modern, UX-focused system from scratch — clean, optimized
+								CodeIgniter API endpoints and a versioned SQL schema with migrations built for heavy
+								usage. <b>Cut dashboard load times by 30%</b> on large patient datasets through SQL
+								optimization. Drove planning directly with the client.
+							</div>
+							<div class="proj-stack">
+								<span class="chip">PHP / CodeIgniter</span>
+								<span class="chip">SQL</span>
+								<span class="chip">REST API</span>
+							</div>
+						</div>
+
+						<div class="proj">
+							<div class="proj-head">
+								<div class="proj-title-row">
+									<span class="proj-name"
+										><a class="proj-link" href="https://taajir.app/" target="_blank" rel="noopener"
+											>Taajir — Inventory Management</a
+										></span
+									>
+									<span class="live">Live</span>
+								</div>
+								<div class="proj-date">08/2024 — 08/2025</div>
+							</div>
+							<div class="proj-desc">
+								Full-stack system tracking products, stock, suppliers, and purchase/sales orders in
+								real time. Encoded real business logic into a maintainable architecture and wrote
+								optimized SQLAlchemy queries for complex relational reporting.
+							</div>
+							<div class="proj-stack">
+								<span class="chip">SvelteKit</span>
+								<span class="chip">FastAPI</span>
+								<span class="chip">SQLAlchemy</span>
+								<span class="chip">PostgreSQL</span>
+							</div>
+						</div>
+
+						<div class="proj">
+							<div class="proj-head">
+								<div class="proj-title-row">
+									<span class="proj-name">Studybuddies — LMS</span>
+								</div>
+								<div class="proj-date">03/2024 — 05/2025</div>
+							</div>
+							<div class="proj-desc">
+								<b>Led a team of 3</b> to convert Figma designs into pixel-perfect, responsive
+								interfaces. Built an advanced scheduling system, integrated live classes via 100ms,
+								and connected a FastAPI backend for seamless data flow.
+							</div>
+							<div class="proj-stack">
+								<span class="chip">SvelteKit</span>
+								<span class="chip">FastAPI</span>
+								<span class="chip">100ms</span>
+							</div>
+						</div>
+
+						<div class="proj">
+							<div class="proj-head">
+								<div class="proj-title-row">
+									<span class="proj-name">Selected Other Work</span>
+								</div>
+								<div class="proj-date">08/2023 — Present</div>
+							</div>
+							<div class="proj-desc">
+								<a class="proj-link" href="https://delineate.pro/" target="_blank" rel="noopener"
+									>Delineate</a
+								>
+								— AI-assisted research-paper analyzer (frontend).
+								<a class="proj-link" href="https://distrobooks.com/" target="_blank" rel="noopener"
+									>Distrobooks</a
+								>
+								— small-scale POS.
+								<a
+									class="proj-link"
+									href="https://strideautocare.com/"
+									target="_blank"
+									rel="noopener"
+									>Stride</a
+								>
+								— autocare business site.
+								<a class="proj-link" href="https://news-updates.com/" target="_blank" rel="noopener"
+									>News Updates</a
+								>
+								— ad-based news platform.
+								<a
+									class="proj-link"
+									href="https://bus-tracker-app.netlify.app/commuter/login"
+									target="_blank"
+									rel="noopener"
+									>Bus Tracker</a
+								>
+								— commuter app with license-plate detection.
+							</div>
+						</div>
+					</section>
+				</main>
+
+				<!-- ========================= ASIDE ========================= -->
+				<aside>
+					<!-- SKILLS -->
+					<section class="block">
+						<div class="sec-title">Skills</div>
+
+						<div class="skillgroup">
+							<div class="skill-label">Frontend</div>
+							<div class="tags">
+								<span class="tag">React</span><span class="tag">Next.js</span>
+								<span class="tag">SvelteKit</span><span class="tag">Vue.js</span>
+								<span class="tag">Flutter</span><span class="tag">Tailwind</span>
+								<span class="tag">JavaScript</span><span class="tag">HTML/CSS</span>
+							</div>
+						</div>
+
+						<div class="skillgroup">
+							<div class="skill-label">Backend</div>
+							<div class="tags">
+								<span class="tag">FastAPI</span><span class="tag">Node.js</span>
+								<span class="tag">NestJS</span><span class="tag">Laravel</span>
+								<span class="tag">CodeIgniter</span><span class="tag">PHP</span>
+							</div>
+						</div>
+
+						<div class="skillgroup">
+							<div class="skill-label">Databases</div>
+							<div class="tags">
+								<span class="tag">PostgreSQL</span><span class="tag">SQL</span>
+								<span class="tag">MongoDB</span><span class="tag">Supabase</span>
+							</div>
+						</div>
+
+						<div class="skillgroup">
+							<div class="skill-label">DevOps / Cloud</div>
+							<div class="tags">
+								<span class="tag">Docker</span><span class="tag">AWS</span>
+								<span class="tag">DigitalOcean</span><span class="tag">GitHub Actions</span>
+							</div>
+						</div>
+
+						<div class="skillgroup">
+							<div class="skill-label">AI Integration</div>
+							<div class="tags">
+								<span class="tag">OpenAI</span><span class="tag">Gemini</span>
+								<span class="tag">Claude</span>
+							</div>
+						</div>
+
+						<div class="skillgroup">
+							<div class="skill-label">Languages</div>
+							<div class="tags">
+								<span class="tag">Python</span><span class="tag">TypeScript</span>
+								<span class="tag">JavaScript</span>
+							</div>
+						</div>
+					</section>
+
+					<!-- EDUCATION -->
+					<section class="block">
+						<div class="sec-title">Education</div>
+						<div class="edu-school">International Islamic University Chittagong</div>
+						<div class="edu-degree">B.Sc. in Computer Science &amp; Engineering</div>
+						<div class="edu-meta">2019 — 10/2024</div>
+						<div class="edu-degree" style="margin-top: 8px">
+							Project: Bus Tracker app with license-plate detection.
+						</div>
+					</section>
+
+					<!-- LANGUAGES / INTERESTS -->
+					<section class="block">
+						<div class="sec-title">Additional Information</div>
+						<ul class="meta-list">
+							<li><span class="k">Languages</span>English — Full professional proficiency</li>
+							<li><span class="k">Interests</span>AI · Research · Leadership · Communication</li>
+						</ul>
+					</section>
+				</aside>
+			</div>
+		</div>
+	</body>
+</html>
