@@ -54,7 +54,7 @@
 		const found = p.image ? [p.image] : [];
 		const exts = ['png', 'webp', 'jpg', 'jpeg'];
 
-		for (let i = 1; i <= 5; i++) {
+		for (let i = 1; i <= 20; i++) {
 			let hit = false;
 			for (const ext of exts) {
 				const path = `/${p.id}/p_${i}.${ext}`;
@@ -178,11 +178,11 @@
 			</button>
 
 			{#if images.length > 1}
-				<div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-5 md:grid-cols-6">
+				<div class="thumb-scroll mt-4 flex gap-3 overflow-x-auto pb-2">
 					{#each images as img}
 						<button
 							type="button"
-							class="group relative aspect-square overflow-hidden rounded-xl ring-2 transition-all hover:scale-[1.03] {selectedImage ===
+							class="group relative aspect-square w-24 flex-none overflow-hidden rounded-xl ring-2 transition-all hover:scale-[1.03] sm:w-28 md:w-32 {selectedImage ===
 							img
 								? 'ring-secondary-300'
 								: 'ring-transparent opacity-70 hover:opacity-100'}"
@@ -267,3 +267,23 @@
 		</div>
 	</div>
 {/if}
+
+<style>
+	.thumb-scroll {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+	}
+
+	.thumb-scroll::-webkit-scrollbar {
+		height: 6px;
+	}
+
+	.thumb-scroll::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.thumb-scroll::-webkit-scrollbar-thumb {
+		background-color: rgba(255, 255, 255, 0.25);
+		border-radius: 9999px;
+	}
+</style>
