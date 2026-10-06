@@ -17,13 +17,13 @@ export const companies = [
 		id: 'nanokingfisher',
 		name: 'Nanokingfisher',
 		role: 'Software Engineer',
-		period: 'Oct 2025 — Present',
+		period: 'Oct 2025 — Jun 2026',
 		type: 'Full-time',
 		color: '#0ea5b5',
-		tagline: 'Currently building here',
+		tagline: 'Where I shipped most recently',
 		description: [
-			'Working as a software engineer across the stack — shipping features, refining the product, and keeping the codebase healthy as the team grows.',
-			'Day to day I work on application logic, APIs, and the user-facing experience, with an emphasis on reliability and clean, maintainable code.'
+			'Worked as a software engineer across the stack — shipping features, refining the product, and keeping the codebase healthy as the team grew.',
+			'Day to day I worked on application logic, APIs, and the user-facing experience, with an emphasis on reliability and clean, maintainable code.'
 		],
 		link: null
 	},

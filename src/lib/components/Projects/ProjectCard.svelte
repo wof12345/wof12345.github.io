@@ -1,5 +1,6 @@
 <script>
 	import CompanyTag from './CompanyTag.svelte';
+	import LiveTag from './LiveTag.svelte';
 	import ProjectTag from './ProjectTag.svelte';
 	import { IconArrowRight } from '@tabler/icons-svelte';
 
@@ -32,9 +33,10 @@
 				{project.name}
 			</h3>
 
-			{#if project.company}
-				<div class="pointer-events-auto">
+			{#if project.company || project.links?.live}
+				<div class="pointer-events-auto flex shrink-0 flex-wrap items-center justify-end gap-2">
 					<CompanyTag company={project.company} />
+					<LiveTag href={project.links?.live} />
 				</div>
 			{/if}
 		</div>

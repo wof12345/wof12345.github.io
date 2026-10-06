@@ -1,5 +1,6 @@
 <script>
 	import CompanyTag from '$lib/components/Projects/CompanyTag.svelte';
+	import LiveTag from '$lib/components/Projects/LiveTag.svelte';
 	import ProjectTag from '$lib/components/Projects/ProjectTag.svelte';
 	import {
 		IconArrowLeft,
@@ -121,6 +122,7 @@
 				{#if project.company}
 					<CompanyTag company={project.company} />
 				{/if}
+				<LiveTag href={project.links?.live} />
 			</div>
 
 			<p class="text-secondary-100/80 max-w-3xl text-lg leading-relaxed">

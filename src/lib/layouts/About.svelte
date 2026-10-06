@@ -31,9 +31,9 @@
 		{
 			role: 'Software Engineer',
 			company: 'Nanokingfisher',
-			period: 'Oct 2025 — Present',
+			period: 'Oct 2025 — Jun 2026',
 			description:
-				'Building full-stack features across the product as a software engineer — shipping reliable, maintainable code as the team grows.'
+				'Built full-stack features across the product as a software engineer — shipping reliable, maintainable code as the team grew.'
 		},
 		{
 			role: 'Co-founder',
