@@ -11,5 +11,19 @@
 		"links": {
 			"live": "https://taajir.app/"
 		}
+	},
+	{
+		"id": "ludo",
+		"name": "Ludo",
+		"period": "2023",
+		"context": "",
+		"company": "Personal",
+		"description": "A browser take on the classic board game with AI opponents, pass-and-play, and real-time online lobbies, kept in sync through Socket.IO events and saved game snapshots.",
+		"tags": ["JavaScript", "HTML", "CSS", "Node.js", "Express", "Socket.IO", "MongoDB"],
+		"image": "/ludo/p_1.png",
+		"links": {
+			"live": "https://classy-lamington-bcc908.netlify.app/",
+			"github": "https://github.com/wof12345/ludo_frontend"
+		}
 	}
 ]

@@ -7,7 +7,6 @@
 		IconBrandGithub,
 		IconChevronLeft,
 		IconChevronRight,
-		IconExternalLink,
 		IconX
 	} from '@tabler/icons-svelte';
 	import Seo from '$lib/components/Seo.svelte';
@@ -129,30 +128,17 @@
 				{project.description}
 			</p>
 
-			{#if project.links?.live || project.links?.github}
+			{#if project.links?.github}
 				<div class="mt-2 flex flex-wrap gap-3">
-					{#if project.links?.live}
-						<a
-							href={project.links.live}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="bg-secondary-300 text-secondary-950 hover:bg-white inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold transition-colors"
-						>
-							<IconExternalLink size={18} />
-							View live
-						</a>
-					{/if}
-					{#if project.links?.github}
-						<a
-							href={project.links.github}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="ring-secondary-300/40 hover:bg-secondary-700 inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold ring-1 transition-colors"
-						>
-							<IconBrandGithub size={18} />
-							GitHub
-						</a>
-					{/if}
+					<a
+						href={project.links.github}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="ring-secondary-300/40 hover:bg-secondary-700 inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold ring-1 transition-colors"
+					>
+						<IconBrandGithub size={18} />
+						GitHub
+					</a>
 				</div>
 			{/if}
 		</div>

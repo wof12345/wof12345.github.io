@@ -17,7 +17,7 @@ export const companies = [
 		id: 'nanokingfisher',
 		name: 'Nanokingfisher',
 		role: 'Software Engineer',
-		period: 'Oct 2025 — Jun 2026',
+		period: 'Aug 2025 — Jun 2026',
 		type: 'Full-time',
 		color: '#0ea5b5',
 		tagline: 'Where I shipped most recently',

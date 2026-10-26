@@ -1,0 +1,181 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Ludo is a browser version of the board game most of us grew up playing on the floor — four
+		colours, sixteen pawns, one die, and a lot of arguing about whose turn it is.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It can be played three ways: against AI opponents, pass-and-play on a single screen, or online
+		with friends through a shareable lobby link. The game is plain JavaScript, HTML, and CSS with no
+		framework. A small Node.js and Socket.IO server keeps everyone at the table in sync. I built it
+		to see how far I could get by working out a real-time multiplayer game from first principles,
+		without an engine doing the hard parts for me.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			A game everyone already knows the rules to, which made every bug easy to spot.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Turning a board into data
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The first problem was the board itself. A Ludo board looks symmetrical, but the track is a loop
+		of 52 squares that bends around four arms of a 15×15 grid. My first attempt generated that loop
+		from rules, and the corners kept coming out wrong. In the end I wrote the 52 squares out by hand
+		as one fixed path, which was simpler and much easier to debug. The four home columns were a
+		better fit for code: each is six steps from a player's entry square in a fixed direction, so
+		one small direction table covers all four colours.
+	</p>
+
+	<p class="text-secondary-100/70">
+		With the path in place, every pawn only needs one number: how far it has travelled from its own
+		start. Its square on the shared loop is that number shifted by the player's offset and wrapped
+		at 52. Once it passes 50 it leaves the loop for its home column. Keeping progress separate from
+		position meant the rules were written once and worked the same for all four players.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Captures, safe squares, and the small rules
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The board keeps a map from each square to the pawn on it. When a pawn lands, the map is checked:
+		an opponent on that square is sent home, unless the square is a starting square or one of the
+		starred safe squares. The same check can also run as a dry run that changes nothing, so the AI
+		can ask whether a move would capture before it makes it. Rolling a six gives another turn and
+		lets a pawn leave its base, three sixes in a row lose the turn, and points are given for
+		leaving base, capturing, and reaching home.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		An AI that plays like a person
+	</h3>
+
+	<p class="text-secondary-100/70">
+		I didn't want the AI to search through every possible future. I wanted it to play the way a
+		person does, by preferring a few kinds of moves in order. Each player keeps its pawns in a
+		priority queue sorted by progress. The queue is changed so that a pawn appears in it only once
+		and moves to its new place after each step. On every roll the AI picks the first of these that
+		applies:
+	</p>
+
+	<ul class="space-y-2.5">
+		<li class="text-secondary-100/80 flex gap-3">
+			<span class="text-secondary-300">1.</span>
+			<span>On a six with a pawn still in base, bring a new pawn onto the board.</span>
+		</li>
+		<li class="text-secondary-100/80 flex gap-3">
+			<span class="text-secondary-300">2.</span>
+			<span>Otherwise, move a pawn into or along its home column if the roll fits exactly.</span>
+		</li>
+		<li class="text-secondary-100/80 flex gap-3">
+			<span class="text-secondary-300">3.</span>
+			<span>Otherwise, take any move that captures an opponent.</span>
+		</li>
+		<li class="text-secondary-100/80 flex gap-3">
+			<span class="text-secondary-300">4.</span>
+			<span>Otherwise, fall back to the furthest pawn that can still move.</span>
+		</li>
+	</ul>
+
+	<p class="text-secondary-100/70">
+		Because the queue is already sorted, each check is a short loop over at most four pawns. The
+		first version moved instantly and felt unsettling to play against. Adding a short pause before
+		each roll made it feel like someone was thinking, even though nothing about the logic changed.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Keeping four screens in agreement
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Online play was the hardest part, and the commit history shows it: "fixed synchronization",
+		"sync disabled temporarily", "attempted success". My first idea was to send only what players
+		do. Given a dice roll and the pawn chosen, every client can work out the same result. So the
+		server only passes two small messages around, <em>roll</em> and <em>pawn clicked</em>, and
+		each browser replays the move with its own animation. That kept messages tiny and the board
+		smooth.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It broke down whenever someone wasn't watching from the start. A player who refreshed, joined
+		late, or lost connection for a moment missed some actions, and their board slowly drifted away
+		from everyone else's. The fix was to add snapshots on top. At the end of every turn the active
+		player's browser packs up the whole game — whose turn it is, every pawn's position and
+		progress, scores, and the finishing order — and the server saves it on the lobby in MongoDB. A
+		player who joins or reconnects loads that snapshot first, then continues from live actions.
+		Actions keep play fast, and snapshots let anyone catch up.
+	</p>
+
+	<p class="text-secondary-100/70">
+		Running AI opponents in online games raised a quieter problem: who rolls for them? If every
+		browser ran the AI, each one would roll its own die and the games would split apart
+		immediately. So only the lobby owner's browser runs the AI and sends its rolls like any other
+		player's. Each client also only lets you roll or move when it really is your turn.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Lobbies and presence
+	</h3>
+
+	<p class="text-secondary-100/70">
+		A lobby is just a random ID in the URL, so inviting someone means sending them a link. Lobbies
+		can have a password, and players already online can be invited directly. Display names are kept
+		unique with a database index rather than extra code. When a player disconnects, the server marks
+		them inactive, tells everyone else in the lobby, and removes the lobby once it's empty. The board
+		also rotates so your own colour always sits in the same corner, which meant converting pawn
+		coordinates for each of the four angles.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">
+			At a glance
+		</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Three modes</span>: vs AI, local pass-and-play, and online</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">2 or 4 players</span> with full Ludo rules and scoring</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Rule-based AI</span> built on a priority queue of pawns</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Hybrid sync</span>: live actions plus saved snapshots</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Shareable lobbies</span> with passwords and invites</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Reconnects</span> restore the game from the saved snapshot</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Rotating board</span> so your colour always faces you</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">No framework</span>: plain JS classes, CSS animations, sound</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			If I rebuilt it today, the server would roll the dice and own the game state rather than just
+			passing messages and storing what clients send it. That one change would remove most of the
+			sync code. Getting there the long way is what taught me why it matters.
+		</p>
+	</div>
+</div>
