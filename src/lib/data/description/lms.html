@@ -1,0 +1,112 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		ClassConnect is a learning management system for schools. Admins run courses and people,
+		teachers run their classes, and students follow their courses, assignments, and exams in one
+		place.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It's a SvelteKit frontend on a FastAPI and PostgreSQL backend, packaged with Docker Compose. I
+		joined in its first weeks, and over about seven months I was the main frontend developer. I
+		built the component library the whole interface is made from, then connected it to the API as
+		the backend grew.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			Most screens in an admin tool are a table, a form, and a modal. Build those three well and
+			every new page comes quickly.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		A component library first
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Before there were many pages, I built the pieces: buttons and icon buttons, text, select, and
+		searchable dropdown inputs with inline validation errors, modals with header, body, and footer
+		slots, tabs, steppers, accordions, breadcrumbs that build themselves from the route, toasts,
+		spinners, a side-navigation layout, and a data table with search and pagination. Pages put these
+		together instead of styling things from scratch, which kept a growing interface consistent while
+		several people worked on it. The set was good enough that I later pulled it out into a separate
+		starter kit to reuse on other projects.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Wiring it to the backend
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Once the API was ready, I replaced the mock data with real endpoints. Authentication runs in a
+		SvelteKit server hook. It reads the session cookie, checks it against the API, and puts the user
+		and role on every request, so protected routes and role-based navigation are decided on the
+		server before a page renders. A small fetch wrapper adds the token to each call and sends
+		server-side requests to the right backend, inside Docker or out. On that base I built course
+		management, with adding, editing, and deleting courses and assigning teachers and students,
+		along with user management for teachers, students, and admins.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">Shipping it</h3>
+
+	<p class="text-secondary-100/70">
+		Toward the end I worked on making it deployable: Docker images for both halves, environment
+		handling that works in local development and in containers, and a stream of fixes for routes,
+		sessions, and edge cases that only showed up against real data.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Component library</span> of inputs, tables,
+					modals, layouts</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Server-side auth</span> in a SvelteKit
+					hook</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Role-based</span> routes and
+					navigation</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Course and user management</span> end to
+					end</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Docker Compose</span> for frontend, API,
+					and database</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Reusable kit</span> later extracted for
+					other projects</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			This was the project where I learned that time spent on shared components pays off later, and
+			where I first owned a frontend from an empty repository to deployment.
+		</p>
+	</div>
+</div>

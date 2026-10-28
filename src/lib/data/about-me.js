@@ -16,7 +16,7 @@
 
 /** Short intro shown at the top of the page. */
 export const intro = [
-	"Beyond the code and commit history, I'm a curious person who likes building things — software, habits, the occasional piece of furniture.",
+	"Beyond the code and commit history, I'm a curious person who likes building things — software, habits, unusual game mechanics/systems that tries to solve real problems in unique ways.",
 	"This page is the less-formal corner of the site: what I do when I'm away from the keyboard, how I like to spend my days, and where I'm hoping all of it leads."
 ];
 
@@ -26,8 +26,8 @@ export const intro = [
  */
 export const quickFacts = [
 	{ label: 'Based in', value: 'Mymensingh, Bangladesh' },
-	{ label: 'Fuelled by', value: 'Coffee & curiosity' },
-	{ label: 'Currently learning', value: 'ThreeJS' },
+	{ label: 'Fuelled by', value: 'Water & curiosity' },
+	{ label: 'Currently learning', value: 'System Design' },
 	{ label: 'Off-switch', value: 'Long walks & Gaming' }
 ];
 
@@ -53,9 +53,9 @@ export const panels = [
 		summary: 'The things I lose track of time doing.',
 		body: [
 			'Outside of work I gravitate toward anything hands-on. I hike when I can get out of the city, and there is a particular calm in being somewhere with no signal and nothing to ship.',
-			'Closer to home, I read widely, mess around with photography, and fall into the occasional weekend project — half of which never get finished, which is entirely the point.'
+			'Closer to home, I like delving into complex games with unique mechanics.'
 		],
-		tags: ['Hiking', 'Reading', 'Photography', 'Side projects']
+		tags: ['Hiking', 'Gaming', 'Brainstorming', 'Tinkering']
 	},
 	{
 		id: 'lifestyle',
@@ -64,7 +64,7 @@ export const panels = [
 		accent: '#b39484',
 		summary: 'How I like my days to actually feel.',
 		body: [
-			'I work best in long, quiet stretches — mornings for deep work, afternoons for the messier collaborative stuff. A good day has a clear win in it, however small.',
+			'I work best in long, quiet stretches — mornings/late nights for deep work, afternoons for the messier collaborative stuff. A good day has a clear win in it, however small.',
 			'I try to keep things balanced: move every day, cook more than I order in, and protect enough downtime that the work stays fun rather than becoming a grind.'
 		],
 		tags: ['Deep work', 'Daily movement', 'Home cooking', 'Slow mornings']

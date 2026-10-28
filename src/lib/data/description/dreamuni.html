@@ -1,0 +1,113 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		DreamUni connects students applying to university with students who already got in. Current
+		undergraduates publish the personal statements that won them their offers, and applicants pay to
+		read them for inspiration.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It has three sides. Sellers are verified university students, buyers are applicants, and admins
+		vet everyone. The frontend is SvelteKit with Tailwind, the backend is FastAPI on PostgreSQL,
+		files are stored in DigitalOcean Spaces, and payments run through Stripe Connect. It was an
+		early-stage product built quickly by a small team. Over about six weeks I wrote more of its
+		commits than anyone else, covering most of the frontend and the API integration.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			A marketplace for proof of success only works if the proof is real.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Verifying sellers
+	</h3>
+
+	<p class="text-secondary-100/70">
+		I rebuilt the seller verification form. It collects the university, course, A-level results, a
+		student ID, and the offer letter itself, with searchable dropdowns over a seeded list of
+		universities, majors, and subjects. On the admin side there is an approval table where the team
+		can download each attachment, look at the offer letter, and approve or reject the profile. A
+		seller only appears to buyers once they're approved. The FAQ explains to buyers that every
+		profile is checked by hand.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Buying and getting paid
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Buyers browse approved profiles with filters, preview a statement, and buy it through a Stripe
+		Checkout session. Purchased documents are served by the API only after it confirms a paid order
+		for that buyer, and buyers can download them from their dashboard. Sellers are paid through
+		Stripe Connect. I built the onboarding link flow that sets up a seller's connected account and
+		the payout tables that show what they've earned. Each sale is split at checkout: the platform
+		keeps its fee and the rest goes straight to the seller's account.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		The rest of the product
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Beyond the main flows I built the shared pieces: modal and table components, file upload, inline
+		form validation and errors, profile and password updates, account deletion, a contact form, and
+		the navigation for desktop and mobile. There was also a steady stream of layout fixes as the
+		design changed.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Three roles</span>: seller, buyer,
+					admin</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Verified sellers</span> via offer letter
+					and student ID</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Admin approval</span> with attachment
+					review</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Stripe Checkout</span> with access checked
+					on the server</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Stripe Connect</span> split payments and
+					payouts</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Shared components</span>: tables, modals,
+					uploads, forms</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			This was the first time I wired a marketplace to Stripe Connect, and it showed me how much of
+			a payments feature is onboarding and trust rather than the charge itself.
+		</p>
+	</div>
+</div>

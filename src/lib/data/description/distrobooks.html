@@ -1,0 +1,154 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Distrobooks is bookkeeping for distributors who work on consignment. Stock comes in from
+		suppliers, goes out to shops before anyone has paid for it, and the money arrives later, a bit
+		at a time.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It's a subscription SaaS. Each business signs up as its own organisation and gets inventory,
+		suppliers and buyers, purchase orders, sales invoices, returns, expenses, a ledger, reports, and
+		a public stock menu it can share. The frontend is SvelteKit with Tailwind. The backend is Flask
+		with SQLAlchemy on MySQL, with Stripe for billing and DigitalOcean Spaces for media. I joined
+		after the first version and stayed on it for well over a year, so most of what's here is
+		features I added to a product that people were already using.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			In consignment the hard question is never "what did we sell?" It's "who still owes us for
+			what?"
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Stock that belongs to someone else
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Stock enters the system through a supplier's purchase order, which creates or tops up inventory
+		and records what the business owes that supplier. It leaves through a sales invoice to a buyer,
+		and that invoice can be marked as consignment. In that case the goods are out of the warehouse
+		but not yet sold, and they show up on their own consignment screen listing which buyer holds
+		what and how much of it is unpaid. Payments can be recorded against an invoice in parts, and the
+		status moves between unpaid, partly paid, and paid as they come in.
+	</p>
+
+	<p class="text-secondary-100/70">
+		Returns were where the maths kept going wrong. I added return invoices on both sides: goods
+		going back to a supplier, and goods coming back from a buyer. Each one had to adjust stock, what
+		is owed, and the ledger together. The "total owed" figures had to be rewritten to take returns
+		into account, and the ledger now shows purchases, sales, and returns in one list that can be
+		filtered by date and exported to CSV for the accountant.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Every change leaves a trail
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Because several people in one business edit the same numbers, every inventory item, account,
+		sale, and purchase order has an audit table next to it. Each change saves a full copy of the row
+		along with the type of change, the time, and the user who made it. The app shows that history on
+		the item's own page. When a stock count looks wrong, someone can see exactly which invoice or
+		edit changed it. A good part of my work was tracking down audit mismatches, where the history
+		and the current value no longer added up.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Menus and QR codes
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Distributors wanted to show shops what was available without giving them a login. Each
+		organisation gets a public inventory menu at its own address, grouped by category, with live
+		stock levels, photos, and short product videos. The server can also draw the whole menu as an
+		image with Pillow, so it can be sent in a message or printed. Inventory items have QR codes, and
+		when building an invoice you can add items by scanning them with the device camera instead of
+		searching a list.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Trials, plans, and Stripe
+	</h3>
+
+	<p class="text-secondary-100/70">
+		I built the subscription system. Plans are Stripe products, and their limits, like the number of
+		accounts or invoices, are stored in the product's metadata, so changing a plan doesn't need a
+		code change. New organisations get a fourteen-day trial with a small cap on accounts and
+		invoices. When the trial ends they're sent to an expired page until they subscribe. Checkout,
+		upgrades, cancellations, and renewals all go through Stripe, and webhooks keep the subscription
+		state in the app in step with Stripe's. Features such as the in-app assistant chat are turned on
+		or off depending on the plan.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Multi-tenant SaaS</span> with roles per
+					organisation</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Consignment tracking</span> with partial
+					payments</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Purchase orders, sales, returns</span> on
+					both sides</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Full audit history</span> for every
+					record</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Ledger and reports</span> with CSV export
+					and P&amp;L</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Public stock menu</span>, also drawn as a
+					shareable image</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">QR scanning</span> to add items to
+					invoices</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Stripe subscriptions</span> with trials,
+					limits, and webhooks</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			Working on a live financial product taught me to change things carefully. A migration that
+			rewrites how money is added up has to be correct on old data as well as new, and the audit
+			trail is usually what proves whether it was.
+		</p>
+	</div>
+</div>

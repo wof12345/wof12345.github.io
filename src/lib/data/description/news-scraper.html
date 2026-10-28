@@ -1,0 +1,156 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		News Updates is a news portal that writes none of its own news. It collects headlines from other
+		outlets' RSS feeds, sorts them into categories and countries, and sends readers back to the
+		original article.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It has two halves. Readers get a fast, image-led front page with a carousel, category tabs, a
+		"latest" sidebar, a country picker, search, and dark mode. Editors get an admin panel where they
+		set up categories, subcategories, countries, and the feeds behind them, and decide how often
+		each one is checked. Both are one Next.js app on Prisma, with GitHub Actions deploying it to a
+		DigitalOcean server running PM2.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			An aggregator lives or dies on how fresh it feels, so most of the work went into deciding when
+			to fetch and what to show.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Feeds as configuration
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Nothing about the content is hard-coded. A source is a feed URL attached to a subcategory, with
+		an optional country, a priority, and a flag for whether it may appear on the home page. Every
+		subcategory has its own refresh interval. A refresh endpoint checks which subcategories are due
+		and fetches only those. The more sources a subcategory has, the sooner it counts as due, which
+		spreads the fetching out instead of hitting every feed at once.
+	</p>
+
+	<p class="text-secondary-100/70">
+		Feeds disagree about almost everything, images most of all. The parser looks for a picture in
+		the enclosure, then in <em>media:content</em>, then in <em>media:thumbnail</em>, and turns
+		category tags into a plain list. Each article is saved by its normalised URL, so fetching the
+		same story twice updates it instead of adding a copy. That one rule fixed a whole run of
+		duplicate-story bugs.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Deciding what goes on the page
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Each feed on the front page is sorted on several levels: the article's own priority, then its
+		source's priority, then either newest first or most endorsed. Readers who sign in can bookmark
+		stories and endorse them, and the endorsement count is what the "popular" tab sorts by. Stories
+		without images are hidden from the home page because they made the grid look broken, and the
+		"last 5 minutes / 30 minutes / hour" sidebar only shows what actually falls inside that window,
+		however quiet that leaves it.
+	</p>
+
+	<p class="text-secondary-100/70">
+		Countries are a filter over sources. Picking a country from the flag dropdown changes which
+		sources count, and with that the categories, tabs, and stories on every page, and the choice is
+		remembered in the browser for the next visit. Headlines in Bengali are detected and set in a
+		Bengali typeface, so the portal can mix languages on one page.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Paying for itself
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The portal runs on ads, so clicking a story goes to a short in-between page before the original
+		site. It shows the headline, tags, and an ad slot. Most of the time it moves you on straight
+		away, but now and then it holds you for a ten-second countdown. Ad slots and AdSense placement
+		are managed from the admin panel, and the site carries the privacy, cookie, and legal pages that
+		ad networks require.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		The admin panel
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The admin area is behind JWT sessions held in a cookie, checked in Next.js middleware. Admin
+		pages redirect to the login screen, and write requests to the admin APIs are refused unless the
+		session belongs to an admin. Reading stays public so the portal can use the same endpoints. From
+		there an editor can reorder countries, turn categories off, link related subcategories, filter
+		long source lists, and set each feed's interval and priority.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">RSS aggregation</span> with per-subcategory
+					refresh intervals</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Country-aware</span> categories, sources,
+					and feeds</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Layered ranking</span> by priority,
+					recency, and endorsements</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Accounts</span> with bookmarks,
+					endorsements, and follows</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Admin panel</span> behind JWT sessions and
+					middleware</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Ad-supported</span> in-between page and
+					managed ad slots</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Dark mode</span>, grid and list views,
+					infinite scroll</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Push to deploy</span> over SSH to a
+					DigitalOcean VM</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			Refreshing is still started by a request to an endpoint. Next time I would move it into a
+			proper background worker with a queue, so a slow feed can never hold up a page load and each
+			source could be retried on its own.
+		</p>
+	</div>
+</div>

@@ -1,0 +1,123 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Topup is a storefront for buying in-game currency, mostly Free Fire diamonds, paid for with
+		bKash or Nagad. My part was turning one shop into a platform that runs many branded shops from
+		the same code.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The system has three parts. There's a Next.js storefront with a wallet, orders, and Google
+		sign-in. There's a React admin panel for products, packages, payment methods, banners, notices,
+		and order handling. And there's an Express and Sequelize API on MySQL behind both. It was
+		already running as a single shop when I joined. The business wanted to open more shops under
+		different names and domains without copying the codebase each time.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			One API, one admin panel, many storefronts, and each one has to look like the only one.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Telling shops apart
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Every shop is a row in a new <em>sites</em> table, identified by its own address. It holds the
+		shop's display name, logo, primary and secondary colours, and contact and social links.
+		Migrations added a site column to users, orders, transactions, products, notices, and banners,
+		so each record belongs to the shop it came from. The first time a new domain sends someone to
+		sign up or log in, a default site is created for it, so starting a shop only means pointing a
+		domain at the storefront and then editing its details in the admin panel.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The harder problem was knowing which shop a request came from. Requests from the browser have an
+		<em>Origin</em> header, but the storefront renders most pages on the server, and those
+		server-to-server calls have none. I changed the storefront's API client to forward the original
+		origin in its own header. A small middleware on the API then picks the first value it can find
+		among the real origin, that forwarded header, and the referrer. Every server-rendered page had
+		to be updated to pass the incoming request through, and that was the bulk of the change.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Making each shop its own
+	</h3>
+
+	<p class="text-secondary-100/70">
+		On the storefront, everything that used to be fixed now comes from the site record. That
+		includes the name in the header and page titles, the theme colours (the loading bar too), the
+		payment method labels, the "why choose us" copy, the footer contacts, and the legal pages. The
+		privacy policy, terms, and children's policy fill in the shop's own name, and each shop gets its
+		own page metadata for search and link previews. After a payment, the gateway sends the customer
+		back to the wallet or order page of the shop they bought from, not to a single default address.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		One admin for all of them
+	</h3>
+
+	<p class="text-secondary-100/70">
+		In the admin panel I added a site editor for creating shops, setting their branding and
+		contacts, and turning them on or off. I also added a site selector, so staff can filter orders
+		and catalogue entries by shop, or look at all of them together. That way one support team can
+		run every shop from a single login.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">White-label storefronts</span> from one
+					codebase</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Origin-based</span> site resolution,
+					including SSR calls</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Per-site data</span> for users, orders,
+					products, banners</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Dynamic branding</span>: name, colours,
+					contacts, metadata</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Mobile wallet payments</span> that return
+					to the right shop</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Admin site editor</span> and cross-site
+					filtering</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			Adding tenants to an app that was never built for them is mostly a hunt for the places that
+			quietly assume there's only one. Here those were page titles, redirect URLs, and legal copy
+			far more than database queries.
+		</p>
+	</div>
+</div>

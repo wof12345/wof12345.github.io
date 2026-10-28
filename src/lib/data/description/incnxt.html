@@ -1,0 +1,144 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		INCNXT helps people start a US company online. You pick an entity type and a state, choose a
+		package, add any extra services, and the team files the paperwork while you follow its progress.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It has three parts: a Next.js marketing site and order flow, an Express and Sequelize API on
+		MySQL, and a React admin panel for the team that does the filing. I joined when the site design
+		was mostly in place but nothing behind it was connected yet. Over about two weeks I built the
+		admin panel from scratch and wrote most of the API and frontend code that turned a set of static
+		pages into a working ordering system.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			Selling a service is mostly about what happens after the customer pays.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Packages, states, and what things cost
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The price of a formation depends on three things: the state's filing fee, a base package, and
+		any extra services. Packages and services are data in the database, managed from the admin
+		panel. A package lists the services it includes, and each of those can be marked optional, so
+		the pricing page lets customers switch parts of a package on or off and see the total update
+		live. Services can also be sold on their own, without a package, and a service is only offered
+		while it's active. Each state's fee comes from the states table, so when a state changes its
+		fee, someone edits one row.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		One checkout, with or without an account
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Most customers order before they have an account. The create-business endpoint does everything
+		inside one database transaction. It finds or creates the user (and sends a generated password if
+		it's new), checks the state, saves the business details, and opens an invoice for the total. If
+		any step fails, none of it is saved. Customers who are already logged in skip the account step
+		and the business is linked to their existing profile. Emails on a block list can't create
+		accounts or companies.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Following an order through
+	</h3>
+
+	<p class="text-secondary-100/70">
+		I replaced a loose status field with a defined status flow. A new business starts as
+		<em>pending name verification</em>, moves to <em>pending verification</em>, and ends as
+		<em>fully operational</em>. Along the way there are rejection states for the name and for the
+		filing, plus states for suspended accounts and overdue payments. Customers can suggest other
+		names when they order, and the dashboard shows whether the name was approved or rejected, with
+		colour-coded progress. On the admin side, the team moves each company through those statuses,
+		uploads the filed documents for the customer to download, and manages invoices, marking them
+		paid or overdue. I also redesigned the invoice into something customers can download.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		The admin panel and content
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The admin panel covers companies, invoices, packages, services, states, users, and blog posts,
+		all with server-side pagination and search. The blog gets articles onto the marketing site
+		without a deploy. Posts have a status and a featured flag, the site filters on both, and the
+		home page sections pull their content from the API. The contact form was the last piece
+		connected before handover.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Data-driven pricing</span>: state fees,
+					packages, add-ons</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Optional package services</span> with live
+					totals</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Transactional checkout</span> that creates
+					the account on the way</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Formation status flow</span> with name
+					verification</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Document delivery</span> from admin to
+					customer</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Invoices</span> with paid and overdue
+					handling</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Admin panel</span> built from scratch with
+					search and paging</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Blog CMS</span> feeding the marketing
+					site</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			Two weeks across three codebases taught me to settle the data model first. Once statuses,
+			packages, and invoices had a fixed shape, the API, the site, and the admin panel could be
+			built against it at the same time.
+		</p>
+	</div>
+</div>

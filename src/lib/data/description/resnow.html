@@ -1,0 +1,101 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		ResNow is a reservation dashboard for restaurants. Staff use it to see the evening's bookings,
+		seat walk-ins, manage guests, and set the opening hours, tables, and rules that decide what can
+		be booked.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It's a SvelteKit and Tailwind frontend with a Storybook component catalogue, built by a small
+		team from a detailed design. I worked on it for about four months as one of several frontend
+		developers. My part was mostly the shared building blocks and the bookings screen.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			A front-of-house screen gets read in a glance between two other jobs, so it has to be right at
+			a glance.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		The bookings timeline
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Next to the plain table of bookings there's a timeline view. Each table in the restaurant is a
+		row, the evening is split into fifteen-minute columns across opening hours, and each booking is
+		a block from its start time to its end. The layout is a CSS grid. A booking's row comes from its
+		table, and its start and end columns are worked out from the time and duration rounded to the
+		nearest quarter hour. A marker shows the current time slot. I refactored this view into the
+		bookings page, and fixed gaps and overflow where bookings crossed column edges.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		The pieces everything else uses
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Much of my work was in the parts every page relies on. I organised the app into route groups for
+		the logged-in dashboard and the sign-in screens, built the sidebar's hover and active states and
+		the organisation menu, and rewrote the top navigation. I added a stepper for multi-step forms,
+		fixed a flickering searchable dropdown, and fixed the date picker that the booking and holiday
+		screens share. Because these are used on almost every screen, small fixes in them improved the
+		whole app.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Timeline view</span> of bookings by table
+					and time</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">CSS grid layout</span> on fifteen-minute
+					slots</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Route groups</span> for dashboard and
+					sign-in</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Shared components</span>: stepper,
+					dropdowns, date picker</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Navigation</span>: sidebar, menus, top
+					bar</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Storybook</span> catalogue for
+					components</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			Working from a pixel-precise design with several other developers taught me to keep components
+			small and predictable, so the next person can use them without reading how they work.
+		</p>
+	</div>
+</div>

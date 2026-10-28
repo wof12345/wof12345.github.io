@@ -6,7 +6,14 @@
 		"context": "",
 		"company": "Brownbrick",
 		"description": "A robust inventory management and point-of-sale system designed for small to medium-sized businesses, featuring real-time stock tracking, sales analytics and customized features to streamline operations.",
-		"tags": ["Svelte 5", "Tailwind CSS", "Vite", "Supabase", "FastAPI", "PostgreSQL"],
+		"tags": [
+			"Svelte 5",
+			"Tailwind CSS",
+			"Vite",
+			"Supabase",
+			"FastAPI",
+			"PostgreSQL"
+		],
 		"image": "/taajir/p_1.png",
 		"links": {
 			"live": "https://taajir.app/"
@@ -19,11 +26,177 @@
 		"context": "",
 		"company": "Personal",
 		"description": "A browser take on the classic board game with AI opponents, pass-and-play, and real-time online lobbies, kept in sync through Socket.IO events and saved game snapshots.",
-		"tags": ["JavaScript", "HTML", "CSS", "Node.js", "Express", "Socket.IO", "MongoDB"],
+		"tags": [
+			"JavaScript",
+			"HTML",
+			"CSS",
+			"Node.js",
+			"Express",
+			"Socket.IO",
+			"MongoDB"
+		],
 		"image": "/ludo/p_1.png",
 		"links": {
 			"live": "https://classy-lamington-bcc908.netlify.app/",
 			"github": "https://github.com/wof12345/ludo_frontend"
 		}
+	},
+	{
+		"id": "news-scraper",
+		"name": "News Updates",
+		"period": "2026",
+		"context": "",
+		"company": "Nanokingfisher",
+		"description": "A news aggregator that pulls RSS feeds into country-aware categories, ranks stories by priority and reader endorsements, and comes with a full admin panel for feeds, intervals, and ad slots.",
+		"tags": [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Prisma",
+			"SQLite",
+			"Tailwind CSS"
+		],
+		"image": "/news-scraper/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "incnxt",
+		"name": "INCNXT",
+		"period": "2025",
+		"context": "",
+		"company": "Nanokingfisher",
+		"description": "An online US company-formation service: data-driven pricing by state and package, a transactional checkout that creates the account on the way, a formation status flow, and an admin panel built from scratch.",
+		"tags": [
+			"Next.js",
+			"React",
+			"Express",
+			"Sequelize",
+			"MySQL",
+			"Tailwind CSS"
+		],
+		"image": "/incnxt/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "distrobooks",
+		"name": "Distrobooks",
+		"period": "2025",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "Subscription bookkeeping for consignment distributors: purchase orders, sales, returns, a ledger with full audit history, public stock menus, QR scanning, and Stripe-billed plans.",
+		"tags": [
+			"SvelteKit",
+			"Tailwind CSS",
+			"Flask",
+			"SQLAlchemy",
+			"MySQL",
+			"Stripe"
+		],
+		"image": "/distrobooks/p_1.png",
+		"links": {
+			"live": "https://distrobooks.com/"
+		}
+	},
+	{
+		"id": "studybuddies",
+		"name": "LearnYourWay",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A private-tutoring marketplace with tutor applications, trial lessons, Stripe-paid packages, a live 100ms classroom, a notice-based reschedule and refund policy, and tutor payouts.",
+		"tags": [
+			"SvelteKit",
+			"FastAPI",
+			"PostgreSQL",
+			"Stripe",
+			"100ms",
+			"Paraglide"
+		],
+		"image": "/studybuddies/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "german-lms",
+		"name": "Ark Clam Academy",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A workplace training app for German companies, with Whisper-generated English and German subtitles, translated quizzes, a fully localised Flutter client, and WebSocket team chat.",
+		"tags": [
+			"Flutter",
+			"Dart",
+			"FastAPI",
+			"PostgreSQL",
+			"Celery",
+			"OpenAI Whisper"
+		],
+		"image": null,
+		"links": {}
+	},
+	{
+		"id": "lms",
+		"name": "ClassConnect",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A school learning management system where I built the component library the whole interface is made from, then wired it to a FastAPI backend with server-side auth and role-based routes.",
+		"tags": [
+			"SvelteKit",
+			"Tailwind CSS",
+			"FastAPI",
+			"PostgreSQL",
+			"Docker"
+		],
+		"image": "/lms/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "resnow",
+		"name": "ResNow",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A restaurant reservation dashboard. I built the bookings timeline, which lays each table out against fifteen-minute slots on a CSS grid, plus the shared navigation and form components.",
+		"tags": [
+			"SvelteKit",
+			"TypeScript",
+			"Tailwind CSS",
+			"Storybook"
+		],
+		"image": "/resnow/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "dreamuni",
+		"name": "DreamUni",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A marketplace where verified university students share their winning personal statements with applicants, with admin approval of offer letters and Stripe Connect split payouts.",
+		"tags": [
+			"SvelteKit",
+			"Tailwind CSS",
+			"FastAPI",
+			"PostgreSQL",
+			"Stripe Connect"
+		],
+		"image": null,
+		"links": {}
+	},
+	{
+		"id": "raz-tutoring",
+		"name": "Raz Tutoring",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A bold marketing site for a small online tutoring business, built in a few weeks on my own Svelte component kit, with the start of a dashboard for tutors and students.",
+		"tags": [
+			"SvelteKit",
+			"Tailwind CSS",
+			"ApexCharts",
+			"Splide"
+		],
+		"image": "/raz-tutoring/p_1.png",
+		"links": {}
 	}
 ]

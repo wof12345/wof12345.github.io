@@ -1,0 +1,149 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		LearnYourWay is a marketplace for private tutoring. Students find a tutor, book a free trial,
+		buy a package of lessons, and meet online or in person. The platform handles payments,
+		scheduling, the classroom, and what happens when plans change.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It's a SvelteKit app backed by a FastAPI and PostgreSQL API. Stripe takes the payments and 100ms
+		runs the live video classroom and whiteboard. There are separate spaces for students, tutors,
+		and admins, and the interface is translated with Paraglide. I was on the project for a year,
+		from early prototype to running product, and wrote more of its commits than anyone else on the
+		team. My work covered the frontend and the API: registration, booking, orders, sessions, and
+		money.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			Booking a lesson takes one click. Being fair when someone cancels two days before takes a
+			policy.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Becoming a tutor
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Tutors apply through a five-step wizard: personal details, teaching background, a
+		criminal-record declaration, their online and in-person rates, and supporting documents. The
+		application also includes an intro video. Admins review each application, and the tutor gets a
+		notification whether it's approved or rejected. Once approved, a tutor creates services: a
+		subject, a lesson length, an intro video, and whether it's taught online, in person, or both.
+		Students search those with filters for subject, language, availability, area, and format. Every
+		time a service is viewed, an impression is recorded, so tutors can see how many people looked at
+		their listing over a chosen period.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		From trial to order
+	</h3>
+
+	<p class="text-secondary-100/70">
+		I built the booking modal and the trial-lesson flow. A student picks a format, chooses times
+		from the tutor's availability on a calendar, and either asks for a free trial or pays for a set
+		of sessions through Stripe Checkout. The price depends on the format: the tutor's online rate,
+		in-person rate, or a mix of the two. Getting that right took a few attempts, including one bug
+		where Stripe charged a different amount from the one shown. A paid order becomes a group of
+		scheduled sessions that both people see on their calendars, and each session opens a 100ms room
+		with a shared whiteboard when it's time.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		When plans change
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The part I'm proudest of is order resolution, meaning what happens when someone wants to
+		reschedule, cancel, or get a refund. Either side can open a request for some or all of an
+		order's sessions, and the other side approves or rejects it, with a notification at each step.
+		What it costs depends on how much notice was given. More than 48 hours before a session, a
+		reschedule is free and a cancellation is fully refunded. Between 24 and 48 hours, each costs
+		half the session. Inside 24 hours, a reschedule costs a full session and a cancellation isn't
+		refunded. The fee is worked out from the tutor's actual rate for that session's format, and a
+		rejected order can give the student a free session as an apology. All of this logic sits in one
+		place on the server, so the screens just show what it decided.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Getting tutors paid
+	</h3>
+
+	<p class="text-secondary-100/70">
+		On the money side I built payouts. Tutors add bank details. The system adds up what each tutor
+		has earned from completed orders, subtracts what has already been paid out, and puts anyone with
+		a balance on a list of payout candidates for an admin to settle. Tutors get an earnings view,
+		and both sides can see a transaction history.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Three roles</span>: student, tutor,
+					admin</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Tutor applications</span> with review and
+					notifications</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Online, in person, or both</span>, priced
+					per format</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Free trials</span> and Stripe-paid lesson
+					packages</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Live classroom</span> with video and
+					whiteboard on 100ms</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Notice-based</span> reschedule and refund
+					policy</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Payouts</span> calculated from completed
+					sessions</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Chat, calendar, and analytics</span> for
+					every role</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			A marketplace is mostly edge cases about time and money. Writing the cancellation rules as one
+			small, testable function, rather than spreading them across screens, is what made them
+			possible to get right.
+		</p>
+	</div>
+</div>

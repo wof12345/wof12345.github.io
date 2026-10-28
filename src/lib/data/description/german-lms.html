@@ -1,0 +1,129 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Ark Clam Academy is a training app for German companies. Staff watch short instructional videos,
+		take quizzes on them, and their managers can see who has finished what.
+	</p>
+
+	<p class="text-secondary-100/70">
+		There are four roles. A CEO account runs the platform, admins manage organisations and their
+		licences, supervisors create training for their teams, and employees work through it, mostly on
+		their phones. The client is a Flutter app for Android and iOS. It talks to a FastAPI backend on
+		PostgreSQL, with Celery workers for slow jobs and DigitalOcean Spaces for video. I worked across
+		the mobile app and the backend for about six months, as one of a small team.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			Not everyone watching was a native German speaker, so the videos had to work in two languages.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Subtitles in two languages, generated for you
+	</h3>
+
+	<p class="text-secondary-100/70">
+		I built the transcription pipeline. When a supervisor uploads a video, the API stores it
+		straight away and returns, then queues one Celery task per language, English and German. Each
+		task sends the audio to OpenAI's Whisper, asks for subtitles in SRT format, uploads the file
+		next to the video, and links it to the video in the database. Because this runs in the
+		background, a long upload never holds up the request, and adding a language is a one-line
+		change. On the app side, the player loads every subtitle track for the video, with one selected
+		by default, and viewers can switch between them. That needed fixes for streaming performance and
+		for video playback on iOS.
+	</p>
+
+	<p class="text-secondary-100/70">
+		Quizzes needed the same treatment. Titles, descriptions, and questions are machine-translated
+		when they're saved and stored as separate translation rows, so an employee sees the whole quiz
+		in their own language and the scores still point to a single question.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		An app that speaks German first
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The app was first written with English strings scattered through the code. I set up Flutter's
+		localisation system and moved every user-facing string into English and German resource files,
+		around 340 keys. That covered the CEO home screen, organisation details, the tables, the modals,
+		the quiz builder, and the settings. The language selector in settings switches locale across the
+		whole app at once, and API calls send that locale so the server answers in the same language. I
+		also added username logins next to email, since many employees didn't have a work email address.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">Team chat</h3>
+
+	<p class="text-secondary-100/70">
+		Toward the end I built chat from end to end. Chat rooms belong to an organisation, have
+		participants, and can be one-to-one or group conversations. Messages are saved through the REST
+		API and pushed to everyone in the room over an authenticated WebSocket. In the app there is a
+		chat sidebar, a conversation view, and a way to add people to an existing group.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Four roles</span>: CEO, admin, supervisor,
+					employee</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Whisper subtitles</span> in English and
+					German</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Celery workers</span> so uploads return
+					straight away</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Translated quizzes</span> stored per
+					language</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Full localisation</span> of the Flutter
+					app</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">WebSocket chat</span> with group
+					rooms</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Username or email</span> sign-in</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Terraform and CI</span> for the backend
+					deploy</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			Localisation is far cheaper to plan for from the start. Most of the work wasn't translating
+			anything. It was finding every string that had been typed straight into a widget.
+		</p>
+	</div>
+</div>

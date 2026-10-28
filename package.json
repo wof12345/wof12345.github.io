@@ -26,6 +26,9 @@
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
+	"engines": {
+		"node": ">=24"
+	},
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",

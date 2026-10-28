@@ -1,0 +1,142 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		This is a hospital management system for a private clinic. I rebuilt the parts that deal with
+		money: admissions, bills, medicine, advance payments, and the accounting that has to balance
+		behind all of them.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It started as an off-the-shelf CodeIgniter hospital system with a public website, doctors,
+		departments, appointments, beds, pharmacy, and an accounts module. The clinic's real process
+		didn't match it. Patients are admitted, given services and medicine over several days, pay in
+		advance in parts, are discharged, and the doctors, staff, and referring agents who were involved
+		all have to be paid. Over a couple of months, and a little over a hundred commits, I reworked
+		that whole flow in PHP, MySQL, and jQuery, with mPDF for printed documents.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			A bill is the easy part. The hard part is that every line on it is also a journal entry
+			somewhere else.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		From admission to discharge
+	</h3>
+
+	<p class="text-secondary-100/70">
+		I rebuilt admission as one guided form. It registers or looks up the patient, assigns a bed,
+		records the referring doctor and agent, adds an optional admission fee, and takes an advance
+		payment with its own printed receipt. While the patient is in, services, medicines, and bed days
+		build up on a single bill for that admission. Discharge closes everything in one step: it works
+		out the final bed charge, prompts for any balance still owed, frees the bed, and prints a
+		separate discharge summary and bill. A lot of the commits are edge cases in this flow, like
+		editing an admission after discharge, a bed changing mid-stay, or advance payments dated before
+		the bill.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Services that carry their own costs
+	</h3>
+
+	<p class="text-secondary-100/70">
+		A service like a surgery isn't one price. It comes with medicines and with people: a surgeon, an
+		anaesthetist, assistants. I changed services and packages so they can define a bundle of
+		medicines and a list of staff roles with what each is paid. When the service is added to a bill,
+		the medicines are taken from pharmacy stock and listed under that service, and the staff lines
+		are filled in ready to assign. Prices and discounts can still be changed per bill, because the
+		front desk always needs to.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Bookkeeping without the bookkeeper
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The accounts module uses double-entry vouchers and a chart of accounts. Before, someone had to
+		enter every voucher by hand after the fact. Now saving a bill creates them automatically.
+		Payments become credit vouchers against cash or card. Each staff member assigned to a service
+		gets a payable voucher with a narration that names the patient, the admission, the service, and
+		their role. Referral agents get their commission the same way. Doctors, staff, and agents get
+		their own account heads, created the first time they're needed, so each person's balance shows
+		up in the general ledger without anyone setting it up. Voucher numbers are given out in
+		sequence, and editing a bill updates its vouchers instead of duplicating them.
+	</p>
+
+	<p class="text-secondary-100/70">
+		On the reporting side I fixed the cash book and general ledger calculations, added narration to
+		the cash book view, added a voucher reject step to approvals, and rewrote the summary reports so
+		people outside accounts can read them.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Admission to discharge</span> as one
+					connected flow</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Advance payments</span> with dated
+					receipts</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Service bundles</span> of medicines and
+					staff roles</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Pharmacy stock</span> drawn down from
+					bills</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Automatic vouchers</span> for payments,
+					staff, and agents</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Account heads</span> created per doctor,
+					employee, and agent</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Cash book and ledger</span> fixes and
+					readable reports</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Printed documents</span>: receipts, bills,
+					discharge summaries</span
+				>
+			</li>
+		</ul>
+	</div>
+
+	<div class="border-secondary-300/10 mt-8 border-t pt-6">
+		<p class="text-secondary-200 text-base">
+			Working inside someone else's older codebase meant fitting in with how it already did things,
+			not rewriting it. Most of the value came from listening to how the front desk actually worked
+			and making the software match.
+		</p>
+	</div>
+</div>
