@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { introPose, stations } from './stations';
+import { introPose, pagePose, stations } from './stations';
 
 const TEXTURES = {
 	earth: '/textures/earth_atmos_2048.jpg',
@@ -23,6 +23,9 @@ const MOON_SPIN = 0.015;
 // Drag: radians per pixel, and how fast a flick's momentum dies off.
 const DRAG_SENSITIVITY = 0.006;
 const SPIN_DECAY = 2.5;
+// The random planet shown behind inner pages.
+const PLANET_POS = { x: 13, y: 6, z: 8 };
+const PLANET_SPIN = 0.02;
 // Stars pop in over this window (seconds) once the recede starts.
 const STAR_SPREAD = 6;
 
@@ -283,10 +286,13 @@ export function createSpace(canvas, { onDragChange } = {}) {
 
 	let started = false;
 	let stationIndex = 0;
+	// An inner page is open: use the page pose and render at half rate.
+	let pageMode = false;
+	let frame = 0;
 	let aspect = 1;
 
 	function applyStation() {
-		const s = stations[stationIndex];
+		const s = pageMode ? pagePose : stations[stationIndex];
 		// On portrait screens the planets sit above the content instead of beside it.
 		const portrait = aspect < 1;
 		cam.x.target = s.camera.x;
@@ -308,6 +314,7 @@ export function createSpace(canvas, { onDragChange } = {}) {
 		camera.updateProjectionMatrix();
 		starUniforms.uPixelRatio.value = dpr;
 		if (started) applyStation();
+		if (current) placePlanet(current);
 	}
 
 	// --- Drag to rotate -----------------------------------------------------
@@ -331,9 +338,13 @@ export function createSpace(canvas, { onDragChange } = {}) {
 			-((e.clientY - rect.top) / rect.height) * 2 + 1
 		);
 		raycaster.setFromCamera(ndc, camera);
-		const hit = raycaster.intersectObjects([earth, moon], false)[0];
+		const bodies = [earth, moon];
+		if (current?.ready) bodies.push(current.body);
+		const hit = raycaster.intersectObjects(bodies, false)[0];
 		if (!hit) return null;
-		return hit.object === moon ? moonHandle : earthHandle;
+		if (hit.object === moon) return moonHandle;
+		if (current && hit.object === current.body) return current.handle;
+		return earthHandle;
 	}
 
 	const worldDelta = new THREE.Quaternion();
@@ -401,6 +412,127 @@ export function createSpace(canvas, { onDragChange } = {}) {
 		onDragChange?.(false);
 	}
 
+	// --- Page planet ------------------------------------------------------------
+
+	/**
+	 * @typedef {{
+	 *   id: string,
+	 *   handle: THREE.Group,
+	 *   body: THREE.Mesh,
+	 *   materials: THREE.Material[],
+	 *   opacity: Damped,
+	 *   ready: boolean,
+	 *   dispose: () => void
+	 * }} PagePlanet
+	 */
+	/** @type {PagePlanet | null} */
+	let current = null;
+	/** Planets fading out after a page change; disposed once invisible. @type {PagePlanet[]} */
+	const leaving = [];
+
+	/** @param {PagePlanet} p */
+	function placePlanet(p) {
+		const portrait = aspect < 1;
+		p.handle.position.set(
+			// Portrait has no free margin: tuck it into the top-right corner, partly off-screen.
+			portrait ? 7 : PLANET_POS.x,
+			PLANET_POS.y + (portrait ? 10 : 0),
+			PLANET_POS.z
+		);
+	}
+
+	/** @param {import('./planets').PlanetDef} def */
+	function buildPlanet(def) {
+		// Own loading manager: the planet fades in only once its textures arrive.
+		const planetManager = new THREE.LoadingManager();
+		const planetLoader = new THREE.TextureLoader(planetManager);
+		/** @param {string} url @param {boolean} [color] */
+		const tex = (url, color = true) => {
+			const t = planetLoader.load(url);
+			if (color) t.colorSpace = THREE.SRGBColorSpace;
+			t.anisotropy = maxAniso;
+			return t;
+		};
+
+		// handle (drag) > tilt (axial tilt, tipped toward the camera) > body (spin)
+		const handle = new THREE.Group();
+		const tilt = new THREE.Group();
+		tilt.rotation.z = THREE.MathUtils.degToRad(def.tilt);
+		tilt.rotation.x = 0.3;
+		handle.add(tilt);
+
+		const bodyMat = new THREE.MeshStandardMaterial({
+			map: tex(def.map),
+			roughness: 1,
+			metalness: 0,
+			transparent: true,
+			opacity: 0
+		});
+		const body = new THREE.Mesh(new THREE.SphereGeometry(def.radius, 64, 64), bodyMat);
+		tilt.add(body);
+		/** @type {THREE.Material[]} */
+		const materials = [bodyMat];
+
+		if (def.ring) {
+			const inner = def.radius * def.ring.inner;
+			const outer = def.radius * def.ring.outer;
+			const geo = new THREE.RingGeometry(inner, outer, 128, 1);
+			// RingGeometry maps UVs across a plane; ring textures run along the radius.
+			const pos = geo.attributes.position;
+			const uv = geo.attributes.uv;
+			const v = new THREE.Vector3();
+			for (let i = 0; i < pos.count; i++) {
+				v.fromBufferAttribute(pos, i);
+				uv.setXY(i, (v.length() - inner) / (outer - inner), 0.5);
+			}
+			const ringMat = new THREE.MeshStandardMaterial({
+				map: tex(def.ring.color),
+				alphaMap: tex(def.ring.alpha, false),
+				side: THREE.DoubleSide,
+				roughness: 1,
+				metalness: 0,
+				transparent: true,
+				opacity: 0,
+				depthWrite: false
+			});
+			const ring = new THREE.Mesh(geo, ringMat);
+			ring.rotation.x = -Math.PI / 2;
+			tilt.add(ring);
+			materials.push(ringMat);
+		}
+
+		/** @type {PagePlanet} */
+		const p = {
+			id: def.id,
+			handle,
+			body,
+			materials,
+			opacity: new Damped(0, 2.5),
+			ready: false,
+			dispose() {
+				scene.remove(handle);
+				momentum.delete(handle);
+				handle.traverse((obj) => {
+					const mesh = /** @type {THREE.Mesh} */ (obj);
+					if (!mesh.geometry) return;
+					mesh.geometry.dispose();
+					const mat = /** @type {THREE.MeshStandardMaterial} */ (mesh.material);
+					mat.map?.dispose();
+					mat.alphaMap?.dispose();
+					mat.dispose();
+				});
+			}
+		};
+		planetManager.onLoad = () => {
+			p.ready = true;
+			if (current === p) p.opacity.target = 1;
+		};
+		placePlanet(p);
+		scene.add(handle);
+		momentum.set(handle, { x: 0, y: 0 });
+		return p;
+	}
+
 	canvas.style.touchAction = 'none';
 	window.addEventListener('pointerdown', onPointerDown);
 	window.addEventListener('pointermove', onPointerMove);
@@ -409,6 +541,8 @@ export function createSpace(canvas, { onDragChange } = {}) {
 
 	const clock = new THREE.Clock();
 	renderer.setAnimationLoop(() => {
+		// Behind an inner page the scene is ambient, so ~30 fps is plenty.
+		if (pageMode && frame++ % 2) return;
 		const dt = Math.min(clock.getDelta(), 0.1);
 		const t = clock.elapsedTime;
 
@@ -441,6 +575,17 @@ export function createSpace(canvas, { onDragChange } = {}) {
 		camera.position.set(cam.x.step(dt) + px * 0.4, cam.y.step(dt) - py * 0.25, cam.z.step(dt));
 		camera.lookAt(px * 0.15, cam.y.value - py * 0.1, 0);
 
+		for (const p of current ? [current, ...leaving] : leaving) {
+			const o = p.opacity.step(dt);
+			for (const m of p.materials) m.opacity = o;
+			p.body.rotation.y += dt * PLANET_SPIN;
+		}
+		for (let i = leaving.length - 1; i >= 0; i--) {
+			if (leaving[i].opacity.value > 0.01) continue;
+			leaving[i].dispose();
+			leaving.splice(i, 1);
+		}
+
 		starUniforms.uTime.value = t;
 		renderer.render(scene, camera);
 	});
@@ -461,6 +606,23 @@ export function createSpace(canvas, { onDragChange } = {}) {
 				applyStation();
 			}
 		},
+		/**
+		 * Shows `def` as the page planet (or none), fading out the previous one.
+		 * @param {import('./planets').PlanetDef | null} def
+		 */
+		setPlanet(def) {
+			if ((current?.id ?? null) === (def?.id ?? null)) return;
+			if (current) {
+				current.opacity.target = 0;
+				leaving.push(current);
+			}
+			current = def ? buildPlanet(def) : null;
+		},
+		/** @param {boolean} on */
+		setPage(on) {
+			pageMode = on;
+			if (started) applyStation();
+		},
 		/** @param {number} index */
 		setStation(index) {
 			stationIndex = index;
@@ -472,6 +634,8 @@ export function createSpace(canvas, { onDragChange } = {}) {
 			window.removeEventListener('pointerup', onPointerUp);
 			window.removeEventListener('pointercancel', onPointerUp);
 			renderer.setAnimationLoop(null);
+			current?.dispose();
+			leaving.forEach((p) => p.dispose());
 			scene.traverse((obj) => {
 				const mesh = /** @type {THREE.Mesh} */ (obj);
 				if (!mesh.geometry) return;

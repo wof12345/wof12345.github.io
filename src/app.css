@@ -134,3 +134,14 @@ html.quiet-scrollbars.is-scrolling {
 .revealing [data-scrollable] {
 	overflow: hidden;
 }
+
+/* "Passing <planet>" caption on inner pages, fades in with the planet. */
+.planet-caption {
+	animation: caption-in 1.2s ease 0.6s both;
+}
+@keyframes caption-in {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+}

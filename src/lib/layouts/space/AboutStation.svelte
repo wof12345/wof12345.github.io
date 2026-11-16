@@ -38,6 +38,12 @@
 			More about me
 		</a>
 		<a
+			href="/blog"
+			class="flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm transition hover:border-white/50"
+		>
+			Blog
+		</a>
+		<a
 			href="https://www.linkedin.com/in/atif-bin-ferdous-1b3602281"
 			target="_blank"
 			rel="noreferrer"

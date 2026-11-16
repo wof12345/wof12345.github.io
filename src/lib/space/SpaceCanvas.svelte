@@ -5,11 +5,13 @@
 	 * @type {{
 	 *   phase: import('./timeline').Phase,
 	 *   station: number,
+	 *   page?: boolean,
+	 *   planet?: import('./planets').PlanetDef | null,
 	 *   onready?: (ready: Promise<void>) => void,
 	 *   ondragchange?: (dragging: boolean) => void
 	 * }}
 	 */
-	let { phase, station, onready, ondragchange } = $props();
+	let { phase, station, page = false, planet = null, onready, ondragchange } = $props();
 
 	/** @type {HTMLCanvasElement} */
 	let canvas;
@@ -39,6 +41,8 @@
 
 	$effect(() => space?.setPhase(phase));
 	$effect(() => space?.setStation(station));
+	$effect(() => space?.setPage(page));
+	$effect(() => space?.setPlanet(planet));
 </script>
 
 <canvas bind:this={canvas} class="fixed inset-0 block h-full w-full" aria-hidden="true"></canvas>

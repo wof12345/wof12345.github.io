@@ -46,6 +46,17 @@ export const stations = [
 	}
 ];
 
+/**
+ * Placement while an inner page (about, blog, company, project) is open:
+ * the earth and moon drift far back so text can sit over the whole screen.
+ * @type {Pick<Station, 'camera' | 'planets'>}
+ */
+export const pagePose = {
+	camera: { x: 0, y: 1, z: 34 },
+	// Far top-left: the top-right belongs to the page's random planet.
+	planets: { x: -19, y: 10, scale: 0.45 }
+};
+
 /** Camera/planet placement during the intro, before the recede. */
 export const introPose = {
 	camera: { x: 0, y: 0, z: 6 },

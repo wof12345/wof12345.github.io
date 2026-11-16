@@ -1,6 +1,6 @@
 <script>
-	import { IconArrowLeft } from '@tabler/icons-svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import SpacePage from '$lib/layouts/space/SpacePage.svelte';
 	import { absoluteUrl, author } from '$lib/seo';
 
 	let { data } = $props();
@@ -21,6 +21,7 @@
 		})
 	);
 
+	/** @param {string | undefined} d */
 	function formatDate(d) {
 		if (!d) return '';
 		const date = new Date(d);
@@ -35,59 +36,53 @@
 
 <Seo
 	title="{data.meta.title ?? data.slug} · Atif Bin Ferdous"
-	description={data.meta.excerpt ?? `Read "${data.meta.title ?? data.slug}" on Atif Bin Ferdous's blog.`}
+	description={data.meta.excerpt ??
+		`Read "${data.meta.title ?? data.slug}" on Atif Bin Ferdous's blog.`}
 	canonical="/blog/{data.slug}"
 	type="article"
 	keywords={Array.isArray(data.meta.tags) ? data.meta.tags : []}
 	jsonLd={articleJsonLd}
 />
 
-<main class="bg-primary-950 min-h-screen w-full text-white">
-	<header class="bg-primary-800 w-full px-6 py-16 md:py-20">
-		<div class="mx-auto flex max-w-3xl flex-col gap-4">
-			<a
-				href="/blog"
-				class="text-primary-200 hover:text-white inline-flex w-fit items-center gap-2 text-sm font-semibold transition-colors"
-			>
-				<IconArrowLeft size={18} />
-				<span>All posts</span>
-			</a>
-
-			<div class="flex flex-wrap items-center gap-3 text-sm">
-				{#if data.meta.date}
-					<span class="text-primary-300 font-semibold">
-						{formatDate(data.meta.date)}
-					</span>
-				{/if}
-				{#if data.meta.tags?.length}
-					<span class="text-primary-400">·</span>
-					<div class="flex flex-wrap gap-2">
-						{#each data.meta.tags as tag}
-							<span
-								class="bg-primary-700/60 text-primary-100 rounded-full px-2.5 py-0.5 text-xs font-semibold"
-							>
-								{tag}
-							</span>
-						{/each}
-					</div>
-				{/if}
-			</div>
-
-			<h1 class="text-3xl font-bold md:text-5xl">
-				{data.meta.title ?? data.slug}
-			</h1>
-
-			{#if data.meta.excerpt}
-				<p class="text-primary-100/80 max-w-2xl leading-relaxed">
-					{data.meta.excerpt}
-				</p>
+<SpacePage back={{ href: '/blog', label: 'All posts' }} revealKey={data.slug}>
+	<header class="flex flex-col gap-4">
+		<div
+			data-reveal
+			style:--i={0}
+			class="flex flex-wrap items-center gap-3 text-xs tracking-[0.2em] text-white/45 uppercase"
+		>
+			{#if data.meta.date}
+				<span>{formatDate(data.meta.date)}</span>
+			{/if}
+			{#if data.meta.tags?.length}
+				<span class="text-white/25">·</span>
+				<span class="flex flex-wrap gap-2 tracking-normal normal-case">
+					{#each data.meta.tags as tag (tag)}
+						<span class="rounded-full border border-white/10 px-2.5 py-0.5 text-white/60"
+							>{tag}</span
+						>
+					{/each}
+				</span>
 			{/if}
 		</div>
+
+		<h1 data-reveal style:--i={1} class="text-4xl font-light tracking-tight md:text-6xl">
+			{data.meta.title ?? data.slug}
+		</h1>
+
+		{#if data.meta.excerpt}
+			<p data-reveal style:--i={2} class="max-w-2xl text-lg leading-relaxed text-white/70">
+				{data.meta.excerpt}
+			</p>
+		{/if}
 	</header>
 
+	<!-- Glass panel: long-form text needs a calmer backdrop than the open scene. -->
 	<article
-		class="prose prose-invert prose-headings:scroll-mt-24 prose-pre:bg-primary-900 prose-pre:ring-1 prose-pre:ring-primary-300/10 prose-code:text-primary-200 prose-a:text-primary-300 hover:prose-a:text-white mx-auto w-full max-w-3xl px-6 py-12 md:py-20"
+		data-reveal
+		style:--i={3}
+		class="prose prose-invert prose-headings:scroll-mt-24 prose-headings:font-medium prose-pre:border prose-pre:border-white/10 prose-pre:bg-black/60 prose-code:text-white prose-a:text-white prose-a:decoration-white/40 hover:prose-a:decoration-white mt-12 max-w-none rounded-3xl border border-white/10 bg-black/45 p-6 backdrop-blur-xl md:p-10"
 	>
 		<Content />
 	</article>
-</main>
+</SpacePage>

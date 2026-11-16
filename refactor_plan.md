@@ -101,6 +101,24 @@ static/textures/         earth (albedo, normal, specular, clouds), moon
 - **Overlays** are plain DOM above the canvas. Each station fades and slides
   based on whether it is active, so text stays crisp, selectable and accessible.
 
+### Inner pages in the same scene
+
+About, blog, blog posts, company and project pages are separate routes (own
+URLs, prerendered, SEO intact), but they render **over the same 3D scene**:
+
+- The canvas, intro and shared `scene` state live in `src/routes/+layout.svelte`
+  and stay mounted across client-side navigations. Only `/cv` and `/demo` opt out.
+- Each route is its own lazily loaded chunk, so a page's code mounts only when
+  it's opened. It then fades in with a staggered reveal (`SpacePage.svelte`).
+- While an inner page is open, the earth and moon drift far top-left
+  (`pagePose`), and the scene renders at half frame rate.
+- **Random planet per page:** each inner-page visit picks one of Mercury, Venus,
+  Mars, Jupiter, Saturn (with rings), Uranus or Neptune (`planets.js`), never
+  the same twice in a row. Only that planet's textures are loaded. It fades in
+  top-right, can be dragged like the earth, and is captioned "Passing <name>".
+- Landing directly on an inner page skips the long intro. Returning home keeps
+  the last station and doesn't replay reveals already seen.
+
 ## 4. Content: "Builder"
 
 Taken from the InnovationWithin work history (`innovationwithin-cv.json`):

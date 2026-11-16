@@ -1,4 +1,6 @@
 <script>
+	import { onMount, untrack } from 'svelte';
+
 	// Matches the `[data-reveal]` transition duration in app.css.
 	const REVEAL_MS = 900;
 
@@ -12,6 +14,8 @@
 	 * The first time a station becomes active, its `[data-reveal]` children
 	 * animate in one after another (`--i` sets the order). `onreveal` receives
 	 * how long that takes so the caller can hold navigation until it ends.
+	 * `revealedBefore` skips that reveal (the visitor already saw it on an
+	 * earlier visit to the home page).
 	 *
 	 * @type {{
 	 *   id: string,
@@ -19,6 +23,7 @@
 	 *   active: boolean,
 	 *   position: number,
 	 *   travel: number,
+	 *   revealedBefore?: boolean,
 	 *   base?: number,
 	 *   step?: number,
 	 *   onreveal?: (ms: number) => void,
@@ -31,6 +36,7 @@
 		active,
 		position,
 		travel,
+		revealedBefore = false,
 		base = 600,
 		step = 140,
 		onreveal,
@@ -39,7 +45,15 @@
 
 	/** @type {HTMLElement} */
 	let el;
-	let seen = $state(false);
+	let seen = $state(untrack(() => revealedBefore));
+	// Becomes true a frame after mount, so a station that is already active
+	// (e.g. coming back from an inner page) still fades in instead of popping.
+	let mounted = $state(false);
+	let shown = $derived(active && mounted);
+	onMount(() => {
+		const frame = requestAnimationFrame(() => (mounted = true));
+		return () => cancelAnimationFrame(frame);
+	});
 	let revealFrom = $state(1);
 	// True while the first reveal plays; inner scroll areas hide their
 	// scrollbar meanwhile, since the sliding children briefly overflow.
@@ -74,9 +88,9 @@
 	class="pointer-events-none fixed inset-0 z-20 flex items-center pr-12 pl-6 sm:px-16 lg:px-24"
 	class:revealed={seen}
 	class:revealing
-	style:opacity={active ? 1 : 0}
-	style:transform="translateY({active ? 0 : Math.sign(position) * 10}vh)"
-	style:transition={active
+	style:opacity={shown ? 1 : 0}
+	style:transform="translateY({shown ? 0 : Math.sign(position || 1) * 10}vh)"
+	style:transition={shown
 		? 'opacity 900ms ease 450ms, transform 1100ms cubic-bezier(0.2, 0.7, 0.2, 1) 450ms'
 		: 'opacity 500ms ease, transform 700ms cubic-bezier(0.5, 0, 0.75, 0)'}
 	style:--reveal-from="{revealFrom * 32}px"
