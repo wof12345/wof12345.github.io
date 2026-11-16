@@ -83,7 +83,8 @@
 	style:--reveal-base="{base}ms"
 	style:--reveal-step="{step}ms"
 >
-	<div class="pointer-events-auto w-full">
+	<!-- Empty space passes clicks through to the planets; see .station-content in app.css. -->
+	<div class="station-content w-full">
 		{@render children()}
 	</div>
 </section>

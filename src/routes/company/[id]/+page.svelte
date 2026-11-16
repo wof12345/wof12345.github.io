@@ -2,12 +2,24 @@
 	import { IconArrowLeft, IconArrowRight, IconExternalLink } from '@tabler/icons-svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import Starfield from '$lib/space/Starfield.svelte';
+	import { quietScrollbars } from '$lib/space/quietScrollbars';
+	import { onMount } from 'svelte';
 
 	let { data } = $props();
 
 	let company = $derived(data.company);
 	let relatedProjects = $derived(data.relatedProjects);
 	let highlights = $derived(company.highlights ?? []);
+
+	onMount(() => {
+		const html = document.documentElement;
+		html.classList.add('quiet-scrollbars');
+		const cleanup = quietScrollbars();
+		return () => {
+			cleanup();
+			html.classList.remove('quiet-scrollbars');
+		};
+	});
 
 	// Replays the staggered reveal whenever the company changes (prev/next links
 	// reuse this component).

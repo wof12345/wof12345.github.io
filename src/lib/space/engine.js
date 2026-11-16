@@ -15,6 +15,14 @@ const MOON_ORBIT = 3;
 const STAR_COUNT = 4000;
 // Camera/planet easing rate; lower = slower, softer travel between stations.
 const TRAVEL_RATE = 1.1;
+// Idle motion, in radians per second. Kept slow so the scene feels calm.
+const EARTH_SPIN = 0.012;
+const CLOUD_SPIN = 0.017;
+const MOON_ORBIT_SPEED = 0.015;
+const MOON_SPIN = 0.015;
+// Drag: radians per pixel, and how fast a flick's momentum dies off.
+const DRAG_SENSITIVITY = 0.006;
+const SPIN_DECAY = 2.5;
 // Stars pop in over this window (seconds) once the recede starts.
 const STAR_SPREAD = 6;
 
@@ -145,9 +153,14 @@ function createStars() {
 
 /**
  * Builds the space scene on `canvas`.
+ *
+ * Dragging on the earth or the moon rotates that body freely; letting go
+ * keeps a little momentum. `onDragChange` reports when a drag starts and
+ * ends so page-level touch navigation can ignore that gesture.
  * @param {HTMLCanvasElement} canvas
+ * @param {{ onDragChange?: (dragging: boolean) => void }} [opts]
  */
-export function createSpace(canvas) {
+export function createSpace(canvas, { onDragChange } = {}) {
 	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
 	renderer.setClearColor(0x000000, 1);
 	renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -194,8 +207,14 @@ export function createSpace(canvas) {
 			opacity: 0
 		})
 	);
-	earth.rotation.z = THREE.MathUtils.degToRad(23.4);
-	planets.add(earth);
+
+	// handle (user drag rotation) > tilt (axial tilt) > earth + clouds (idle spin)
+	const earthHandle = new THREE.Group();
+	planets.add(earthHandle);
+	const earthTilt = new THREE.Group();
+	earthTilt.rotation.z = THREE.MathUtils.degToRad(23.4);
+	earthHandle.add(earthTilt);
+	earthTilt.add(earth);
 
 	const clouds = new THREE.Mesh(
 		new THREE.SphereGeometry(EARTH_RADIUS * 1.012, 96, 96),
@@ -206,8 +225,7 @@ export function createSpace(canvas) {
 			depthWrite: false
 		})
 	);
-	clouds.rotation.z = earth.rotation.z;
-	planets.add(clouds);
+	earthTilt.add(clouds);
 
 	const atmosphereMat = new THREE.ShaderMaterial({
 		vertexShader: atmosphereVertex,
@@ -238,8 +256,11 @@ export function createSpace(canvas) {
 			opacity: 0
 		})
 	);
-	moon.position.x = MOON_ORBIT;
-	moonPivot.add(moon);
+	// Same pattern as the earth: the handle takes drag rotation, the mesh spins.
+	const moonHandle = new THREE.Group();
+	moonHandle.position.x = MOON_ORBIT;
+	moonPivot.add(moonHandle);
+	moonHandle.add(moon);
 
 	const stars = createStars();
 	scene.add(stars);
@@ -289,22 +310,121 @@ export function createSpace(canvas) {
 		if (started) applyStation();
 	}
 
+	// --- Drag to rotate -----------------------------------------------------
+
+	const raycaster = new THREE.Raycaster();
+	const ndc = new THREE.Vector2();
+	/** Momentum per body, in radians per second around world Y (x) and X (y). */
+	const momentum = new Map([
+		[earthHandle, { x: 0, y: 0 }],
+		[moonHandle, { x: 0, y: 0 }]
+	]);
+	/** @type {{ handle: THREE.Group, x: number, y: number, t: number } | null} */
+	let drag = null;
+
+	/** The body under the pointer, if any. @param {PointerEvent} e */
+	function pick(e) {
+		if (!started) return null;
+		const rect = canvas.getBoundingClientRect();
+		ndc.set(
+			((e.clientX - rect.left) / rect.width) * 2 - 1,
+			-((e.clientY - rect.top) / rect.height) * 2 + 1
+		);
+		raycaster.setFromCamera(ndc, camera);
+		const hit = raycaster.intersectObjects([earth, moon], false)[0];
+		if (!hit) return null;
+		return hit.object === moon ? moonHandle : earthHandle;
+	}
+
+	const worldDelta = new THREE.Quaternion();
+	const parentWorld = new THREE.Quaternion();
+	const stepQ = new THREE.Quaternion();
+	const AXIS_X = new THREE.Vector3(1, 0, 0);
+	const AXIS_Y = new THREE.Vector3(0, 1, 0);
+	/**
+	 * Rotates `obj` around screen-aligned world axes, whatever its parents'
+	 * rotation (the moon sits inside a tilted, orbiting pivot).
+	 * @param {THREE.Object3D} obj @param {number} yaw @param {number} pitch
+	 */
+	function rotateWorld(obj, yaw, pitch) {
+		worldDelta.setFromAxisAngle(AXIS_Y, yaw).multiply(stepQ.setFromAxisAngle(AXIS_X, pitch));
+		/** @type {THREE.Object3D} */ (obj.parent).getWorldQuaternion(parentWorld);
+		// Convert the world-space delta into the parent's frame: P⁻¹ · Δ · P
+		const local = parentWorld.clone().invert().multiply(worldDelta).multiply(parentWorld);
+		obj.quaternion.premultiply(local);
+	}
+
 	/** @param {PointerEvent} e */
-	function onPointer(e) {
+	function onPointerDown(e) {
+		if (e.target !== canvas || e.button !== 0) return;
+		const handle = pick(e);
+		if (!handle) return;
+		e.preventDefault();
+		drag = { handle, x: e.clientX, y: e.clientY, t: performance.now() };
+		const m = /** @type {{ x: number, y: number }} */ (momentum.get(handle));
+		m.x = m.y = 0;
+		canvas.style.cursor = 'grabbing';
+		onDragChange?.(true);
+	}
+
+	/** @param {PointerEvent} e */
+	function onPointerMove(e) {
+		if (drag) {
+			const now = performance.now();
+			const yaw = (e.clientX - drag.x) * DRAG_SENSITIVITY;
+			const pitch = (e.clientY - drag.y) * DRAG_SENSITIVITY;
+			rotateWorld(drag.handle, yaw, pitch);
+			// Remember the latest speed so a flick keeps spinning after release.
+			const dt = Math.max(now - drag.t, 1) / 1000;
+			const m = /** @type {{ x: number, y: number }} */ (momentum.get(drag.handle));
+			m.x = yaw / dt;
+			m.y = pitch / dt;
+			drag.x = e.clientX;
+			drag.y = e.clientY;
+			drag.t = now;
+			return;
+		}
 		pointer.x.target = (e.clientX / window.innerWidth - 0.5) * 2;
 		pointer.y.target = (e.clientY / window.innerHeight - 0.5) * 2;
+		if (e.target === canvas) canvas.style.cursor = pick(e) ? 'grab' : '';
 	}
-	window.addEventListener('pointermove', onPointer);
+
+	function onPointerUp() {
+		if (!drag) return;
+		// A pause before release means the user stopped: no momentum.
+		if (performance.now() - drag.t > 80) {
+			const m = /** @type {{ x: number, y: number }} */ (momentum.get(drag.handle));
+			m.x = m.y = 0;
+		}
+		drag = null;
+		canvas.style.cursor = 'grab';
+		onDragChange?.(false);
+	}
+
+	canvas.style.touchAction = 'none';
+	window.addEventListener('pointerdown', onPointerDown);
+	window.addEventListener('pointermove', onPointerMove);
+	window.addEventListener('pointerup', onPointerUp);
+	window.addEventListener('pointercancel', onPointerUp);
 
 	const clock = new THREE.Clock();
 	renderer.setAnimationLoop(() => {
 		const dt = Math.min(clock.getDelta(), 0.1);
 		const t = clock.elapsedTime;
 
-		earth.rotation.y += dt * 0.06;
-		clouds.rotation.y += dt * 0.085;
-		moonPivot.rotation.y += dt * 0.08;
-		moon.rotation.y += dt * 0.08; // tidally locked-ish
+		earth.rotation.y += dt * EARTH_SPIN;
+		clouds.rotation.y += dt * CLOUD_SPIN;
+		moonPivot.rotation.y += dt * MOON_ORBIT_SPEED;
+		moon.rotation.y += dt * MOON_SPIN;
+
+		const decay = Math.exp(-SPIN_DECAY * dt);
+		for (const [handle, m] of momentum) {
+			if (drag?.handle === handle || (!m.x && !m.y)) continue;
+			rotateWorld(handle, m.x * dt, m.y * dt);
+			m.x *= decay;
+			m.y *= decay;
+			if (Math.abs(m.x) + Math.abs(m.y) < 1e-3) m.x = m.y = 0;
+		}
 
 		const eo = earthOpacity.step(dt);
 		const mo = moonOpacity.step(dt);
@@ -347,7 +467,10 @@ export function createSpace(canvas) {
 			if (started) applyStation();
 		},
 		dispose() {
-			window.removeEventListener('pointermove', onPointer);
+			window.removeEventListener('pointerdown', onPointerDown);
+			window.removeEventListener('pointermove', onPointerMove);
+			window.removeEventListener('pointerup', onPointerUp);
+			window.removeEventListener('pointercancel', onPointerUp);
 			renderer.setAnimationLoop(null);
 			scene.traverse((obj) => {
 				const mesh = /** @type {THREE.Mesh} */ (obj);

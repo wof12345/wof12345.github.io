@@ -8,6 +8,7 @@
 	import { stations } from '$lib/space/stations';
 	import { runIntro } from '$lib/space/timeline';
 	import { stationNavigation } from '$lib/space/navigation';
+	import { quietScrollbars } from '$lib/space/quietScrollbars';
 	import Station from '$lib/layouts/space/Station.svelte';
 	import HeroStation from '$lib/layouts/space/HeroStation.svelte';
 	import BuilderStation from '$lib/layouts/space/BuilderStation.svelte';
@@ -49,6 +50,8 @@
 	// Navigation stays locked while travelling and while a station plays its
 	// first-visit reveal.
 	let lockedUntil = 0;
+	// True while the visitor is dragging a planet; that touch isn't a swipe.
+	let dragging = false;
 	/** @param {number} ms */
 	const lock = (ms) => (lockedUntil = Math.max(lockedUntil, performance.now() + ms));
 	const canNavigate = () => ready && performance.now() >= lockedUntil;
@@ -84,17 +87,20 @@
 			gate: assetsReady,
 			reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches
 		});
+		const cleanupScrollbars = quietScrollbars();
 		const cleanupNav = stationNavigation(root, {
 			count: stations.length,
 			get: () => station,
 			set: navigate,
-			enabled: canNavigate
+			enabled: canNavigate,
+			ignoreTouch: () => dragging
 		});
 
 		return () => {
 			window.removeEventListener('hashchange', stationFromHash);
 			cancelIntro();
 			cleanupNav();
+			cleanupScrollbars();
 			html.style.overflow = '';
 			html.style.overscrollBehavior = '';
 		};
@@ -111,7 +117,12 @@
 />
 
 <main bind:this={root} class="fixed inset-0 overflow-hidden bg-black text-white">
-	<SpaceCanvas {phase} {station} onready={(p) => startIntro(p)} />
+	<SpaceCanvas
+		{phase}
+		{station}
+		onready={(p) => startIntro(p)}
+		ondragchange={(d) => (dragging = d)}
+	/>
 
 	{#each views as View, i (stations[i].id)}
 		<Station

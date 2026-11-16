@@ -5,10 +5,11 @@
 	 * @type {{
 	 *   phase: import('./timeline').Phase,
 	 *   station: number,
-	 *   onready?: (ready: Promise<void>) => void
+	 *   onready?: (ready: Promise<void>) => void,
+	 *   ondragchange?: (dragging: boolean) => void
 	 * }}
 	 */
-	let { phase, station, onready } = $props();
+	let { phase, station, onready, ondragchange } = $props();
 
 	/** @type {HTMLCanvasElement} */
 	let canvas;
@@ -23,7 +24,7 @@
 		// three.js is loaded lazily so the first paint stays blank and fast.
 		import('./engine').then(({ createSpace }) => {
 			if (disposed) return;
-			space = createSpace(canvas);
+			space = createSpace(canvas, { onDragChange: (d) => ondragchange?.(d) });
 			onResize = () => space?.resize();
 			window.addEventListener('resize', onResize);
 			onready?.(space.ready);

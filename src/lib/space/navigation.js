@@ -17,12 +17,19 @@ function canScrollInside(target, direction) {
 /**
  * Turns wheel / touch / key input into station steps. Locking is owned by
  * the caller: while `enabled()` is false, input is swallowed (and wheel
- * deltas discarded, so trackpad inertia can't queue a step).
+ * deltas discarded, so trackpad inertia can't queue a step). A touch that
+ * starts while `ignoreTouch()` is true (e.g. dragging a planet) is not a swipe.
  * @param {HTMLElement} root
- * @param {{ count: number, get: () => number, set: (i: number) => void, enabled: () => boolean }} opts
+ * @param {{
+ *   count: number,
+ *   get: () => number,
+ *   set: (i: number) => void,
+ *   enabled: () => boolean,
+ *   ignoreTouch?: () => boolean
+ * }} opts
  * @returns {() => void} cleanup
  */
-export function stationNavigation(root, { count, get, set, enabled }) {
+export function stationNavigation(root, { count, get, set, enabled, ignoreTouch = () => false }) {
 	let wheelAccum = 0;
 	let touchY = /** @type {number | null} */ (null);
 
@@ -53,7 +60,8 @@ export function stationNavigation(root, { count, get, set, enabled }) {
 
 	/** @param {TouchEvent} e */
 	function onTouchStart(e) {
-		touchY = e.touches[0].clientY;
+		// Pointer events fire before touch events, so a planet drag is already flagged here.
+		touchY = ignoreTouch() ? null : e.touches[0].clientY;
 	}
 	/** @param {TouchEvent} e */
 	function onTouchEnd(e) {

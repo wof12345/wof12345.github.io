@@ -88,10 +88,30 @@
 	/* Add other safelisted patterns if needed */
 }
 
-/* Inner scroll areas on the space stations (see $lib/space/navigation.js). */
-[data-scrollable] {
+/*
+ * Quiet scrollbars: the bar keeps its space but stays invisible until the
+ * area is scrolled (`is-scrolling` is toggled by $lib/space/quietScrollbars.js).
+ * Applies to station scroll areas and to pages that opt in on <html>.
+ */
+[data-scrollable],
+html.quiet-scrollbars {
 	scrollbar-width: thin;
-	scrollbar-color: rgb(255 255 255 / 0.2) transparent;
+	scrollbar-color: transparent transparent;
+}
+[data-scrollable].is-scrolling,
+html.quiet-scrollbars.is-scrolling {
+	scrollbar-color: rgb(255 255 255 / 0.25) transparent;
+}
+
+/*
+ * Station overlays let pointer events through to the 3D scene, except on
+ * the actual content blocks (children of each station's root element).
+ */
+.station-content {
+	pointer-events: none;
+}
+.station-content > * > * {
+	pointer-events: auto;
 }
 
 /*
