@@ -9,7 +9,7 @@
 	import { scene } from '$lib/space/scene.svelte';
 	import Station from '$lib/layouts/space/Station.svelte';
 	import HeroStation from '$lib/layouts/space/HeroStation.svelte';
-	import BuilderStation from '$lib/layouts/space/BuilderStation.svelte';
+	// import BuilderStation from '$lib/layouts/space/BuilderStation.svelte';
 	import ExperienceStation from '$lib/layouts/space/ExperienceStation.svelte';
 	import ProjectsStation from '$lib/layouts/space/ProjectsStation.svelte';
 	import AboutStation from '$lib/layouts/space/AboutStation.svelte';
@@ -30,7 +30,8 @@
 		knowsAbout: ['AI agents', 'System design', 'Node.js', 'AWS', 'Svelte', 'Distributed systems']
 	});
 
-	const views = [HeroStation, BuilderStation, ExperienceStation, ProjectsStation, AboutStation];
+	// BuilderStation hidden for now; restore alongside its entry in stations.js.
+	const views = [HeroStation, ExperienceStation, ProjectsStation, AboutStation];
 	// The hero is the intro's last act, so it reveals slower than the rest.
 	/** @type {Record<string, { base: number, step: number }>} */
 	const revealTiming = { home: { base: 200, step: 320 } };
@@ -57,9 +58,6 @@
 		lock(TRAVEL_MS);
 	}
 
-	/** @type {HTMLElement} */
-	let root;
-
 	// Deep links like /#projects start at (or jump to) that station.
 	const stationFromHash = () => {
 		const i = stations.findIndex((s) => `#${s.id}` === location.hash);
@@ -73,7 +71,8 @@
 		html.style.overflow = 'hidden';
 		html.style.overscrollBehavior = 'none';
 
-		const cleanupNav = stationNavigation(root, {
+		// Listen on window: wheel and swipes over the canvas count too.
+		const cleanupNav = stationNavigation(window, {
 			count: stations.length,
 			get: () => scene.station,
 			set: navigate,
@@ -99,7 +98,8 @@
 	jsonLd={personJsonLd}
 />
 
-<main bind:this={root} class="fixed inset-0 overflow-hidden text-white">
+<!-- Click-through so the planets behind can be dragged; content and dots opt back in. -->
+<main class="pointer-events-none fixed inset-0 overflow-hidden text-white">
 	{#each views as View, i (stations[i].id)}
 		<Station
 			id={stations[i].id}

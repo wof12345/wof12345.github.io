@@ -1,7 +1,7 @@
 <script>
 	import { IconBrandGithub, IconBrandLinkedin, IconBrandX, IconFileCv } from '@tabler/icons-svelte';
 	import { author } from '$lib/seo';
-	import { headline, tagline } from '$lib/data/builder';
+	import { headline, headlineDefinition as def, tagline } from '$lib/data/builder';
 
 	const socials = [
 		{ href: 'https://github.com/wof12345', label: 'GitHub', icon: IconBrandGithub },
@@ -29,7 +29,26 @@
 			{author}
 		</p>
 		<h1 class="text-6xl font-light tracking-tight sm:text-8xl" data-reveal style:--i={2}>
-			{headline}
+			<!-- Hover or focus shows a dictionary-style definition. -->
+			<button
+				type="button"
+				class="group relative inline-block cursor-help outline-none"
+				aria-describedby="headline-definition"
+			>
+				{headline}
+				<span
+					id="headline-definition"
+					role="tooltip"
+					class="pointer-events-none absolute top-full left-0 z-30 mt-3 w-72 translate-y-1 rounded-xl border border-white/15 bg-black/70 p-4 text-left tracking-normal opacity-0 backdrop-blur-md transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:w-80"
+				>
+					<span class="block text-base font-normal text-white">
+						{headline.toLowerCase()}
+						<span class="ml-1 text-sm text-white/50">{def.pronunciation}</span>
+					</span>
+					<span class="mt-0.5 block text-xs text-white/40 italic">{def.partOfSpeech}</span>
+					<span class="mt-2 block text-sm leading-relaxed text-white/75">{def.meaning}</span>
+				</span>
+			</button>
 		</h1>
 	</div>
 

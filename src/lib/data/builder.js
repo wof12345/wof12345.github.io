@@ -12,6 +12,14 @@
 
 export const headline = 'Builder';
 
+/** Dictionary-style definition shown when hovering the headline. */
+export const headlineDefinition = {
+	pronunciation: '/ˈbɪl·dər/',
+	partOfSpeech: 'noun',
+	meaning:
+		'A person who designs and constructs things — taking an idea from sketch to something real that works and keeps working.'
+};
+
 export const tagline =
 	'I design and ship systems end to end — AI agents and pipelines, event-driven backends, and the platform underneath them.';
 

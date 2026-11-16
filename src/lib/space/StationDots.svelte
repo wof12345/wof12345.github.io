@@ -56,7 +56,7 @@
 
 <nav
 	aria-label="Sections"
-	class="fixed top-1/2 right-3 z-40 -translate-y-1/2 sm:right-8"
+	class="pointer-events-auto fixed top-1/2 right-3 z-40 -translate-y-1/2 sm:right-8"
 	style:height="{stations.length * ROW}px"
 >
 	<div class="relative h-full w-6">

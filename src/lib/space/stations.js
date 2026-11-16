@@ -20,12 +20,13 @@ export const stations = [
 		camera: { x: 0, y: 0, z: 11 },
 		planets: { x: 3.2, y: -0.3, scale: 1 }
 	},
-	{
-		id: 'builder',
-		label: 'Builder',
-		camera: { x: 0, y: 0.5, z: 17 },
-		planets: { x: 9, y: 4, scale: 0.8 }
-	},
+	// Builder station hidden for now; restore together with BuilderStation in +page.svelte.
+	// {
+	// 	id: 'builder',
+	// 	label: 'Builder',
+	// 	camera: { x: 0, y: 0.5, z: 17 },
+	// 	planets: { x: 9, y: 4, scale: 0.8 }
+	// },
 	{
 		id: 'experience',
 		label: 'Experience',

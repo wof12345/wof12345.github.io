@@ -1,0 +1,101 @@
+{
+    "company": "InnovationWithin",
+    "role": "Backend Engineer",
+    "period": {
+        "start": null,
+        "end": "Present"
+    },
+    "summary": "Backend engineer on an AI-assisted customer-discovery platform that records, transcribes and analyses interviews. Owned features across the Node.js API, AWS Lambda and ECS workers, and the platform's runtime upgrades, with a focus on correctness, performance measurement and incremental decomposition of a legacy monolith.",
+    "cvBullets": [
+        "Built the transcript auto-correction pipeline end to end, from AI correction detection in an event-driven Lambda to apply, reject and undo APIs. This covered multi-turn span mapping, audio-timestamp redistribution for word highlights, and a per-user opt-in automatic correction and analysis flow.",
+        "Cut about 530 ms from every transcript-correction click by timing each layer and fixing the slowest. CORS preflight caching saved 308–320 ms. Reusing the Keycloak admin token and dropping a duplicate user lookup cut auth middleware from ~210 ms to ~50 ms (−75%), and parallel S3 reads saved another 31–62 ms. Together these nearly halved server time per accept (435–488 ms → 234–274 ms).",
+        "Led the Node.js 18 → 22 → 24 upgrade across the platform's API, Lambda and ECS services. Wrote per-service migration plans with risk notes, migrated to AWS SDK v3 and Express 5, replaced deprecated packages and verified each release locally and in CI.",
+        "Instrumented the Zoom webhook endpoints with per-branch timing logs and CloudWatch Logs Insights queries to find the slow paths behind a 3-second webhook timeout.",
+        "Decomposed a legacy Express monolith into domain modules (routes, controllers, services, validation middleware, query builders), migrating auth and DB helpers and the retranscription and entry routes without breaking frontend contracts.",
+        "Migrated meeting and recording state from DynamoDB to relational tables, removed obsolete DynamoDB usage across repositories, and fixed calendar and Zoom OAuth scheduling flows.",
+        "Designed and scaffolded a standalone meeting-webhook service to take Zoom and calendar webhook handling out of the main API, weighing SQS and HTTP handoff options.",
+        "Delivered admin APIs for a prompt library (PostgreSQL JSONB with per-prompt versioning and upsert) and founder-intake invitations and interviews, with paginated filtering and Postman collections for QA.",
+        "Hardened the AI insight-generation ECS worker with MySQL connection retry and exponential backoff, idempotent run-status updates through DynamoDB conditional writes, and recovery for stuck or crashed tasks.",
+        "Fixed authentication and onboarding defects in the Keycloak-based login and invitation flows, including a login hang caused by unhandled promise chains and lost org access after role changes.",
+        "Set team coding standards by writing workspace conventions for dynamic query builders, layering, naming and constants, and removed dead code and unused dependencies."
+    ],
+    "highlights": [
+        {
+            "area": "Transcript correction pipeline",
+            "details": [
+                "Correction detection in linx-event-processor (TypeScript Lambda): neighbouring-turn search with a configurable window, phrase matching across turn boundaries, and speaker names and participants passed to the detector.",
+                "Apply utilities in the API: corrections applied across multiple turns, timestamp distribution that keeps audio sync and highlighting, partial-word highlights, and sorting by audio position.",
+                "Workflow rules: unresolved detections excluded from completion totals, meta-analysis triggered only once per completion, and the legacy CORRECTION status replaced with a correctionPending interview flag for the analysis validation API.",
+                "IW-1353 auto-correct: per-user opt-in setting, apply logic ported into the event processor, an org-level feature flag check, and documented flow diagrams for an SQS-claimed interview flow.",
+                "Correction-email template updates and failure-state reporting in the GET API."
+            ]
+        },
+        {
+            "area": "Correction latency (IW-1374)",
+            "details": [
+                "Added temporary per-layer timing logs (Keycloak, access checks, validation, each S3 read and write) to PATCH /transcript/corrections and measured each fix against deployed Lambda logs.",
+                "CORS maxAge 7200 with a single cors() call removed the preflight before every click, saving 308–320 ms per click as measured in the browser.",
+                "Keycloak admin token reused until expiry and the duplicate user lookup removed, cutting Keycloak calls per request from four to one. Keycloak middleware went from 201–223 ms to 47–57 ms (about −75%), and its share of server time from 46% to 20%.",
+                "User row written only when the Keycloak profile changed: profile sync went from 10–13 ms to under 1 ms.",
+                "Correction document and transcript read from S3 in parallel with Promise.all, saving 31–62 ms per request (10–17% of server time). Reject-only requests skip the transcript read.",
+                "Overall: about 530 ms less per correction click, and server time per accept went from 435–488 ms to 234–274 ms."
+            ]
+        },
+        {
+            "area": "Platform runtime upgrades",
+            "details": [
+                "Node 24 migration plans and upgrades for the main API (linx Lambda), cloud-uploader, realtime-editor, ai-insight-generation (ECS), linx-event-processor and linx-event-v3.",
+                "Express 5 migration (preserving req._query behaviour), AWS SDK v2 → v3 conversion, @vendia/serverless-express replacement, engines.node pinning and Docker base-image fixes.",
+                "Reviewed packages for known vulnerabilities and breaking changes (axios, stripe, keycloak, pubnub, openai, portkey-ai, mysql2, pg) and wrote test reports for each release step."
+            ]
+        },
+        {
+            "area": "Performance and observability",
+            "details": [
+                "Zoom webhook branch-timing utility and CloudWatch Logs Insights queries to find the slow paths behind the 3-second webhook timeout.",
+                "PostgreSQL EXPLAIN ANALYZE review of activity-table lookups before choosing a derivation strategy."
+            ]
+        },
+        {
+            "area": "Architecture and refactoring",
+            "details": [
+                "Moved routes out of the legacy linx.mjs monolith into domain modules following a controller → service → db-service layering with express-validator middleware.",
+                "Replaced monolith-local keycloak, q and qAll helpers with shared module imports and wrote regression test plans for the frontend.",
+                "Designed the meeting-webhook service boundary, configuration (SSM and Secrets Manager) and a full move off the main API.",
+                "Removed unused features and packages: PDF meta-insight export, the EXPORT_TEAM_INTERVIEW SQS event, and the unused canvas controller."
+            ]
+        },
+        {
+            "area": "Data and integrations",
+            "details": [
+                "DynamoDB → MySQL migration for Zoom meeting and recording status (MeetingLogStatus, InterviewMeeting).",
+                "Zoom OAuth query consolidation, group soft-delete handling and calendar meeting scheduling fixes.",
+                "Fixed soft-deleted meetings appearing in recording lists and inconsistent transcription status values."
+            ]
+        },
+        {
+            "area": "Admin APIs",
+            "details": [
+                "Prompt library: PostgreSQL table design, JSONB prompt settings with per-prompt isCustom and updatedAt, upsert updates and reset to original.",
+                "Founder-intake admin: invitation list view, create, expiry update and soft delete, plus interview filtering, all paginated.",
+                "Org-level feature flag support (isFounderIntakeInterviewEnabled) and org keyterm limits."
+            ]
+        },
+        {
+            "area": "Reliability",
+            "details": [
+                "ai-insight-generation: MySQL connect retry with exponential backoff, DynamoDB conditional-write run claiming, idempotent success marking, and handling of crashed ECS tasks and long outages.",
+                "Auth: fixed a login hang from unhandled promise chains, invitation acceptance that did not create the org or team, and session group context lost after a role change."
+            ]
+        }
+    ],
+    "skills": {
+        "languages": ["JavaScript (ESM)", "TypeScript", "SQL"],
+        "backend": ["Node.js", "Express", "Fastify", "express-validator", "REST API design"],
+        "databases": ["MySQL", "PostgreSQL (JSONB)", "Amazon DynamoDB"],
+        "aws": ["Lambda", "ECS", "SQS", "S3", "CloudWatch Logs Insights", "SSM Parameter Store", "Secrets Manager"],
+        "authAndIntegrations": ["Keycloak", "Zoom API and webhooks", "Calendar integrations", "PubNub", "Stripe", "OpenAI", "Portkey"],
+        "tooling": ["Docker", "Git", "Postman", "Infisical"],
+        "practices": ["Monolith decomposition", "Performance profiling", "Idempotent and retry-safe workers", "Runtime and dependency upgrades", "Technical documentation"]
+    }
+}

@@ -19,7 +19,7 @@ function canScrollInside(target, direction) {
  * the caller: while `enabled()` is false, input is swallowed (and wheel
  * deltas discarded, so trackpad inertia can't queue a step). A touch that
  * starts while `ignoreTouch()` is true (e.g. dragging a planet) is not a swipe.
- * @param {HTMLElement} root
+ * @param {HTMLElement | Window} root
  * @param {{
  *   count: number,
  *   get: () => number,
