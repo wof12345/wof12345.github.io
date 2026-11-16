@@ -13,7 +13,12 @@ export function load({ params }) {
 
 	const relatedProjects = projects.filter((p) => p.company === company.name);
 
-	return { company, relatedProjects };
+	// Neighbours in the experience timeline, for "previous / next stop" links.
+	const index = companies.indexOf(company);
+	const newer = companies[index - 1] ?? null;
+	const older = companies[index + 1] ?? null;
+
+	return { company, relatedProjects, newer, older };
 }
 
 export function entries() {

@@ -1,7 +1,7 @@
 <script>
-	import { IconArrowLeft, IconArrowRight, IconSearch, IconX } from '@tabler/icons-svelte';
-	import Reveal from '$lib/components/Animated/Entity/Reveal.svelte';
+	import { IconArrowRight, IconSearch, IconX } from '@tabler/icons-svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import SpacePage from '$lib/layouts/space/SpacePage.svelte';
 
 	/**
 	 * @typedef {Object} Post
@@ -24,9 +24,7 @@
 
 	// Every unique tag across all posts, sorted alphabetically.
 	const allTags = $derived(
-		Array.from(new Set(data.posts.flatMap((p) => p.tags ?? []))).sort((a, b) =>
-			a.localeCompare(b)
-		)
+		Array.from(new Set(data.posts.flatMap((p) => p.tags ?? []))).sort((a, b) => a.localeCompare(b))
 	);
 
 	// Tags matching the search box — keeps relevant chips easy to click while searching.
@@ -62,6 +60,7 @@
 		});
 	});
 
+	/** @param {string} tag */
 	function toggleTag(tag) {
 		selectedTags = selectedTags.includes(tag)
 			? selectedTags.filter((t) => t !== tag)
@@ -72,6 +71,7 @@
 		selectedTags = [];
 	}
 
+	/** @param {string | undefined} d */
 	function formatDate(d) {
 		if (!d) return '';
 		const date = new Date(d);
@@ -86,50 +86,45 @@
 
 <Seo
 	title="Blog · Atif Bin Ferdous"
-	description="Writings by Atif Bin Ferdous on software engineering, web development, projects, and developer tools."
+	description="Writings by Atif Bin Ferdous on building software, system design, projects, and developer tools."
 	canonical="/blog"
-	keywords={['engineering blog', 'web development articles', 'Svelte tutorials', 'developer writing']}
+	keywords={['engineering blog', 'system design articles', 'Svelte tutorials', 'developer writing']}
 />
 
-<main class="bg-primary-950 min-h-screen w-full text-white">
-	<header class="bg-primary-800 relative w-full px-6 py-20 md:py-28">
-		<div class="mx-auto flex max-w-3xl flex-col gap-4">
-			<a
-				href="/#about"
-				class="text-primary-200 hover:text-white inline-flex items-center gap-2 text-sm font-semibold transition-colors"
-			>
-				<IconArrowLeft size={18} />
-				<span>Back to portfolio</span>
-			</a>
-			<p class="text-primary-300 text-sm font-semibold tracking-widest uppercase">
-				The blog
-			</p>
-			<h1 class="text-4xl font-bold md:text-6xl">Notes &amp; writing</h1>
-			<p class="text-primary-100/80 max-w-xl text-lg leading-relaxed">
-				Thoughts on engineering, post-mortems on the projects I've built, and things I keep
-				learning along the way.
-			</p>
-		</div>
+<SpacePage back={{ href: '/#about', label: 'Home' }}>
+	<header class="flex flex-col gap-4">
+		<p data-reveal style:--i={0} class="text-xs tracking-[0.35em] text-white/50 uppercase">
+			The blog
+		</p>
+		<h1 data-reveal style:--i={1} class="text-5xl font-light tracking-tight md:text-7xl">
+			Notes &amp; writing
+		</h1>
+		<p data-reveal style:--i={2} class="max-w-xl text-lg leading-relaxed text-white/70">
+			Thoughts on engineering, post-mortems on the things I've built, and what I keep learning along
+			the way.
+		</p>
 	</header>
 
-	<section class="mx-auto max-w-3xl px-6 py-16 md:py-24">
+	<section class="mt-14">
 		{#if data.posts.length === 0}
-			<p class="text-primary-200/70 text-center">
-				No posts yet — drop a <code class="bg-primary-800 rounded px-1.5 py-0.5">.md</code> file
-				into <code class="bg-primary-800 rounded px-1.5 py-0.5">src/posts/</code> to publish one.
+			<p data-reveal style:--i={3} class="text-center text-white/60">
+				No posts yet — drop a <code class="rounded bg-white/10 px-1.5 py-0.5">.md</code> file into
+				<code class="rounded bg-white/10 px-1.5 py-0.5">src/posts/</code> to publish one.
 			</p>
 		{:else}
 			{#if allTags.length > 0}
-				<div class="mb-10 flex flex-col gap-4">
+				<div data-reveal style:--i={3} class="mb-10 flex flex-col gap-4">
 					<div class="flex flex-wrap items-center justify-between gap-3">
-						<label class="bg-primary-900/60 ring-primary-300/10 focus-within:ring-primary-300/40 flex w-full items-center gap-2 rounded-full px-4 py-2 ring-1 transition-all sm:max-w-xs">
-							<IconSearch size={18} class="text-primary-400 shrink-0" />
+						<label
+							class="flex w-full items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 backdrop-blur-md transition-colors focus-within:border-white/40 sm:max-w-xs"
+						>
+							<IconSearch size={18} class="shrink-0 text-white/40" />
 							<input
 								type="search"
 								bind:value={query}
 								placeholder="Search posts…"
 								aria-label="Search posts by title, tag or description"
-								class="placeholder:text-primary-400/70 w-full bg-transparent text-sm text-white outline-none"
+								class="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/35"
 							/>
 						</label>
 
@@ -137,7 +132,7 @@
 							<button
 								type="button"
 								onclick={clearTags}
-								class="text-primary-300 hover:text-white inline-flex items-center gap-1 text-sm font-semibold transition-colors"
+								class="inline-flex items-center gap-1 text-sm text-white/50 transition-colors hover:text-white"
 							>
 								<IconX size={16} />
 								Clear {selectedTags.length} filter{selectedTags.length > 1 ? 's' : ''}
@@ -152,16 +147,16 @@
 								type="button"
 								aria-pressed={active}
 								onclick={() => toggleTag(tag)}
-								class="rounded-full px-4 py-1.5 text-sm font-semibold transition-colors {active
-									? 'bg-primary-300 text-primary-950'
-									: 'bg-primary-800/60 text-primary-100 hover:bg-primary-700/70'}"
+								class="rounded-full border px-3.5 py-1 text-sm transition-colors {active
+									? 'border-white bg-white text-black'
+									: 'border-white/15 text-white/70 hover:border-white/40 hover:text-white'}"
 							>
 								{tag}
 							</button>
 						{/each}
 
 						{#if matchingTags.length === 0}
-							<span class="text-primary-200/60 py-1.5 text-sm">No tags match “{query}”.</span>
+							<span class="py-1 text-sm text-white/50">No tags match “{query}”.</span>
 						{/if}
 					</div>
 
@@ -169,7 +164,7 @@
 						<button
 							type="button"
 							onclick={() => (showAllTags = !showAllTags)}
-							class="text-primary-300 hover:text-white self-start text-sm font-semibold transition-colors"
+							class="self-start text-sm text-white/50 transition-colors hover:text-white"
 						>
 							{showAllTags ? 'Show fewer tags' : `Show all tags (+${hiddenCount})`}
 						</button>
@@ -178,61 +173,50 @@
 			{/if}
 
 			{#if filteredPosts.length === 0}
-				<p class="text-primary-200/70 text-center">No posts match the selected tags.</p>
+				<p class="text-center text-white/60">No posts match the selected tags.</p>
 			{:else}
-			<ul class="flex flex-col gap-8">
-				{#each filteredPosts as post, i (post.slug)}
-					<li>
-						<Reveal delay={i * 80} y={28}>
-						<a
-							href="/blog/{post.slug}"
-							class="bg-primary-900/60 hover:bg-primary-800 ring-primary-300/10 hover:ring-primary-300/30 group block rounded-2xl p-6 ring-1 transition-all duration-200 md:p-8"
-						>
-							<div class="flex flex-col gap-3">
-								<div class="flex flex-wrap items-center gap-3 text-sm">
-									<span class="text-primary-300 font-semibold">
-										{formatDate(post.date)}
-									</span>
+				<ul class="flex flex-col gap-5">
+					{#each filteredPosts as post, i (post.slug)}
+						<li data-reveal style:--i={4 + Math.min(i, 6)}>
+							<a
+								href="/blog/{post.slug}"
+								class="group flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md transition hover:border-white/30 md:p-8"
+							>
+								<div
+									class="flex flex-wrap items-center gap-3 text-xs tracking-[0.2em] text-white/45 uppercase"
+								>
+									<span>{formatDate(post.date)}</span>
 									{#if post.tags?.length}
-										<span class="text-primary-400">·</span>
-										<div class="flex flex-wrap gap-2">
-											{#each post.tags as tag}
+										<span class="text-white/25">·</span>
+										<span class="flex flex-wrap gap-2 tracking-normal normal-case">
+											{#each post.tags as tag (tag)}
 												<span
-													class="bg-primary-700/60 text-primary-100 rounded-full px-2.5 py-0.5 text-xs font-semibold"
+													class="rounded-full border border-white/10 px-2.5 py-0.5 text-white/60"
 												>
 													{tag}
 												</span>
 											{/each}
-										</div>
+										</span>
 									{/if}
 								</div>
-
-								<h2
-									class="group-hover:text-primary-100 text-2xl font-bold transition-colors md:text-3xl"
-								>
-									{post.title ?? post.slug}
-								</h2>
-
+								<h2 class="text-2xl font-medium md:text-3xl">{post.title ?? post.slug}</h2>
 								{#if post.excerpt}
-									<p class="text-primary-100/70 leading-relaxed">{post.excerpt}</p>
+									<p class="leading-relaxed text-white/65">{post.excerpt}</p>
 								{/if}
-
 								<span
-									class="text-primary-300 group-hover:text-white mt-1 inline-flex items-center gap-1 text-sm font-semibold transition-colors"
+									class="mt-1 inline-flex items-center gap-1 text-sm text-white/50 transition-colors group-hover:text-white"
 								>
 									Read post
 									<IconArrowRight
 										size={16}
-										class="transition-transform duration-200 group-hover:translate-x-1"
+										class="transition-transform group-hover:translate-x-1"
 									/>
 								</span>
-							</div>
-						</a>
-						</Reveal>
-					</li>
-				{/each}
-			</ul>
+							</a>
+						</li>
+					{/each}
+				</ul>
 			{/if}
 		{/if}
 	</section>
-</main>
+</SpacePage>
