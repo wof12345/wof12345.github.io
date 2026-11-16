@@ -1,9 +1,9 @@
 /** Intro timings in ms from page entry. Single source for the sequence. */
 export const timeline = {
 	earthIn: 500,
-	moonIn: 750,
-	// ~700 ms after the moon appears both planets recede.
-	recede: 1450
+	moonIn: 1500,
+	// Both planets hold together for a beat before receding.
+	recede: 2900
 };
 
 /**

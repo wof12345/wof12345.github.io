@@ -1,7 +1,5 @@
 const WHEEL_THRESHOLD = 60;
 const SWIPE_THRESHOLD = 50;
-// Matches the camera travel time so trackpad inertia can't skip stations.
-const LOCK_MS = 1000;
 
 /**
  * True if `target` sits inside a [data-scrollable] element that can still
@@ -17,26 +15,25 @@ function canScrollInside(target, direction) {
 }
 
 /**
- * Turns wheel / touch / key input into station steps.
+ * Turns wheel / touch / key input into station steps. Locking is owned by
+ * the caller: while `enabled()` is false, input is swallowed (and wheel
+ * deltas discarded, so trackpad inertia can't queue a step).
  * @param {HTMLElement} root
  * @param {{ count: number, get: () => number, set: (i: number) => void, enabled: () => boolean }} opts
  * @returns {() => void} cleanup
  */
 export function stationNavigation(root, { count, get, set, enabled }) {
-	let lockedUntil = 0;
 	let wheelAccum = 0;
 	let touchY = /** @type {number | null} */ (null);
 
 	/** @param {number} index */
 	const go = (index) => {
 		const next = Math.max(0, Math.min(count - 1, index));
-		if (next === get()) return;
-		lockedUntil = performance.now() + LOCK_MS;
-		set(next);
+		if (next !== get()) set(next);
 	};
 	/** @param {1 | -1} dir */
 	const step = (dir) => go(get() + dir);
-	const locked = () => !enabled() || performance.now() < lockedUntil;
+	const locked = () => !enabled();
 
 	/** @param {WheelEvent} e */
 	function onWheel(e) {

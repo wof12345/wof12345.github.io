@@ -11,6 +11,7 @@
 	import Station from '$lib/layouts/space/Station.svelte';
 	import HeroStation from '$lib/layouts/space/HeroStation.svelte';
 	import BuilderStation from '$lib/layouts/space/BuilderStation.svelte';
+	import ExperienceStation from '$lib/layouts/space/ExperienceStation.svelte';
 	import ProjectsStation from '$lib/layouts/space/ProjectsStation.svelte';
 	import AboutStation from '$lib/layouts/space/AboutStation.svelte';
 
@@ -30,12 +31,35 @@
 		knowsAbout: ['AI agents', 'System design', 'Node.js', 'AWS', 'Svelte', 'Distributed systems']
 	});
 
-	const views = [HeroStation, BuilderStation, ProjectsStation, AboutStation];
+	const views = [HeroStation, BuilderStation, ExperienceStation, ProjectsStation, AboutStation];
+	// The hero is the intro's last act, so it reveals slower than the rest.
+	/** @type {Record<string, { base: number, step: number }>} */
+	const revealTiming = { home: { base: 200, step: 320 } };
+
+	// Minimum time between stations: the content swap plus most of the camera ease.
+	const TRAVEL_MS = 1500;
 
 	/** @type {import('$lib/space/timeline').Phase} */
 	let phase = $state('blank');
 	let station = $state(0);
+	// Direction of the last move: 1 = forward (down), -1 = back (up).
+	let travel = $state(1);
 	let ready = $derived(phase === 'ready');
+
+	// Navigation stays locked while travelling and while a station plays its
+	// first-visit reveal.
+	let lockedUntil = 0;
+	/** @param {number} ms */
+	const lock = (ms) => (lockedUntil = Math.max(lockedUntil, performance.now() + ms));
+	const canNavigate = () => ready && performance.now() >= lockedUntil;
+
+	/** @param {number} i */
+	function navigate(i) {
+		if (!canNavigate() || i === station) return;
+		travel = i > station ? 1 : -1;
+		station = i;
+		lock(TRAVEL_MS);
+	}
 
 	/** @type {HTMLElement} */
 	let root;
@@ -63,8 +87,8 @@
 		const cleanupNav = stationNavigation(root, {
 			count: stations.length,
 			get: () => station,
-			set: (i) => (station = i),
-			enabled: () => ready
+			set: navigate,
+			enabled: canNavigate
 		});
 
 		return () => {
@@ -92,19 +116,18 @@
 	{#each views as View, i (stations[i].id)}
 		<Station
 			id={stations[i].id}
-			active={ready && station === i}
-			direction={Math.sign(i - station)}
 			label={stations[i].label}
+			active={ready && station === i}
+			position={i - station}
+			{travel}
+			{...revealTiming[stations[i].id]}
+			onreveal={lock}
 		>
-			{#if i === 0}
-				<View revealed={ready} />
-			{:else}
-				<View />
-			{/if}
+			<View />
 		</Station>
 	{/each}
 
 	{#if ready}
-		<StationDots current={station} onselect={(i) => (station = i)} />
+		<StationDots current={station} onselect={navigate} />
 	{/if}
 </main>

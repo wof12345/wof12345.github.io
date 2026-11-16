@@ -13,14 +13,14 @@ The identity changes from "Software Engineer" to **Builder**.
 
 ## 1. Entry sequence
 
-| t (ms)       | What happens                                                                      |
-| ------------ | --------------------------------------------------------------------------------- |
-| 0            | Blank black screen. Canvas mounted, textures loading, nothing visible.            |
-| 500          | Earth snaps in (≈200 ms fade). Surface rotates, clouds drift on a separate layer. |
-| 750          | Moon snaps in (≈200 ms fade), already orbiting.                                   |
-| 1450         | ~700 ms after the moon: both **recede**. Camera pulls back, planets slide right.  |
-| 1450 → ~5s   | Stars pop in one by one with staggered delays, then twinkle.                      |
-| 1450 → ~2.5s | Foreground fades in, staggered: photo, name, "Builder", tagline, hint.            |
+| t (ms)       | What happens                                                                            |
+| ------------ | --------------------------------------------------------------------------------------- |
+| 0            | Blank black screen. Canvas mounted, textures loading, nothing visible.                  |
+| 500          | Earth fades in (~0.7 s). Surface rotates, clouds drift on a separate layer.             |
+| 1500         | Moon fades in (~0.7 s), already orbiting.                                               |
+| 2900         | Both **recede**: camera eases back (~2 s), planets slide right.                         |
+| 2900 → ~9s   | Stars pop in one by one over ~6 s, then twinkle.                                        |
+| 2900 → ~6.5s | Hero reveals one item every 320 ms: photo, name, "Builder", tagline, each social, hint. |
 
 If textures are still loading at 500 ms, the timeline waits for them, so the
 earth never shows untextured. With `prefers-reduced-motion`, the sequence goes
@@ -30,22 +30,37 @@ straight to the end state.
 
 `html`/`body` get `overflow: hidden` on `/`. Input is turned into a station index:
 
-- **Wheel:** deltas are added up past a threshold, then one step is taken and
-  input is locked for the length of the transition (~1 s). This stops trackpad
-  inertia from skipping stations.
+- **Wheel:** deltas are added up past a threshold, then one step is taken.
 - **Touch:** a vertical swipe over 50 px takes one step.
 - **Keys:** ↓ / PageDown / Space go forward, ↑ / PageUp go back, Home / End jump.
-- **Dot nav** on the right edge: click to jump, and it shows the current station.
+- **Lock:** after each move, input is ignored for 1.5 s (content swap plus most
+  of the camera ease). The first visit to a station also locks until its
+  staggered reveal finishes. Wheel deltas are dropped while locked, so trackpad
+  inertia can't queue a step.
+- **Direction:** stations already passed sit above and stations ahead sit
+  below. Scrolling down, content leaves upward and the next station rises in.
+  Scrolling up, both move down.
+- **First-visit reveal:** `[data-reveal]` children with `--i` animate in one
+  after another, only the first time.
+- **Dot nav:** on each move a short line travels from the old dot to the new
+  one, then a ring draws around the target, starting from where the line
+  arrived. The label fades in last.
 - **Inner scroll exception:** if the event is inside a `[data-scrollable]`
   element that can still scroll that way, the element scrolls and the station
   stays put.
 
-| #   | Station  | Camera z | Planets                    | Overlay                                         |
-| --- | -------- | -------- | -------------------------- | ----------------------------------------------- |
-| 0   | Hero     | 11       | right of centre, full size | Photo, name, "Builder", one-liner, socials      |
-| 1   | Builder  | 17       | drift up-right, smaller    | What I build: Agents · System design · Platform |
-| 2   | Projects | 26       | further back, top-right    | Project cards from `projects.json`              |
-| 3   | About    | 38       | tiny, far away             | Short bio, quick facts, contact links           |
+| #   | Station    | Camera z | Planets                    | Overlay                                         |
+| --- | ---------- | -------- | -------------------------- | ----------------------------------------------- |
+| 0   | Home       | 11       | right of centre, full size | Photo, name, "Builder", one-liner, socials      |
+| 1   | Builder    | 17       | up-right, smaller          | What I build: Agents · System design · Platform |
+| 2   | Experience | 23       | further up-right           | Company timeline → `/company/[id]`              |
+| 3   | Projects   | 30       | further back, top-right    | Project cards from `projects.json`              |
+| 4   | About      | 40       | tiny, far away             | Short bio, quick facts, contact links           |
+
+Company pages (`/company/[id]`) use the same look without three.js: a 2D
+twinkling starfield, the company drawn as a lit sphere in its colour with an
+orbiting moon, highlights, related projects, and links to the previous and
+next company.
 
 Camera and planet targets live in one `stations.js` table, so adding a station
 means adding a row of data and an overlay component.

@@ -4,13 +4,19 @@
 
 <div class="flex max-w-5xl flex-col gap-8">
 	<header class="flex flex-col gap-2">
-		<p class="text-xs tracking-[0.35em] text-white/50 uppercase">What I build</p>
-		<h2 class="text-4xl font-light sm:text-5xl">Agents, systems, and the platform underneath</h2>
+		<p data-reveal style:--i={0} class="text-xs tracking-[0.35em] text-white/50 uppercase">
+			What I build
+		</p>
+		<h2 data-reveal style:--i={1} class="text-4xl font-light sm:text-5xl">
+			Agents, systems, and the platform underneath
+		</h2>
 	</header>
 
 	<div data-scrollable class="grid max-h-[60vh] gap-4 overflow-y-auto md:grid-cols-3">
-		{#each areas as area (area.id)}
+		{#each areas as area, i (area.id)}
 			<article
+				data-reveal
+				style:--i={i + 2}
 				class="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md"
 			>
 				<div class="flex flex-col gap-1">

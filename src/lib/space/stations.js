@@ -27,16 +27,22 @@ export const stations = [
 		planets: { x: 9, y: 4, scale: 0.8 }
 	},
 	{
+		id: 'experience',
+		label: 'Experience',
+		camera: { x: 0, y: 0.8, z: 23 },
+		planets: { x: 12, y: 6.5, scale: 0.7 }
+	},
+	{
 		id: 'projects',
 		label: 'Projects',
-		camera: { x: 0, y: 1, z: 26 },
-		planets: { x: 14, y: 8.5, scale: 0.6 }
+		camera: { x: 0, y: 1, z: 30 },
+		planets: { x: 15, y: 9.5, scale: 0.55 }
 	},
 	{
 		id: 'about',
 		label: 'About',
-		camera: { x: 0, y: 1.5, z: 38 },
-		planets: { x: 15, y: 9, scale: 0.4 }
+		camera: { x: 0, y: 1.5, z: 40 },
+		planets: { x: 17, y: 11, scale: 0.4 }
 	}
 ];
 

@@ -13,8 +13,10 @@ const EARTH_RADIUS = 1.6;
 const MOON_RADIUS = 0.43;
 const MOON_ORBIT = 3;
 const STAR_COUNT = 4000;
+// Camera/planet easing rate; lower = slower, softer travel between stations.
+const TRAVEL_RATE = 1.1;
 // Stars pop in over this window (seconds) once the recede starts.
-const STAR_SPREAD = 4;
+const STAR_SPREAD = 6;
 
 /**
  * A value that eases toward its target each frame (exponential damping), so
@@ -243,18 +245,18 @@ export function createSpace(canvas) {
 	scene.add(stars);
 	const starUniforms = /** @type {THREE.ShaderMaterial} */ (stars.material).uniforms;
 
-	// Animated state. Opacity is snappy ("fade in suddenly"), travel is smooth.
-	const earthOpacity = new Damped(0, 14);
-	const moonOpacity = new Damped(0, 14);
+	// Animated state. Opacity fades in over ~0.7 s, travel eases over ~2 s.
+	const earthOpacity = new Damped(0, 3.5);
+	const moonOpacity = new Damped(0, 3.5);
 	const cam = {
-		x: new Damped(introPose.camera.x, 2.2),
-		y: new Damped(introPose.camera.y, 2.2),
-		z: new Damped(introPose.camera.z, 2.2)
+		x: new Damped(introPose.camera.x, TRAVEL_RATE),
+		y: new Damped(introPose.camera.y, TRAVEL_RATE),
+		z: new Damped(introPose.camera.z, TRAVEL_RATE)
 	};
 	const group = {
-		x: new Damped(introPose.planets.x, 2.2),
-		y: new Damped(introPose.planets.y, 2.2),
-		scale: new Damped(introPose.planets.scale, 2.2)
+		x: new Damped(introPose.planets.x, TRAVEL_RATE),
+		y: new Damped(introPose.planets.y, TRAVEL_RATE),
+		scale: new Damped(introPose.planets.scale, TRAVEL_RATE)
 	};
 	const pointer = { x: new Damped(0, 3), y: new Damped(0, 3) };
 

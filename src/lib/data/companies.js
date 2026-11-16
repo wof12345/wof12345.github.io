@@ -8,11 +8,34 @@
  * @property {string} color        Brand / accent colour (hex)
  * @property {string} tagline      Short one-liner shown in the comic bubble
  * @property {string[]} description Paragraphs for the dedicated company page
+ * @property {string[]} [highlights] Concrete outcomes, shown as a list
  * @property {string | null} link  External website, if any
  */
 
 /** @type {Company[]} */
 export const companies = [
+	{
+		id: 'innovationwithin',
+		name: 'InnovationWithin',
+		role: 'Backend Engineer',
+		period: '2026 — Present',
+		type: 'Full-time',
+		color: '#f5a524',
+		tagline: 'Where I build now',
+		description: [
+			'Backend engineer on an AI-assisted customer-discovery platform that records, transcribes and analyses interviews.',
+			'I own features across the Node.js API, AWS Lambda and ECS workers, and the platform runtime itself — with a focus on correctness, measured performance, and breaking a legacy monolith into pieces that can change safely.'
+		],
+		highlights: [
+			'Built the AI transcript auto-correction pipeline end to end, from detection in an event-driven Lambda to apply, reject and undo APIs.',
+			'Cut ~530 ms from every correction click by timing each layer; auth middleware went from ~210 ms to ~50 ms.',
+			'Led the Node.js 18 → 22 → 24 upgrade across API, Lambda and ECS services, including AWS SDK v3 and Express 5.',
+			'Decomposed a legacy Express monolith into domain modules without breaking frontend contracts.',
+			'Designed a standalone meeting-webhook service, weighing SQS and HTTP handoff.',
+			'Hardened the AI insight-generation worker with retries, backoff, idempotent status writes and crash recovery.'
+		],
+		link: null
+	},
 	{
 		id: 'nanokingfisher',
 		name: 'Nanokingfisher',
