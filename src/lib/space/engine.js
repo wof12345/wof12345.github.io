@@ -1,18 +1,42 @@
 import * as THREE from 'three';
 import { introPose, pagePose, stations } from './stations';
 
-const TEXTURES = {
-	earth: '/textures/earth_atmos_2048.jpg',
-	earthNormal: '/textures/earth_normal_2048.jpg',
-	earthSpecular: '/textures/earth_specular_2048.jpg',
-	clouds: '/textures/earth_clouds_1024.png',
-	moon: '/textures/moon_1024.jpg'
+/**
+ * Per-tier settings (see quality.js). `low` skips the normal/specular maps
+ * and loads quarter-size textures: ~0.4 MB instead of ~1.6 MB.
+ */
+const TIERS = {
+	high: {
+		textures: {
+			earth: '/textures/earth_atmos_2048.jpg',
+			earthNormal: '/textures/earth_normal_2048.jpg',
+			earthSpecular: '/textures/earth_specular_2048.jpg',
+			clouds: '/textures/earth_clouds_1024.png',
+			moon: '/textures/moon_1024.jpg'
+		},
+		segments: 96,
+		stars: 4000,
+		maxPixelRatio: 2,
+		antialias: true
+	},
+	low: {
+		textures: {
+			earth: '/textures/earth_atmos_1024.jpg',
+			earthNormal: null,
+			earthSpecular: null,
+			clouds: '/textures/earth_clouds_512.png',
+			moon: '/textures/moon_512.jpg'
+		},
+		segments: 48,
+		stars: 1500,
+		maxPixelRatio: 1.5,
+		antialias: false
+	}
 };
 
 const EARTH_RADIUS = 1.6;
 const MOON_RADIUS = 0.43;
 const MOON_ORBIT = 3;
-const STAR_COUNT = 4000;
 // Camera/planet easing rate; lower = slower, softer travel between stations.
 const TRAVEL_RATE = 1.1;
 // Idle motion, in radians per second. Kept slow so the scene feels calm.
@@ -28,6 +52,16 @@ const PLANET_POS = { x: 13, y: 6, z: 8 };
 const PLANET_SPIN = 0.02;
 // Stars pop in over this window (seconds) once the recede starts.
 const STAR_SPREAD = 6;
+// Frame-rate watchdog: average over this many frames, after a warm-up that
+// skips texture uploads and the intro. Below TARGET_FPS the resolution
+// steps down; still below MIN_FPS at the lowest resolution, `onSlow` fires.
+// TARGET_FPS sits under 30 so phones in battery saver (rAF capped at 30)
+// aren't mistaken for slow ones.
+const FPS_WARMUP = 90;
+const FPS_WINDOW = 90;
+const TARGET_FPS = 27;
+const MIN_FPS = 18;
+const MIN_PIXEL_RATIO = 0.75;
 
 /**
  * A value that eases toward its target each frame (exponential damping), so
@@ -105,19 +139,20 @@ const atmosphereFragment = /* glsl */ `
 	}
 `;
 
-function createStars() {
-	const positions = new Float32Array(STAR_COUNT * 3);
-	const sizes = new Float32Array(STAR_COUNT);
-	const appear = new Float32Array(STAR_COUNT);
-	const phase = new Float32Array(STAR_COUNT);
-	const colors = new Float32Array(STAR_COUNT * 3);
+/** @param {number} count */
+function createStars(count) {
+	const positions = new Float32Array(count * 3);
+	const sizes = new Float32Array(count);
+	const appear = new Float32Array(count);
+	const phase = new Float32Array(count);
+	const colors = new Float32Array(count * 3);
 	const tints = [
 		[1, 1, 1],
 		[0.75, 0.85, 1],
 		[1, 0.9, 0.75]
 	];
 
-	for (let i = 0; i < STAR_COUNT; i++) {
+	for (let i = 0; i < count; i++) {
 		// Uniform direction on a sphere, radius in a thick shell around the scene.
 		const u = Math.random() * 2 - 1;
 		const theta = Math.random() * Math.PI * 2;
@@ -160,11 +195,26 @@ function createStars() {
  * Dragging on the earth or the moon rotates that body freely; letting go
  * keeps a little momentum. `onDragChange` reports when a drag starts and
  * ends so page-level touch navigation can ignore that gesture.
+ *
+ * Rendering resolution adapts to the measured frame rate. `onSlow` fires
+ * (once) when even the lowest resolution can't keep up, or the GPU context
+ * is lost, so the caller can fall back to something lighter.
  * @param {HTMLCanvasElement} canvas
- * @param {{ onDragChange?: (dragging: boolean) => void }} [opts]
+ * @param {{
+ *   tier?: 'high' | 'low',
+ *   onDragChange?: (dragging: boolean) => void,
+ *   onSlow?: () => void
+ * }} [opts]
  */
-export function createSpace(canvas, { onDragChange } = {}) {
-	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+export function createSpace(canvas, { tier = 'high', onDragChange, onSlow } = {}) {
+	const quality = TIERS[tier];
+	const TEXTURES = quality.textures;
+	const renderer = new THREE.WebGLRenderer({
+		canvas,
+		antialias: quality.antialias,
+		alpha: false,
+		powerPreference: 'high-performance'
+	});
 	renderer.setClearColor(0x000000, 1);
 	renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -179,9 +229,10 @@ export function createSpace(canvas, { onDragChange } = {}) {
 	// Textures
 	const manager = new THREE.LoadingManager();
 	const loader = new THREE.TextureLoader(manager);
-	const maxAniso = renderer.capabilities.getMaxAnisotropy();
-	/** @param {string} url @param {boolean} [color] */
+	const maxAniso = Math.min(renderer.capabilities.getMaxAnisotropy(), tier === 'high' ? 16 : 4);
+	/** @param {string | null} url @param {boolean} [color] */
 	const load = (url, color = true) => {
+		if (!url) return null;
 		const tex = loader.load(url);
 		if (color) tex.colorSpace = THREE.SRGBColorSpace;
 		tex.anisotropy = maxAniso;
@@ -197,14 +248,17 @@ export function createSpace(canvas, { onDragChange } = {}) {
 	const planets = new THREE.Group();
 	scene.add(planets);
 
+	const seg = quality.segments;
+	const specularMap = load(TEXTURES.earthSpecular, false);
 	const earth = new THREE.Mesh(
-		new THREE.SphereGeometry(EARTH_RADIUS, 96, 96),
+		new THREE.SphereGeometry(EARTH_RADIUS, seg, seg),
 		new THREE.MeshPhongMaterial({
 			map: load(TEXTURES.earth),
 			normalMap: load(TEXTURES.earthNormal, false),
 			normalScale: new THREE.Vector2(0.85, 0.85),
-			specularMap: load(TEXTURES.earthSpecular, false),
-			specular: new THREE.Color(0x333333),
+			specularMap,
+			// Without the map that keeps land matte, tone the glint down everywhere.
+			specular: new THREE.Color(specularMap ? 0x333333 : 0x111111),
 			shininess: 18,
 			transparent: true,
 			opacity: 0
@@ -220,7 +274,7 @@ export function createSpace(canvas, { onDragChange } = {}) {
 	earthTilt.add(earth);
 
 	const clouds = new THREE.Mesh(
-		new THREE.SphereGeometry(EARTH_RADIUS * 1.012, 96, 96),
+		new THREE.SphereGeometry(EARTH_RADIUS * 1.012, seg, seg),
 		new THREE.MeshPhongMaterial({
 			map: load(TEXTURES.clouds),
 			transparent: true,
@@ -239,7 +293,12 @@ export function createSpace(canvas, { onDragChange } = {}) {
 		depthWrite: false,
 		blending: THREE.AdditiveBlending
 	});
-	planets.add(new THREE.Mesh(new THREE.SphereGeometry(EARTH_RADIUS * 1.15, 64, 64), atmosphereMat));
+	planets.add(
+		new THREE.Mesh(
+			new THREE.SphereGeometry(EARTH_RADIUS * 1.15, seg / 1.5, seg / 1.5),
+			atmosphereMat
+		)
+	);
 
 	// The moon orbits on a tilted plane around the earth.
 	const moonOrbit = new THREE.Group();
@@ -250,7 +309,7 @@ export function createSpace(canvas, { onDragChange } = {}) {
 	moonPivot.rotation.y = -0.25; // start front-right of the earth
 	moonOrbit.add(moonPivot);
 	const moon = new THREE.Mesh(
-		new THREE.SphereGeometry(MOON_RADIUS, 64, 64),
+		new THREE.SphereGeometry(MOON_RADIUS, seg / 1.5, seg / 1.5),
 		new THREE.MeshStandardMaterial({
 			map: load(TEXTURES.moon),
 			roughness: 1,
@@ -265,7 +324,7 @@ export function createSpace(canvas, { onDragChange } = {}) {
 	moonPivot.add(moonHandle);
 	moonHandle.add(moon);
 
-	const stars = createStars();
+	const stars = createStars(quality.stars);
 	scene.add(stars);
 	const starUniforms = /** @type {THREE.ShaderMaterial} */ (stars.material).uniforms;
 
@@ -303,10 +362,19 @@ export function createSpace(canvas, { onDragChange } = {}) {
 		group.scale.target = s.planets.scale;
 	}
 
+	// Resolution scale the frame-rate watchdog can lower, never above the tier's cap.
+	let pixelCap = quality.maxPixelRatio;
+	let slowReported = false;
+	const reportSlow = () => {
+		if (slowReported) return;
+		slowReported = true;
+		onSlow?.();
+	};
+
 	function resize() {
 		const w = canvas.clientWidth;
 		const h = canvas.clientHeight;
-		const dpr = Math.min(window.devicePixelRatio, 2);
+		const dpr = Math.min(window.devicePixelRatio, pixelCap);
 		renderer.setPixelRatio(dpr);
 		renderer.setSize(w, h, false);
 		aspect = w / h;
@@ -338,6 +406,7 @@ export function createSpace(canvas, { onDragChange } = {}) {
 			-((e.clientY - rect.top) / rect.height) * 2 + 1
 		);
 		raycaster.setFromCamera(ndc, camera);
+		/** @type {THREE.Object3D[]} */
 		const bodies = [earth, moon];
 		if (current?.ready) bodies.push(current.body);
 		const hit = raycaster.intersectObjects(bodies, false)[0];
@@ -468,7 +537,10 @@ export function createSpace(canvas, { onDragChange } = {}) {
 			transparent: true,
 			opacity: 0
 		});
-		const body = new THREE.Mesh(new THREE.SphereGeometry(def.radius, 64, 64), bodyMat);
+		const body = new THREE.Mesh(
+			new THREE.SphereGeometry(def.radius, seg / 1.5, seg / 1.5),
+			bodyMat
+		);
 		tilt.add(body);
 		/** @type {THREE.Material[]} */
 		const materials = [bodyMat];
@@ -533,14 +605,51 @@ export function createSpace(canvas, { onDragChange } = {}) {
 		return p;
 	}
 
+	// --- Frame-rate watchdog ---------------------------------------------------
+
+	let lastFrame = 0;
+	let watched = 0;
+	let windowMs = 0;
+	let windowFrames = 0;
+
+	/** @param {number} time rAF timestamp, ms */
+	function watchFrameRate(time) {
+		const ms = time - lastFrame;
+		lastFrame = time;
+		// Hidden tabs pause rAF; the first frame back isn't a real measurement.
+		if (!started || slowReported || ms > 250 || document.hidden) return;
+		if (++watched <= FPS_WARMUP) return;
+		windowMs += ms;
+		if (++windowFrames < FPS_WINDOW) return;
+		const fps = (1000 * windowFrames) / windowMs;
+		windowMs = windowFrames = 0;
+		if (fps >= TARGET_FPS) return;
+		const dpr = renderer.getPixelRatio();
+		if (dpr > MIN_PIXEL_RATIO) {
+			pixelCap = Math.max(MIN_PIXEL_RATIO, dpr * 0.75);
+			resize();
+			watched = FPS_WARMUP - 30; // let the resized canvas settle before measuring again
+		} else if (fps < MIN_FPS) {
+			reportSlow();
+		}
+	}
+
+	/** @param {Event} e */
+	function onContextLost(e) {
+		e.preventDefault();
+		reportSlow();
+	}
+
 	canvas.style.touchAction = 'none';
+	canvas.addEventListener('webglcontextlost', onContextLost);
 	window.addEventListener('pointerdown', onPointerDown);
 	window.addEventListener('pointermove', onPointerMove);
 	window.addEventListener('pointerup', onPointerUp);
 	window.addEventListener('pointercancel', onPointerUp);
 
 	const clock = new THREE.Clock();
-	renderer.setAnimationLoop(() => {
+	renderer.setAnimationLoop((time) => {
+		watchFrameRate(time);
 		// Behind an inner page the scene is ambient, so ~30 fps is plenty.
 		if (pageMode && frame++ % 2) return;
 		const dt = Math.min(clock.getDelta(), 0.1);
@@ -629,6 +738,7 @@ export function createSpace(canvas, { onDragChange } = {}) {
 			if (started) applyStation();
 		},
 		dispose() {
+			canvas.removeEventListener('webglcontextlost', onContextLost);
 			window.removeEventListener('pointerdown', onPointerDown);
 			window.removeEventListener('pointermove', onPointerMove);
 			window.removeEventListener('pointerup', onPointerUp);

@@ -24,16 +24,24 @@
 
 	const initialStyle = 'transition: 1s; opacity: 0; transform: translateY(-10px)';
 
+	/**
+	 * textContent is already decoded, so re-escape before it goes back through innerHTML.
+	 * @param {string} text
+	 */
+	function escapeHtml(text) {
+		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	}
+
 	function fragmentStringToElement(string) {
 		let reconstructedHtml = '';
 
 		string.split(byWord ? ' ' : '').forEach((character, idx) => {
 			if (!byWord) {
 				if (character.trim() !== '')
-					reconstructedHtml += `<span class='inline-block animated-character' style='${initialStyle}'>${character}</span>`;
+					reconstructedHtml += `<span class='inline-block animated-character' style='${initialStyle}'>${escapeHtml(character)}</span>`;
 				else reconstructedHtml += `<span class='inline-block'>&nbsp;</span>`;
 			} else {
-				reconstructedHtml += `<span class='inline-block animated-character' style='${initialStyle}'>${character}&nbsp;</span>`;
+				reconstructedHtml += `<span class='inline-block animated-character' style='${initialStyle}'>${escapeHtml(character)}&nbsp;</span>`;
 			}
 		});
 

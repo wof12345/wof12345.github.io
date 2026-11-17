@@ -35,6 +35,8 @@
 
 	const canonicalUrl = $derived(absoluteUrl(canonical));
 	const imageUrl = $derived(absoluteUrl(image));
+	// Escape "<" so a closing script tag inside any string value cannot end the tag early.
+	const safeJsonLd = $derived(jsonLd?.replace(/</g, '\\u003c'));
 	const allKeywords = $derived([...new Set([...defaultKeywords, ...keywords])].join(', '));
 </script>
 
@@ -64,7 +66,7 @@
 	<meta name="twitter:description" content={description} />
 	<meta name="twitter:image" content={imageUrl} />
 
-	{#if jsonLd}
-		{@html `<script type="application/ld+json">${jsonLd}<\/script>`}
+	{#if safeJsonLd}
+		{@html `<script type="application/ld+json">${safeJsonLd}<\/script>`}
 	{/if}
 </svelte:head>

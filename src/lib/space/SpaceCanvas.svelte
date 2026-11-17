@@ -5,13 +5,24 @@
 	 * @type {{
 	 *   phase: import('./timeline').Phase,
 	 *   station: number,
+	 *   tier: 'high' | 'low',
 	 *   page?: boolean,
 	 *   planet?: import('./planets').PlanetDef | null,
 	 *   onready?: (ready: Promise<void>) => void,
-	 *   ondragchange?: (dragging: boolean) => void
+	 *   ondragchange?: (dragging: boolean) => void,
+	 *   onslow?: () => void
 	 * }}
 	 */
-	let { phase, station, page = false, planet = null, onready, ondragchange } = $props();
+	let {
+		phase,
+		station,
+		tier,
+		page = false,
+		planet = null,
+		onready,
+		ondragchange,
+		onslow
+	} = $props();
 
 	/** @type {HTMLCanvasElement} */
 	let canvas;
@@ -24,13 +35,20 @@
 		let onResize = () => {};
 
 		// three.js is loaded lazily so the first paint stays blank and fast.
-		import('./engine').then(({ createSpace }) => {
-			if (disposed) return;
-			space = createSpace(canvas, { onDragChange: (d) => ondragchange?.(d) });
-			onResize = () => space?.resize();
-			window.addEventListener('resize', onResize);
-			onready?.(space.ready);
-		});
+		import('./engine')
+			.then(({ createSpace }) => {
+				if (disposed) return;
+				space = createSpace(canvas, {
+					tier,
+					onDragChange: (d) => ondragchange?.(d),
+					onSlow: () => onslow?.()
+				});
+				onResize = () => space?.resize();
+				window.addEventListener('resize', onResize);
+				onready?.(space.ready);
+			})
+			// WebGL can still refuse at this point (driver blocklist, too many contexts).
+			.catch(() => onslow?.());
 
 		return () => {
 			disposed = true;

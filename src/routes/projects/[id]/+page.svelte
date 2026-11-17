@@ -113,7 +113,11 @@
 			{/if}
 		</div>
 
-		<h1 data-reveal style:--i={1} class="text-5xl font-light tracking-tight md:text-7xl">
+		<h1
+			data-reveal
+			style:--i={1}
+			class="text-4xl font-light tracking-tight break-words sm:text-5xl md:text-7xl"
+		>
 			{project.name}
 		</h1>
 

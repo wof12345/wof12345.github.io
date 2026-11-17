@@ -15,11 +15,11 @@
 	];
 </script>
 
-<div class="flex max-w-xl flex-col items-start gap-6 max-sm:mt-[30vh]">
+<div class="flex max-w-xl flex-col items-start gap-5 max-sm:mt-[28vh] sm:gap-6">
 	<img
 		src="/dev/pp.png"
 		alt={author}
-		class="size-28 rounded-full object-cover ring-1 ring-white/20 sm:size-36"
+		class="size-24 rounded-full object-cover ring-1 ring-white/20 sm:size-36"
 		data-reveal
 		style:--i={0}
 	/>
@@ -28,7 +28,7 @@
 		<p class="text-sm tracking-[0.35em] text-white/60 uppercase" data-reveal style:--i={1}>
 			{author}
 		</p>
-		<h1 class="text-6xl font-light tracking-tight sm:text-8xl" data-reveal style:--i={2}>
+		<h1 class="text-5xl font-light tracking-tight sm:text-8xl" data-reveal style:--i={2}>
 			<!-- Hover or focus shows a dictionary-style definition. -->
 			<button
 				type="button"
@@ -39,7 +39,7 @@
 				<span
 					id="headline-definition"
 					role="tooltip"
-					class="pointer-events-none absolute top-full left-0 z-30 mt-3 w-72 translate-y-1 rounded-xl border border-white/15 bg-black/70 p-4 text-left tracking-normal opacity-0 backdrop-blur-md transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:w-80"
+					class="pointer-events-none absolute top-full left-0 z-30 mt-3 w-72 translate-y-1 rounded-xl border border-white/15 bg-black/70 p-4 text-left tracking-normal opacity-0 backdrop-blur-md transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus:translate-y-0 group-focus:opacity-100 sm:w-80"
 				>
 					<span class="block text-base font-normal text-white">
 						{headline.toLowerCase()}
@@ -52,7 +52,7 @@
 		</h1>
 	</div>
 
-	<p class="max-w-md text-lg leading-relaxed text-white/70" data-reveal style:--i={3}>
+	<p class="max-w-md text-base leading-relaxed text-white/70 sm:text-lg" data-reveal style:--i={3}>
 		{tagline}
 	</p>
 
@@ -77,6 +77,8 @@
 		data-reveal
 		style:--i={4 + socials.length}
 	>
-		Scroll to travel ↓
+		<span class="pointer-coarse:hidden">Scroll</span><span class="hidden pointer-coarse:inline"
+			>Swipe</span
+		> to travel ↓
 	</p>
 </div>
