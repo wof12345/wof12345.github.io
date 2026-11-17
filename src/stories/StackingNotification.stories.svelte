@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import StackingNotification from '$lib/components/StackingNotification/StackingNotification.svelte';
-	import { fn } from '@storybook/test';
+	import { fn } from 'storybook/test';
 	import { stackingNotificationStore } from '$lib/components/StackingNotification/store.svelte.js';
 
 	let array = [

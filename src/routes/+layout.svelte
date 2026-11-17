@@ -1,6 +1,5 @@
 <script>
-	import { i18n } from '$lib/i18n';
-	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
+	import { locales, localizeHref } from '$lib/paraglide/runtime';
 	import '../app.css';
 	import { onMount, untrack } from 'svelte';
 	import { page } from '$app/state';
@@ -62,26 +61,31 @@
 	});
 </script>
 
-<ParaglideJS {i18n}>
-	{#if inSpace}
-		<!-- Mounted once and kept across inner pages, so travelling never reloads the scene. -->
-		<SpaceCanvas
-			phase={scene.phase}
-			station={scene.station}
-			page={!isHome}
-			{planet}
-			onready={(p) => startIntro(p)}
-			ondragchange={(d) => (scene.dragging = d)}
-		/>
-		{#if planet}
-			{#key planet.id}
-				<p
-					class="planet-caption pointer-events-none fixed right-6 bottom-6 z-20 hidden sm:block text-[10px] tracking-[0.4em] text-white/35 uppercase"
-				>
-					Passing {planet.name}
-				</p>
-			{/key}
-		{/if}
+<svelte:head>
+	<!-- Also lets the prerender crawler find each localized copy of the page. -->
+	{#each locales as locale (locale)}
+		<link rel="alternate" hreflang={locale} href={localizeHref(page.url.pathname, { locale })} />
+	{/each}
+</svelte:head>
+
+{#if inSpace}
+	<!-- Mounted once and kept across inner pages, so travelling never reloads the scene. -->
+	<SpaceCanvas
+		phase={scene.phase}
+		station={scene.station}
+		page={!isHome}
+		{planet}
+		onready={(p) => startIntro(p)}
+		ondragchange={(d) => (scene.dragging = d)}
+	/>
+	{#if planet}
+		{#key planet.id}
+			<p
+				class="planet-caption pointer-events-none fixed right-6 bottom-6 z-20 hidden sm:block text-[10px] tracking-[0.4em] text-white/35 uppercase"
+			>
+				Passing {planet.name}
+			</p>
+		{/key}
 	{/if}
-	{@render children()}
-</ParaglideJS>
+{/if}
+{@render children()}

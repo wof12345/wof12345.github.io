@@ -1,4 +1,4 @@
-/** @type { import('@storybook/svelte').Preview } */
+/** @type { import('@storybook/sveltekit').Preview } */
 import "../src/app.css";
 
 const preview = {
