@@ -7,12 +7,12 @@
 		<p data-reveal style:--i={0} class="text-xs tracking-[0.35em] text-white/50 uppercase">
 			Things I've built
 		</p>
-		<h2 data-reveal style:--i={1} class="text-4xl font-light sm:text-5xl">Projects</h2>
+		<h2 data-reveal style:--i={1} class="text-3xl font-light sm:text-5xl">Projects</h2>
 	</header>
 
 	<div
 		data-scrollable
-		class="grid max-h-[62vh] gap-4 overflow-y-auto pr-2 sm:grid-cols-2 lg:grid-cols-3"
+		class="grid gap-4 pr-2 sm:max-h-[62vh] sm:grid-cols-2 sm:overflow-y-auto lg:grid-cols-3"
 	>
 		{#each projects as p, i (p.id)}
 			<!-- Cards past the first two rows share one delay so the lock stays short. -->

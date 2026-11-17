@@ -6,12 +6,12 @@
 <div class="flex max-w-3xl flex-col gap-8">
 	<header class="flex flex-col gap-2">
 		<p data-reveal style:--i={0} class="text-xs tracking-[0.35em] text-white/50 uppercase">About</p>
-		<h2 data-reveal style:--i={1} class="text-4xl font-light sm:text-5xl">
+		<h2 data-reveal style:--i={1} class="text-3xl font-light sm:text-5xl">
 			From far enough away, it's all one system
 		</h2>
 	</header>
 
-	<div class="flex flex-col gap-4 text-lg leading-relaxed text-white/75">
+	<div class="flex flex-col gap-4 text-base leading-relaxed text-white/75 sm:text-lg">
 		{#each intro as paragraph, i (paragraph)}
 			<p data-reveal style:--i={2 + i}>{paragraph}</p>
 		{/each}

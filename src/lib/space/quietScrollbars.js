@@ -59,8 +59,7 @@ export function quietScrollbars() {
 		if (!el) return;
 		if (el !== document.scrollingElement && !el.matches('[data-scrollable]')) return;
 		// Programmatic scrolls (e.g. hash jumps) can fire on areas with nothing to scroll.
-		const scrollable =
-			el.scrollHeight - el.clientHeight > 1 || el.scrollWidth - el.clientWidth > 1;
+		const scrollable = el.scrollHeight - el.clientHeight > 1 || el.scrollWidth - el.clientWidth > 1;
 		if (!scrollable) return;
 
 		let entry = active.get(el);

@@ -9,6 +9,8 @@
 	import { runIntro } from '$lib/space/timeline';
 	import { quietScrollbars } from '$lib/space/quietScrollbars';
 	import { randomPlanet } from '$lib/space/planets';
+	import { detectTier, downgrade } from '$lib/space/quality';
+	import SpaceBackdrop from '$lib/space/SpaceBackdrop.svelte';
 
 	let { children } = $props();
 
@@ -34,10 +36,25 @@
 	let startIntro;
 	const assetsReady = new Promise((resolve) => (startIntro = resolve));
 
+	// How much 3D this device gets; decided on mount (needs a WebGL probe).
+	/** @type {import('$lib/space/quality').Tier | null} */
+	let tier = $state(null);
+
+	// The scene can't keep up: rebuild it one tier lighter (remembered for the session).
+	function onSlow() {
+		if (!tier || tier === 'off') return;
+		tier = downgrade(tier);
+		if (tier === 'off') startIntro(Promise.resolve());
+	}
+
 	onMount(() => {
 		tabVisibleState.set(document.visibilityState === 'visible');
 		const onVisibility = () => tabVisibleState.set(document.visibilityState === 'visible');
 		document.addEventListener('visibilitychange', onVisibility);
+
+		tier = detectTier();
+		// Nothing to load or animate without the 3D scene.
+		if (tier === 'off') startIntro(Promise.resolve());
 
 		// The full cinematic intro only plays when the visit starts on the home
 		// page. Landing on an inner page fades the planets straight into the
@@ -45,7 +62,9 @@
 		const cancelIntro = runIntro((p) => (scene.phase = p), {
 			gate: assetsReady,
 			reducedMotion:
-				matchMedia('(prefers-reduced-motion: reduce)').matches || page.url.pathname !== '/'
+				matchMedia('(prefers-reduced-motion: reduce)').matches ||
+				page.url.pathname !== '/' ||
+				tier === 'off'
 		});
 
 		const html = document.documentElement;
@@ -68,24 +87,33 @@
 	{/each}
 </svelte:head>
 
-{#if inSpace}
-	<!-- Mounted once and kept across inner pages, so travelling never reloads the scene. -->
-	<SpaceCanvas
-		phase={scene.phase}
-		station={scene.station}
-		page={!isHome}
-		{planet}
-		onready={(p) => startIntro(p)}
-		ondragchange={(d) => (scene.dragging = d)}
-	/>
-	{#if planet}
-		{#key planet.id}
-			<p
-				class="planet-caption pointer-events-none fixed right-6 bottom-6 z-20 hidden sm:block text-[10px] tracking-[0.4em] text-white/35 uppercase"
-			>
-				Passing {planet.name}
-			</p>
+{#if inSpace && tier}
+	{#if tier === 'off'}
+		<SpaceBackdrop />
+	{:else}
+		<!-- Mounted once and kept across inner pages, so travelling never reloads the scene.
+		     Remounts only if the frame-rate watchdog drops it to a lighter tier. -->
+		{#key tier}
+			<SpaceCanvas
+				phase={scene.phase}
+				station={scene.station}
+				{tier}
+				page={!isHome}
+				{planet}
+				onready={(p) => startIntro(p)}
+				ondragchange={(d) => (scene.dragging = d)}
+				onslow={onSlow}
+			/>
 		{/key}
+		{#if planet}
+			{#key planet.id}
+				<p
+					class="planet-caption pointer-events-none fixed right-6 bottom-6 z-20 hidden sm:block text-[10px] tracking-[0.4em] text-white/35 uppercase"
+				>
+					Passing {planet.name}
+				</p>
+			{/key}
+		{/if}
 	{/if}
 {/if}
 {@render children()}

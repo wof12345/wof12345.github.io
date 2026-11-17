@@ -23,7 +23,11 @@
 		<p data-reveal style:--i={0} class="text-xs tracking-[0.3em] text-white/50 uppercase">
 			<span style:color={company.color}>{company.type}</span> · {company.period}
 		</p>
-		<h1 data-reveal style:--i={1} class="text-5xl font-light tracking-tight md:text-7xl">
+		<h1
+			data-reveal
+			style:--i={1}
+			class="text-4xl font-light tracking-tight break-words sm:text-5xl md:text-7xl"
+		>
 			{company.name}
 		</h1>
 		<p data-reveal style:--i={2} class="text-xl text-white/80 md:text-2xl">{company.role}</p>

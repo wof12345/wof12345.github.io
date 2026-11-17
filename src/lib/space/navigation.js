@@ -2,16 +2,32 @@ const WHEEL_THRESHOLD = 60;
 const SWIPE_THRESHOLD = 50;
 
 /**
+ * The [data-scrollable] elements containing `target`, innermost first.
+ * @param {EventTarget | null} target
+ */
+function scrollersOf(target) {
+	/** @type {Element[]} */
+	const found = [];
+	let el = target instanceof Element ? target.closest('[data-scrollable]') : null;
+	while (el) {
+		found.push(el);
+		el = el.parentElement?.closest('[data-scrollable]') ?? null;
+	}
+	return found;
+}
+
+/**
  * True if `target` sits inside a [data-scrollable] element that can still
  * scroll in `direction` — that element scrolls instead of the station.
+ * Checks every level: a list may only scroll on wide screens while its
+ * station scrolls on narrow ones.
  * @param {EventTarget | null} target
  * @param {1 | -1} direction
  */
 function canScrollInside(target, direction) {
-	const el = target instanceof Element ? target.closest('[data-scrollable]') : null;
-	if (!el) return false;
-	if (direction > 0) return el.scrollTop + el.clientHeight < el.scrollHeight - 1;
-	return el.scrollTop > 0;
+	return scrollersOf(target).some((el) =>
+		direction > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0
+	);
 }
 
 /**
@@ -32,6 +48,8 @@ function canScrollInside(target, direction) {
 export function stationNavigation(root, { count, get, set, enabled, ignoreTouch = () => false }) {
 	let wheelAccum = 0;
 	let touchY = /** @type {number | null} */ (null);
+	/** Scroll offsets under the finger at touch start. @type {[Element, number][]} */
+	let touchScroll = [];
 
 	/** @param {number} index */
 	const go = (index) => {
@@ -62,12 +80,15 @@ export function stationNavigation(root, { count, get, set, enabled, ignoreTouch 
 	function onTouchStart(e) {
 		// Pointer events fire before touch events, so a planet drag is already flagged here.
 		touchY = ignoreTouch() ? null : e.touches[0].clientY;
+		touchScroll = scrollersOf(e.target).map((el) => [el, el.scrollTop]);
 	}
 	/** @param {TouchEvent} e */
 	function onTouchEnd(e) {
 		if (touchY === null) return;
 		const dy = touchY - e.changedTouches[0].clientY;
 		touchY = null;
+		// The swipe scrolled content (e.g. down to its end): that was the whole gesture.
+		if (touchScroll.some(([el, top]) => el.scrollTop !== top)) return;
 		const dir = dy > 0 ? 1 : -1;
 		if (Math.abs(dy) < SWIPE_THRESHOLD || locked() || canScrollInside(e.target, dir)) return;
 		step(dir);

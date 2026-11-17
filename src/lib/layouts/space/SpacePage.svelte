@@ -45,7 +45,7 @@
 </script>
 
 <div
-	class="pointer-events-none relative z-10 min-h-screen text-white transition-opacity duration-700"
+	class="pointer-events-none relative z-10 min-h-dvh text-white transition-opacity duration-700"
 	class:revealed
 	style:opacity={revealed ? 1 : 0}
 	style:--reveal-base="150ms"
@@ -58,7 +58,7 @@
 	></div>
 
 	<nav
-		class="pointer-events-auto mx-auto flex items-center justify-between gap-4 px-6 pt-8 {width ===
+		class="pointer-events-auto mx-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-6 pt-8 {width ===
 		'wide'
 			? 'max-w-5xl'
 			: 'max-w-3xl'}"
@@ -74,7 +74,7 @@
 		{:else}
 			<span></span>
 		{/if}
-		<ul class="flex gap-4 text-xs tracking-[0.2em] uppercase sm:gap-6">
+		<ul class="flex flex-wrap gap-x-4 gap-y-2 text-xs tracking-[0.2em] uppercase sm:gap-x-6">
 			{#each links as l (l.href)}
 				<li>
 					<a
@@ -92,7 +92,7 @@
 	</nav>
 
 	<div
-		class="pointer-events-auto mx-auto px-6 pt-14 pb-24 md:pt-20 {width === 'wide'
+		class="pointer-events-auto mx-auto px-6 pt-10 pb-24 sm:pt-14 md:pt-20 {width === 'wide'
 			? 'max-w-5xl'
 			: 'max-w-3xl'}"
 	>

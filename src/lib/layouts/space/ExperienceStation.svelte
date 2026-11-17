@@ -8,12 +8,12 @@
 		<p data-reveal style:--i={0} class="text-xs tracking-[0.35em] text-white/50 uppercase">
 			Experience
 		</p>
-		<h2 data-reveal style:--i={1} class="text-4xl font-light sm:text-5xl">
+		<h2 data-reveal style:--i={1} class="text-3xl font-light sm:text-5xl">
 			Places I've built things
 		</h2>
 	</header>
 
-	<ol data-scrollable class="relative flex max-h-[62vh] flex-col overflow-y-auto pr-2">
+	<ol data-scrollable class="relative flex flex-col pr-2 sm:max-h-[62vh] sm:overflow-y-auto">
 		{#each companies as c, i (c.id)}
 			<li data-reveal style:--i={i + 2} class="relative pb-6 pl-10 last:pb-0">
 				<!-- orbit line + node -->
@@ -33,13 +33,13 @@
 
 				<a
 					href="/company/{c.id}"
-					class="group flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-md transition hover:border-white/30 sm:flex-row sm:items-start sm:justify-between sm:gap-6"
+					class="group flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-md transition hover:border-white/30 max-sm:p-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6"
 				>
 					<div class="flex flex-col gap-1">
 						<p class="text-xs tracking-[0.2em] text-white/45 uppercase">
 							{c.period} · {c.type}
 						</p>
-						<h3 class="text-xl font-medium">
+						<h3 class="text-lg font-medium sm:text-xl">
 							{c.role} <span class="text-white/40">at</span>
 							<span style:color={c.color}>{c.name}</span>
 						</h3>

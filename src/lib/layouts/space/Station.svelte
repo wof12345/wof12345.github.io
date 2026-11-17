@@ -76,7 +76,8 @@
 	aria-label={label}
 	aria-hidden={!active}
 	inert={!active}
-	class="pointer-events-none fixed inset-0 z-20 flex items-center pr-12 pl-6 sm:px-16 lg:px-24"
+	data-scrollable
+	class="pointer-events-none fixed inset-0 z-20 flex overflow-y-auto pr-12 pl-6 sm:px-16 lg:px-24"
 	class:revealed={seen}
 	style:opacity={shown ? 1 : 0}
 	style:transform="translateY({shown ? 0 : Math.sign(position || 1) * 10}vh)"
@@ -87,8 +88,10 @@
 	style:--reveal-base="{base}ms"
 	style:--reveal-step="{step}ms"
 >
-	<!-- Empty space passes clicks through to the planets; see .station-content in app.css. -->
-	<div class="station-content w-full">
+	<!-- Empty space passes clicks through to the planets; see .station-content in app.css.
+	     `my-auto` centres the content but, unlike `items-center`, lets content taller
+	     than a phone screen scroll instead of being cut off at both ends. -->
+	<div class="station-content my-auto w-full py-12 sm:py-8">
 		{@render children()}
 	</div>
 </section>
