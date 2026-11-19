@@ -15,7 +15,7 @@
 	];
 </script>
 
-<div class="flex max-w-xl flex-col items-start gap-5 max-sm:mt-[28vh] sm:gap-6">
+<div class="flex max-w-xl flex-col items-start gap-5 sm:gap-6">
 	<img
 		src="/dev/pp.png"
 		alt={author}

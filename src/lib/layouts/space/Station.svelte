@@ -17,6 +17,9 @@
 	 * `revealedBefore` skips that reveal (the visitor already saw it on an
 	 * earlier visit to the home page).
 	 *
+	 * `fit` marks content sized to one screen: it never scrolls, and on phones
+	 * it sits at the bottom, leaving the top of the screen to the planets.
+	 *
 	 * @type {{
 	 *   id: string,
 	 *   label: string,
@@ -24,6 +27,7 @@
 	 *   position: number,
 	 *   travel: number,
 	 *   revealedBefore?: boolean,
+	 *   fit?: boolean,
 	 *   base?: number,
 	 *   step?: number,
 	 *   onreveal?: (ms: number) => void,
@@ -37,6 +41,7 @@
 		position,
 		travel,
 		revealedBefore = false,
+		fit = false,
 		base = 600,
 		step = 140,
 		onreveal,
@@ -76,8 +81,10 @@
 	aria-label={label}
 	aria-hidden={!active}
 	inert={!active}
-	data-scrollable
-	class="pointer-events-none fixed inset-0 z-20 flex overflow-y-auto pr-12 pl-6 sm:px-16 lg:px-24"
+	data-scrollable={fit ? undefined : true}
+	class="pointer-events-none fixed inset-0 z-20 flex pr-12 pl-6 sm:px-16 lg:px-24 {fit
+		? 'overflow-hidden'
+		: 'overflow-y-auto'}"
 	class:revealed={seen}
 	style:opacity={shown ? 1 : 0}
 	style:transform="translateY({shown ? 0 : Math.sign(position || 1) * 10}vh)"
@@ -91,7 +98,7 @@
 	<!-- Empty space passes clicks through to the planets; see .station-content in app.css.
 	     `my-auto` centres the content but, unlike `items-center`, lets content taller
 	     than a phone screen scroll instead of being cut off at both ends. -->
-	<div class="station-content my-auto w-full py-12 sm:py-8">
+	<div class="station-content w-full sm:my-auto sm:py-8 {fit ? 'mt-auto pb-10' : 'my-auto py-12'}">
 		{@render children()}
 	</div>
 </section>

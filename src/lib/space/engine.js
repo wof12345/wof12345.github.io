@@ -371,6 +371,16 @@ export function createSpace(canvas, { tier = 'high', onDragChange, onSlow } = {}
 		onSlow?.();
 	};
 
+	/**
+	 * Camera distance for the intro close-up. On narrow (portrait) screens the
+	 * horizontal field of view shrinks, so back off until the earth spans
+	 * about 60% of the width instead of overflowing it.
+	 */
+	function introDistance() {
+		const halfWidth = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * aspect;
+		return Math.max(introPose.camera.z, (EARTH_RADIUS * 1.65) / halfWidth);
+	}
+
 	function resize() {
 		const w = canvas.clientWidth;
 		const h = canvas.clientHeight;
@@ -382,6 +392,7 @@ export function createSpace(canvas, { tier = 'high', onDragChange, onSlow } = {}
 		camera.updateProjectionMatrix();
 		starUniforms.uPixelRatio.value = dpr;
 		if (started) applyStation();
+		else cam.z.value = cam.z.target = introDistance();
 		if (current) placePlanet(current);
 	}
 
