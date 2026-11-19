@@ -108,6 +108,7 @@
 			position={i - scene.station}
 			travel={scene.travel}
 			revealedBefore={scene.seen[stations[i].id]}
+			fit={stations[i].id === 'home'}
 			{...revealTiming[stations[i].id]}
 			onreveal={(ms) => {
 				scene.seen[stations[i].id] = true;
