@@ -23,16 +23,14 @@ export const companies = [
 		color: '#f5a524',
 		tagline: 'Where I build now',
 		description: [
-			'Backend engineer on an AI-assisted customer-discovery platform that records, transcribes and analyses interviews.',
-			'I own features across the Node.js API, AWS Lambda and ECS workers, and the platform runtime itself — with a focus on correctness, measured performance, and breaking a legacy monolith into pieces that can change safely.'
+			'Backend engineer working across the API, background workers and the platform runtime.',
+			'My focus is correctness, measured performance, and making a large legacy codebase safe to change.'
 		],
 		highlights: [
-			'Built the AI transcript auto-correction pipeline end to end, from detection in an event-driven Lambda to apply, reject and undo APIs.',
-			'Cut ~530 ms from every correction click by timing each layer; auth middleware went from ~210 ms to ~50 ms.',
-			'Led the Node.js 18 → 22 → 24 upgrade across API, Lambda and ECS services, including AWS SDK v3 and Express 5.',
-			'Decomposed a legacy Express monolith into domain modules without breaking frontend contracts.',
-			'Designed a standalone meeting-webhook service, weighing SQS and HTTP handoff.',
-			'Hardened the AI insight-generation worker with retries, backoff, idempotent status writes and crash recovery.'
+			'Cut ~530 ms from a core user interaction by profiling each layer; authentication overhead went from ~210 ms to ~50 ms.',
+			'Led the Node.js 18 → 22 → 24 upgrade across every service, including the move to AWS SDK v3 and Express 5.',
+			'Broke a legacy monolith into domain modules without breaking any frontend contracts.',
+			'Made background processing more reliable with retries, backoff, idempotent writes and crash recovery.'
 		],
 		link: null
 	},
