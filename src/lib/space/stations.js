@@ -1,8 +1,10 @@
 /**
  * Fixed points in space the visitor moves between.
  *
- * `camera.z` is the camera distance; `planets` places the earth+moon group.
- * Each step pushes the planets further away so they recede into the
+ * Earth sits fixed at the origin of the solar system map, so these describe
+ * the shot rather than moving anything: `camera.z` is the camera distance,
+ * and `planets` is where the earth+moon appear on screen (offset, and size
+ * via `scale`). Each step frames them further away so they recede into the
  * background as the visitor travels.
  *
  * @typedef {Object} Station
@@ -46,17 +48,6 @@ export const stations = [
 		planets: { x: 17, y: 11, scale: 0.4 }
 	}
 ];
-
-/**
- * Placement while an inner page (about, blog, company, project) is open:
- * the earth and moon drift far back so text can sit over the whole screen.
- * @type {Pick<Station, 'camera' | 'planets'>}
- */
-export const pagePose = {
-	camera: { x: 0, y: 1, z: 34 },
-	// Far top-left: the top-right belongs to the page's random planet.
-	planets: { x: -19, y: 10, scale: 0.45 }
-};
 
 /** Camera/planet placement during the intro, before the recede. */
 export const introPose = {
