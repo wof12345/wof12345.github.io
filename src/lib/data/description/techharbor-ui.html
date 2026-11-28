@@ -1,0 +1,58 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		TechHarbor UI is the starting point I built for new dashboards: a SvelteKit component kit,
+		ready-made layouts, and a chat module wired to a real backend.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The kit covers the parts every admin panel ends up needing. Inputs include dropdowns, searchable
+		and multi-select pills, date fields, text areas, and file and image uploads. There are also
+		tabs, steppers, tables, context windows, a month-view calendar with events, typography, and
+		nested section, container, and side-nav layouts. Every page under the dashboard shows the
+		components in use, so the starter is its own documentation.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		A backend to go with it
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The kit pairs with a FastAPI service that I set up as a reusable base: SQLAlchemy models with
+		Alembic migrations, JWT login and registration, and a chat module with chatrooms and members.
+		Messages travel over a WebSocket per chatroom, and the socket is authenticated with the same
+		token as the REST API. The SvelteKit side keeps the token in a cookie and calls the API from the
+		server, so the browser never talks to the backend directly.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Component kit</span>: inputs, uploads,
+					tabs, calendar</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Nested layouts</span> ready to fill</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">WebSocket chat</span> with token auth</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">FastAPI base</span> with Alembic
+					migrations</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,58 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		RA Marketplace is a property marketplace where owners list homes to rent or sell and seekers
+		find them, with an admin team approving what goes live.
+	</p>
+
+	<p class="text-secondary-100/70">
+		There are two kinds of account. Providers create listings, track what they've rented out and
+		sold, and manage their subscriptions. Seekers browse, search, and keep their personal details
+		and subscription in one place. Admins review pending providers and listings, approve or reject
+		them, and follow payments, rentals, and seekers from an overview. The front end is SvelteKit
+		with OpenLayers maps for property locations. The back end is FastAPI with SQLAlchemy and Alembic
+		migrations.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Approval before anything is public
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Both providers and listings start as pending. Only after an admin approves them do they show up
+		in search, which keeps fake listings out without slowing genuine providers down much.
+		Subscriptions are stored with a full payment history, so the admin overview can show what each
+		provider has paid and when.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Provider and seeker</span> accounts</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Admin approval</span> for providers and
+					listings</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Map-based</span> property locations</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Subscriptions</span> with payment
+					history</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

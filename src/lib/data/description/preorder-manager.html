@@ -1,0 +1,55 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Preorder Manager is a small admin for preorder campaigns, with two screens: a list and a form.
+		The point was to do both of them properly.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The list can be filtered by status, sorted by name or any of its dates in either direction, and
+		paginated, and all of that runs on the server against the database rather than in the browser.
+		The filter state lives in the URL, so a filtered view can be refreshed or shared. Rows can be
+		selected, switched between active and inactive in place, or deleted. Creating and editing share
+		one form with inline validation, a saving state, and toast messages.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Server Actions all the way down
+	</h3>
+
+	<p class="text-secondary-100/70">
+		There's no separate API. Create, update, toggle, and delete are Next.js Server Actions, and
+		their input and the page's query parameters are checked with Zod schemas before anything reaches
+		the database. Out-of-range page numbers and unknown sort keys are clamped to sensible defaults
+		instead of failing. Prisma talks to SQLite through the libSQL adapter, so the same code runs on
+		a local file or on Turso.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Server-side</span> filter, sort, and
+					paging</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Zod-validated</span> Server Actions</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">One form</span> for create and edit</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">libSQL</span>, local or Turso</span>
+			</li>
+		</ul>
+	</div>
+</div>

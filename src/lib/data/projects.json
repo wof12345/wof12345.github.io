@@ -130,7 +130,7 @@
 			"Celery",
 			"OpenAI Whisper"
 		],
-		"image": null,
+		"image": "/german-lms/p_1.png",
 		"links": {}
 	},
 	{
@@ -180,7 +180,7 @@
 			"PostgreSQL",
 			"Stripe Connect"
 		],
-		"image": null,
+		"image": "/dreamuni/p_1.png",
 		"links": {}
 	},
 	{
@@ -197,6 +197,299 @@
 			"Splide"
 		],
 		"image": "/raz-tutoring/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "islamic-events",
+		"name": "Islamic Events",
+		"period": "2026",
+		"context": "",
+		"company": "Personal",
+		"description": "A bilingual events platform for community and charity programmes: categorised event listings, per-event registration forms built from a JSON schema, optional fixed or open fees in BDT, Google sign-in, and an admin area for events and registrations.",
+		"tags": [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Prisma",
+			"PostgreSQL",
+			"NextAuth",
+			"next-intl",
+			"Tailwind CSS"
+		],
+		"image": "/islamic-events/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "campus-bus-tracker",
+		"name": "Campus Bus Tracker",
+		"period": "2024",
+		"context": "",
+		"company": "Personal",
+		"description": "A campus transport system where a gate camera reads bus number plates with YOLOv8 and EasyOCR to mark buses in or out, drivers stream their location live over WebSockets, and commuters follow routes and reserve seats.",
+		"tags": [
+			"SvelteKit",
+			"FastAPI",
+			"MongoDB",
+			"YOLOv8",
+			"EasyOCR",
+			"WebSockets",
+			"Leaflet"
+		],
+		"image": "/campus-bus-tracker/p_1.png",
+		"links": {
+			"github": "https://github.com/wof12345/lisence-detection-svelte"
+		}
+	},
+	{
+		"id": "psplatform",
+		"name": "PSPlatform",
+		"period": "2025",
+		"context": "",
+		"company": "Polygon Systems",
+		"description": "A team workspace for organisations: invite-based teams, a realtime kanban board, end-to-end encrypted group messaging, posts written in a block editor, invoices, shared files, and a separate admin console.",
+		"tags": [
+			"SvelteKit",
+			"Supabase",
+			"PostgreSQL",
+			"TweetNaCl",
+			"Editor.js",
+			"Tailwind CSS",
+			"Cloudflare"
+		],
+		"image": "/psplatform/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "iot-manager",
+		"name": "IoT Manager",
+		"period": "2025",
+		"context": "",
+		"company": "Polygon Systems",
+		"description": "A device-management backend and dashboard for an organisation's sensors: per-device access tokens, temperature and file ingestion buffered through a Redis queue and written in batches, and a dashboard for devices, keys, files, and users.",
+		"tags": [
+			"SvelteKit",
+			"Drizzle ORM",
+			"SQLite",
+			"BullMQ",
+			"Redis",
+			"Docker",
+			"Tailwind CSS"
+		],
+		"image": "/iot-manager/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "serum-diagnostics",
+		"name": "Serum Diagnostics",
+		"period": "2025",
+		"context": "",
+		"company": "Nanokingfisher",
+		"description": "A diagnostic-centre management system covering patient diagnoses, lab reporting, report delivery, dues, expenses, and doctor commissions, with TCP listeners that take results straight from lab analysers over HL7 and ASTM.",
+		"tags": [
+			"PHP",
+			"CodeIgniter",
+			"MySQL",
+			"HL7",
+			"ASTM E1394",
+			"mPDF"
+		],
+		"image": "/serum-diagnostics/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "preorder-manager",
+		"name": "Preorder Manager",
+		"period": "2026",
+		"context": "",
+		"company": "Personal",
+		"description": "A small preorder admin built around Server Actions: a list with server-side filtering, sorting, and pagination, inline status toggles, and a shared create and edit form with validation and toast feedback.",
+		"tags": [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Prisma",
+			"libSQL",
+			"Zod",
+			"Tailwind CSS"
+		],
+		"image": "/preorder-manager/p_1.png",
+		"links": {
+			"github": "https://github.com/wof12345/xubiter-project"
+		}
+	},
+	{
+		"id": "ra-marketplace",
+		"name": "RA Marketplace",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A property marketplace for renting and selling, with separate provider and seeker accounts, listings that go through admin approval, map-based property locations, and paid subscriptions with payment history.",
+		"tags": [
+			"SvelteKit",
+			"FastAPI",
+			"SQLAlchemy",
+			"PostgreSQL",
+			"OpenLayers",
+			"Tailwind CSS"
+		],
+		"image": "/ra-marketplace/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "car-auction",
+		"name": "JP Auction Center",
+		"period": "2023",
+		"context": "",
+		"company": "Personal",
+		"description": "A chassis-number lookup service for Japanese auction cars: buyers search a chassis number to see its auction sheet, and staff manage cars, documents, QR codes, and approval status from a dashboard.",
+		"tags": [
+			"SvelteKit",
+			"FastAPI",
+			"PostgreSQL",
+			"Tailwind CSS",
+			"Cloudflare"
+		],
+		"image": "/car-auction/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "svelte-design-system",
+		"name": "Svelte Design System",
+		"period": "2024",
+		"context": "",
+		"company": "Brownbrick",
+		"description": "A Svelte and Tailwind implementation of a full design kit: around thirty-five dashboard, settings, landing, and informational pages built from one set of shared components and Chart.js charts.",
+		"tags": [
+			"SvelteKit",
+			"Tailwind CSS",
+			"Chart.js",
+			"TypeScript"
+		],
+		"image": "/svelte-design-system/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "algorithm-debunker",
+		"name": "Algorithm Debunker",
+		"period": "2023",
+		"context": "",
+		"company": "Personal",
+		"description": "A step-through visualiser for eight sorting algorithms, from bubble sort to heap sort. Enter your own numbers, then step forwards and backwards or let it auto-play while each comparison and swap is highlighted.",
+		"tags": [
+			"JavaScript",
+			"HTML",
+			"CSS"
+		],
+		"image": "/algorithm-debunker/p_1.png",
+		"links": {
+			"github": "https://github.com/wof12345/detailed-algorithm_debunker"
+		}
+	},
+	{
+		"id": "pathfinding-visualizer",
+		"name": "Pathfinding Visualizer",
+		"period": "2022",
+		"context": "",
+		"company": "Personal",
+		"description": "A grid sandbox for comparing pathfinding algorithms (BFS, DFS, Dijkstra, Bellman-Ford, A*, and Yen's K shortest paths) with 4- or 8-directional movement, editable blockades, and animated traversal.",
+		"tags": [
+			"JavaScript",
+			"HTML",
+			"CSS"
+		],
+		"image": "/pathfinding-visualizer/p_1.png",
+		"links": {
+			"github": "https://github.com/wof12345/test-virtual_pathfinding_and_aibehaviour_test"
+		}
+	},
+	{
+		"id": "map-tour",
+		"name": "Waive",
+		"period": "2023",
+		"context": "",
+		"company": "Personal",
+		"description": "A map-first discovery app that lists events, food, offers, and services near you next to an OpenLayers map, with switchable base layers, a liked state, and animated list transitions.",
+		"tags": [
+			"SvelteKit",
+			"OpenLayers",
+			"Turf.js",
+			"Tailwind CSS"
+		],
+		"image": "/map-tour/p_1.png",
+		"links": {
+			"github": "https://github.com/wof12345/projectMapTour"
+		}
+	},
+	{
+		"id": "quiz-app",
+		"name": "Quiz App",
+		"period": "2022",
+		"context": "",
+		"company": "Personal",
+		"description": "A timed quiz app where anyone can build a quiz with a time limit and take it later. The countdown runs in a Web Worker so it stays accurate when the tab is in the background.",
+		"tags": [
+			"JavaScript",
+			"HTML",
+			"CSS",
+			"Web Workers"
+		],
+		"image": "/quiz-app/p_1.png",
+		"links": {
+			"github": "https://github.com/wof12345/common-quiz-app"
+		}
+	},
+	{
+		"id": "frontend-playground",
+		"name": "Front-end Playground",
+		"period": "2022",
+		"context": "",
+		"company": "Personal",
+		"description": "A collection of early front-end work: landing pages and storefront templates, ad banners, a command-palette search UI, a Three.js and cannon-es physics sandbox, and an in-browser face-detection check.",
+		"tags": [
+			"JavaScript",
+			"HTML",
+			"CSS",
+			"SvelteKit",
+			"Three.js",
+			"face-api.js"
+		],
+		"image": "/frontend-playground/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "metro-hms",
+		"name": "Metro HMS",
+		"period": "2023",
+		"context": "",
+		"company": "Personal",
+		"description": "A desktop hospital and diagnostic-centre management system: patient registration across lab, indoor, and hospital care, lab test billing with discounts and dues, per-test report templates rendered to PDF, admissions, daily transactions, and test statistics.",
+		"tags": [
+			"Flutter",
+			"Dart",
+			"FastAPI",
+			"SQLAlchemy",
+			"PostgreSQL",
+			"FPDF"
+		],
+		"image": "/metro-hms/p_1.png",
+		"links": {}
+	},
+	{
+		"id": "techharbor-ui",
+		"name": "TechHarbor UI",
+		"period": "2025",
+		"context": "",
+		"company": "Personal",
+		"description": "A SvelteKit component kit and dashboard starter, with inputs, uploads, tabs, steppers, a calendar, and nested layouts, plus a real-time chat module backed by a FastAPI service with JWT auth and WebSocket chatrooms.",
+		"tags": [
+			"SvelteKit",
+			"TypeScript",
+			"Tailwind CSS",
+			"FastAPI",
+			"PostgreSQL",
+			"WebSockets"
+		],
+		"image": "/techharbor-ui/p_1.png",
 		"links": {}
 	}
 ]

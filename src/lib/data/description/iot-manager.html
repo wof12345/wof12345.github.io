@@ -1,0 +1,65 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		IoT Manager is where an organisation registers its devices and where those devices send their
+		data: temperature readings, uploaded files, and whatever comes next.
+	</p>
+
+	<p class="text-secondary-100/70">
+		Each device gets its own access token, which it uses to post readings and files to the API. A
+		dashboard lets the organisation manage devices, regenerate keys, browse and download files, and
+		manage users. It's SvelteKit with Drizzle ORM on SQLite, plus Redis and BullMQ for ingestion,
+		and the whole thing is packaged with Docker Compose.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			Devices talk in small, constant bursts. The database prefers fewer, larger writes.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Batching the firehose
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Incoming readings aren't written straight to SQLite. Each one becomes a job on a BullMQ queue in
+		Redis. A worker takes up to a hundred waiting jobs at a time, sorts them into temperature
+		readings and file records, inserts each group in one statement, and removes the jobs once the
+		write succeeds. A short Redis lock with a set-if-absent expiry means only one worker drains the
+		queue in any one-second window, even with several instances running.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Per-device tokens</span> for
+					ingestion</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Queued, batched writes</span> with
+					BullMQ</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Redis lock</span> so one worker drains at a
+					time</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Dockerised</span> app, Redis, and
+					database</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

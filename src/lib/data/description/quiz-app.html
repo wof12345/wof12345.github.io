@@ -1,0 +1,19 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Quiz App lets anyone write a quiz with a time limit and anyone else take it before the clock
+		runs out.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The builder sets a title, an author, and a time limit, then adds and removes questions. Each
+		quiz gets an ID, is saved in the browser, and appears in the list of available quizzes. Taking a
+		quiz shows the questions with a countdown, and the result is shown at the end, or when time runs
+		out.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The countdown runs in a Web Worker instead of on the page. Browsers slow down timers in
+		background tabs, so a quiz timed on the main thread could give someone extra time just because
+		they switched tabs. The worker keeps ticking at the right rate either way.
+	</p>
+</div>

@@ -1,0 +1,56 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		JP Auction Center lets someone buying an imported Japanese car check it before they pay: type in
+		the chassis number and see the car's auction record and sheet.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The public side is a single search box. Behind it, staff use a dashboard to add cars, upload
+		their auction sheets and photos, generate QR codes that link straight to a car's page, and move
+		each car through new, approved, and rejected. Users and their passwords are managed from the
+		same dashboard. The front end is SvelteKit with Tailwind, and the back end is FastAPI with JWT
+		auth and Alembic migrations.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Auction sheets on any screen
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Auction sheets arrive as PDFs, which many phone browsers won't display inline. The details page
+		renders the sheet as an image preview instead, so it reads the same on a phone at a dealership
+		as on a desktop. Chassis numbers are unique, so the same car can't be entered twice.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Chassis-number lookup</span> for
+					buyers</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">QR codes</span> linking to each car</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">PDF sheets</span> previewed as images</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Approval workflow</span> for listed
+					cars</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

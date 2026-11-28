@@ -1,0 +1,76 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Islamic Events is a platform for a community organisation that runs learning sessions, Qur'an
+		recitation events, and charity drives. People browse what's coming up, register, and pay if the
+		event has a fee. The organisers run it all from one admin area.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It's a single Next.js App Router project on Prisma and PostgreSQL, with NextAuth for email and
+		Google sign-in and next-intl serving every page in English and Bangla. Events belong to
+		categories and carry tags, images, a date, a location, an optional capacity, and a draft or
+		published status.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			No two events ask the same questions, so the registration form is data, not code.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Forms defined per event
+	</h3>
+
+	<p class="text-secondary-100/70">
+		A lecture might need only a name and phone number, while a sponsored iftar needs dietary details
+		and a guest count. Instead of hard-coding fields, each event can have a form schema stored as
+		JSON next to it. A shared dynamic form component renders that schema on the registration page,
+		and the answers are saved as JSON on the registration. Adding a new kind of event therefore
+		needs no migration and no deploy.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Fees without forcing payment
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Most events are free. Those that aren't can have a fixed fee or let people choose an amount, and
+		a registration with a fee gets its own payment record in BDT with a status, a gateway reference,
+		and a history of what the gateway reported. Keeping payments separate from registrations means a
+		free event never touches the payment code at all.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">English and Bangla</span> on every
+					page</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">JSON-schema forms</span> per event</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Fixed or open fees</span> with payment
+					history</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Admin area</span> for events, categories,
+					and registrations</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

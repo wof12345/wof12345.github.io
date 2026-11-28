@@ -1,0 +1,65 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Serum Diagnostics runs the day-to-day of a diagnostic centre, from a patient's first test order
+		to the printed report, and gets results from the lab machines without anyone retyping them.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The application is a CodeIgniter system on MySQL. It covers new diagnoses and patient records,
+		lab reporting and report delivery, due collection, purchases and expenses, financial reports,
+		doctor and marketing-area commissions, and licensing. Reports are rendered to PDF with mPDF,
+		with QR codes so a printed report can be checked.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			Every analyser speaks a slightly different dialect of a standard.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Talking to the analysers
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Each lab machine gets its own long-running PHP listener on a TCP port. The Maglumi 800
+		immunoassay analyser uses ASTM E1394, so its listener handles the ENQ/ACK handshake, reads
+		framed records between STX and ETX, and parses header, patient, order, and result records. The
+		CXL Pro T240 Plus chemistry analyser uses HL7 over MLLP. Its listener acknowledges each message,
+		answers the machine's order queries for a sample, and then inserts or updates each result
+		against the right test. Other listeners cover a urine analyser and a Selectra chemistry
+		analyser. Every exchange is logged, so when a machine and the system disagree there's a record
+		of what was actually sent.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">HL7 and ASTM</span> analyser
+					interfaces</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Order queries</span> answered from the
+					LIS</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">PDF reports</span> with QR codes</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Finance</span>: dues, expenses,
+					commissions</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

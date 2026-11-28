@@ -1,0 +1,69 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		PSPlatform is a workspace for small organisations: one place for the team, its tasks, its
+		conversations, and its paperwork.
+	</p>
+
+	<p class="text-secondary-100/70">
+		An organisation signs up, invites people by link, and gets a kanban board, group and direct
+		messaging, posts written in a block editor, invoices with line items, and shared files. A
+		separate admin console oversees users, posts, messages, invoices, and files across the platform.
+		It's built on SvelteKit and Supabase, using Supabase for auth, Postgres, storage, and realtime,
+		and deployed to Cloudflare.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			A team chat that the platform's own admins can't read.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		End-to-end encrypted messages
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Each user gets a NaCl key pair. The private key is itself encrypted with a secret before it is
+		stored, so the database never holds it in the clear. When someone sends a message, the browser
+		encrypts it separately for every participant's public key and stores one ciphertext per
+		recipient. Each reader decrypts only their own copy. The server passes and stores messages it
+		can't read.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		Realtime without polling
+	</h3>
+
+	<p class="text-secondary-100/70">
+		The kanban board and the message list both subscribe to Supabase realtime channels, so a card
+		moved by one teammate or a new message shows up for everyone else straight away.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Per-recipient encryption</span> with
+					TweetNaCl</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Realtime kanban</span> and chat</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">Invites</span>, teams, and roles</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Invoices, posts, files</span>, and an admin
+					console</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

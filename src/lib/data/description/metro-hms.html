@@ -1,0 +1,73 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Metro HMS runs the front desk and the lab of a hospital and diagnostic centre: registering
+		patients, billing their tests, writing up results, and printing the reports they take home.
+	</p>
+
+	<p class="text-secondary-100/70">
+		It's a Windows desktop app written in Flutter, talking to a FastAPI service on PostgreSQL. Staff
+		sign in with one of three roles (admin, receptionist, or lab), and the sidebar splits the work
+		into admin, information (doctors and staff), patients, transactions, reports, and stats.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			A report is only finished when it's on paper in the patient's hand, so printing was part of
+			the design from the start.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		From registration to report
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Patients are filed as lab, indoor, or hospital patients. Registering tests for a patient picks
+		from a catalogue of lab tests grouped by department, each with its own price. It records the
+		referring doctor, any advance payment and discount, and a delivery date, then shows what is
+		still owed. Every test can have a saved report template, so the lab fills in results against a
+		fixed layout and the server renders the finished report to PDF. Payments made later update the
+		same record, and a report can be regenerated after corrections.
+	</p>
+
+	<p class="text-secondary-100/70">
+		Admissions follow the same pattern, with costs, discounts, and the doctors in charge. Payments
+		are recorded as transactions, and the transactions view shows today's total, lists any date
+		range, and exports it as a PDF. The stats screen charts how many reports each test and test
+		group produced.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Flutter desktop</span> client for
+					Windows</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Report templates</span> rendered to
+					PDF</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Billing</span> with advances, discounts,
+					and dues</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Three roles</span>: admin, receptionist,
+					lab</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,72 @@
+<div class="space-y-6">
+	<p class="text-secondary-50 text-xl leading-relaxed font-medium">
+		Campus Bus Tracker answers the question every student at a bus stop asks: is the bus still on
+		campus, or has it left? A camera at the gate answers it by reading number plates.
+	</p>
+
+	<p class="text-secondary-100/70">
+		The system has three kinds of user. Commuters see routes and live bus positions and reserve
+		seats. Drivers share their location while they drive. Admins manage buses, drivers, routes,
+		hotspots, and the camera feed. The front end is SvelteKit with Leaflet maps. The back end is
+		FastAPI on MongoDB, with a WebSocket channel that pushes positions and status changes as they
+		happen.
+	</p>
+
+	<div class="border-secondary-300 bg-secondary-800/40 rounded-r-2xl border-l-4 px-6 py-4">
+		<p class="text-secondary-50 text-lg italic">
+			The useful part isn't reading the plate. It's knowing which way the bus was going when it was
+			read.
+		</p>
+	</div>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">
+		From video to bus status
+	</h3>
+
+	<p class="text-secondary-100/70">
+		Gate footage goes through YOLOv8 to find vehicles, a trained plate detector to crop the plate,
+		and EasyOCR to read it. SORT tracking follows each vehicle across frames, so the same bus isn't
+		counted many times and its direction of travel can be worked out from its track. Each recognised
+		plate is matched to a registered bus. A bus coming in is marked as stopped on campus, a bus
+		going out is marked as running, and anything unclear is marked unknown instead of guessed.
+	</p>
+
+	<h3 class="text-secondary-200 pt-2 text-sm font-bold tracking-widest uppercase">Live maps</h3>
+
+	<p class="text-secondary-100/70">
+		Routes are drawn as polylines over the map, and driver positions arrive over the WebSocket and
+		move the bus markers without a page reload. The same live view is available per bus, so a
+		commuter can follow the one they've reserved a seat on.
+	</p>
+
+	<div class="mt-8">
+		<h3 class="text-secondary-200 mb-4 text-sm font-bold tracking-widest uppercase">At a glance</h3>
+		<ul class="grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">YOLOv8 + EasyOCR</span> plate reading at
+					the gate</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Direction-aware</span> in or out of
+					campus</span
+				>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span><span class="text-secondary-50 font-semibold">WebSocket</span> live positions</span>
+			</li>
+			<li class="text-secondary-100/80 flex gap-3">
+				<span class="text-secondary-300">—</span>
+				<span
+					><span class="text-secondary-50 font-semibold">Three roles</span>: commuter, driver,
+					admin</span
+				>
+			</li>
+		</ul>
+	</div>
+</div>
