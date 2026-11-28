@@ -7,7 +7,7 @@
  */
 
 /** Canonical origin (no trailing slash). */
-export const siteUrl = 'https://wof12345.github.io';
+export const siteUrl = 'https://atifbinferdous.com';
 
 /** Brand / site name used in <title> suffixes and Open Graph. */
 export const siteName = 'Atif Bin Ferdous';

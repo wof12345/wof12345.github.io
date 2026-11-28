@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /demo
 
-Sitemap: https://wof12345.github.io/sitemap.xml
+Sitemap: https://atifbinferdous.com/sitemap.xml
